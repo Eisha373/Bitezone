@@ -1,6 +1,9 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import {Login} from"./pages/auth/Login";
 import {Signup} from"./pages/auth/Signup";
+import {Logout} from"./pages/auth/Logout";
+import {Footer} from "./components/Footer";
+import "./auth.css";
 
 function App()
 {
@@ -10,6 +13,8 @@ function App()
 <Routes>
   <Route path="/login" element={<Login/>}/>
   <Route path="/signup" element={<Signup/>}/>
+  <Route path="/logout" element={<Logout/>}/>
+  <Route path="footer" element={<Footer/>}/>
   </Routes>
   </BrowserRouter>
   );

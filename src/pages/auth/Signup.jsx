@@ -1,4 +1,6 @@
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import "../../auth.css";
+
 export function Signup(){
     return(
 <div className="auth-container">
@@ -14,11 +16,16 @@ export function Signup(){
                     <label htmlFor="confirm-password">Confirm Password:</label>
                     <input type="password" id="confirm-password" placeholder="Re-enter your password"required/>
                     <div className="role-based-selector">
+                    
                     <label htmlFor="role">Role:</label>
-                    <select id="role" defaultValue="user">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select>
+                    <label className="radio-label">
+                  <input type="radio" name="role" value="customer" defaultChecked />
+                   Customer
+                    </label>
+                 <label className="radio-label">
+                 <input type="radio" name="role" value="admin" />
+                    Admin
+                  </label>
                     </div>
                     <button type="submit">Sign up</button>
                 </form>

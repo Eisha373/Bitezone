@@ -1,9 +1,13 @@
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import "../../auth.css";
+
 export function Login(){
     return(
         <div className="auth-container">
             <div className="auth-card">
-            <h2>Login</h2>
+         <img src="/images/burger-logo(1).jpg" alt="Bitezone Logo" className="auth-logo" />
+            
+            <h2>Welcome to Bitezone</h2>
             <form>
                 <label htmlFor="email">Email:</label>
                 <input type="email" id="email" placeholder="Email" required/>
@@ -14,5 +18,6 @@ export function Login(){
             <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
         </div>
         </div>
+        
     );
 }
