@@ -36,8 +36,12 @@
 .auth-logo {
   width: 60px;
   height: 60px;
-  display: block;
-  margin: 0 auto 15px;
+  display:block;
+  margin: 20px auto 15px;
+  border-radius: 28%; 
+  object-fit: cover;
+  border: none;     
+  background-color:none;
 }
 .auth-card {
     position:relative;
