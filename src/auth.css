@@ -2,9 +2,36 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
-    background: linear-gradient(135deg, #f3e3cb, #f8ead3);   /* gradient */
     padding:20px;
+    min-height:100vh;
+    background-image: url("/images/background-image.jpg");
+  background-size: cover;
+  background-position: center;
+  position:relative;
+  overflow:hidden;
+}
+.auth-container::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  right: -18px;
+  bottom: -18px;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  filter: blur(5.5px);
+  z-index: 0;
+}
+.auth-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 0;
 }
 .auth-logo {
   width: 60px;
@@ -13,6 +40,8 @@
   margin: 0 auto 15px;
 }
 .auth-card {
+    position:relative;
+    z-index:1;
   background-color: #ffffff;
   padding: 40px 35px;
   border-radius: 12px;
@@ -61,15 +90,22 @@
     padding:10px 12px;
     border-radius:25px;
     border:none;
-    background-color:#aebbac;
+    background-color:#d65335;
     color:white;
     font-size:0.95rem;
     cursor:pointer;
     transition:background-color 0.1s ease;
 }
-.role-based-selector p {
-  margin-top: 15px;
+.role-based-selector{
+  margin-top: 8px;
   margin-bottom: 8px;
+  gap:15px;
+  align-items:center;
+  display:flex;
+  flex-wrap:wrap;
+}
+.role-based-selector p{
+  margin: 0;
   font-size: 0.9rem;
   color: #444;
   font-weight: 500;
@@ -79,14 +115,17 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-right: 20px;
+  margin:0;
   font-weight: normal;
   cursor: pointer;
 }
 
 .radio-label input[type="radio"] {
-  width: auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
   display: inline-block;
+  accent-color: #6372fc;
 }
 
 .auth-card button[type="submit"]:hover{
@@ -128,7 +167,7 @@ margin-top:25px;
     font-weight:600;
 }
 .logout-actions button:first-child{
-    background-color:#aebbac;
+    background-color:#d65335;
     color:#121111;
 }
 .logout-actions button:first-child:hover{
@@ -137,7 +176,7 @@ margin-top:25px;
 }
 
 .logout-actions button:last-child{
-    background-color:#aebbac;
+    background-color:#d65335;
     color:#121111;
 }
 .logout-actions button:last-child:hover{
