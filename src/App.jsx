@@ -2,8 +2,9 @@ import {BrowserRouter,Routes,Route} from "react-router-dom";
 import {Login} from"./pages/auth/Login";
 import {Signup} from"./pages/auth/Signup";
 import {Logout} from"./pages/auth/Logout";
-import {Footer} from "./components/Footer";
+import {Home} from "./pages/customer/Home";
 import "./auth.css";
+import "./home.css";
 
 function App()
 {
@@ -11,10 +12,11 @@ function App()
 
 <BrowserRouter>
 <Routes>
+  <Route path="/" element={<Home/>}/>
   <Route path="/login" element={<Login/>}/>
   <Route path="/signup" element={<Signup/>}/>
   <Route path="/logout" element={<Logout/>}/>
-  <Route path="footer" element={<Footer/>}/>
+  
   </Routes>
   </BrowserRouter>
   );

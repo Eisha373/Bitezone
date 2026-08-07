@@ -1,17 +1,24 @@
-import {dummyProducts} from "../../data/dummyProducts";
-import {ProductCard} from "../../components/ProductCard";
+import { dummyProducts } from "../../data/dummyProducts";
+import { ProductCard } from "../../components/ProductCard";
+import { Navbar } from "../../components/Navbar";
+import {Footer} from "../../components/Footer";
+import "../../home.css";
 
-const Home = () => {
+export function Home() {
   return (
-    <div className="home">
-      <h1>Our Menu</h1>
-      <div className="product-grid">
-        {dummyProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <div>
+      <Navbar />
+
+      <div className="home-container">
+        <h1>Our Menu</h1>
+        <div className="product-grid">
+          {dummyProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
-};
-
-export default Home;
+}
