@@ -16,6 +16,7 @@ export function Signup(){
                     <label htmlFor="confirm-password">Confirm Password:</label>
                     <input type="password" id="confirm-password" placeholder="Re-enter your password"required/>
                     <div className="role-based-selector">
+                    
                     <label htmlFor="role">Role:</label>
                     <label className="radio-label">
                   <input type="radio" name="role" value="customer" defaultChecked />
