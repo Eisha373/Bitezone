@@ -1,6 +1,9 @@
+import {Link} from "react-router-dom";
+
 import {useState} from "react";
 export function ProductCard({ product }) {
   const [quantity, setQuantity] = useState(1);
+  
   function handleIncrement(){
     setQuantity(quantity+1);
   }
@@ -22,8 +25,11 @@ export function ProductCard({ product }) {
         <button className="qty-btn" onClick={handleIncrement}>+</button>
       </div>
       <div className="product-action">
+        <Link to="/Cart">
         <button className="add-to-cart-btn">Add to Cart</button>
+        </Link>
       </div>
+      
     </div>
   );
 }
