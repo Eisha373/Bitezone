@@ -1,4 +1,4 @@
-import { dummyProducts } from "../../data/dummyProducts";
+import { dummyProducts } from "../../data/DummyProducts";
 import { ProductCard } from "../../components/ProductCard";
 import { Navbar } from "../../components/Navbar";
 import {Footer} from "../../components/Footer";
