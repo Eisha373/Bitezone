@@ -10,7 +10,7 @@ export function Home() {
       <Navbar />
 
       <div className="home-container">
-        <h1>Our Menu</h1>
+        <h1>Menu</h1>
         <div className="product-grid">
           {dummyProducts.map((product) => (
             <ProductCard key={product.id} product={product} />

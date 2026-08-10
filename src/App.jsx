@@ -5,6 +5,7 @@ import {Logout} from"./pages/auth/Logout";
 import {Home} from "./pages/customer/Home";
 import "./auth.css";
 import "./home.css";
+import "./navbar-footer.css";
 
 function App()
 {

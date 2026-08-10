@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import "../navbar-footer.css";
 
 export function Footer(){
     return(
@@ -7,7 +8,7 @@ export function Footer(){
                 <p>&copy; {new Date().getFullYear()} BiteZone. All rights reserved.</p>
                 <div className="footer-links">
                     <Link to="/contact">Contact Us</Link>
-                    <a href="mailto:support@bitezone.com">support@bitezone.com</a>
+                    <a href="mailto:support@bitezone.com"> support@bitezone.com</a>
                 </div>
             </div>
         </footer>

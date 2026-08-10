@@ -1,4 +1,5 @@
 import {Link,useNavigate} from "react-router-dom";
+import "../navbar-footer.css";
 export function Navbar() {
 
     const navigate = useNavigate();
