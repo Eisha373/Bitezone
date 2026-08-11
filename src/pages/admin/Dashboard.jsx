@@ -17,6 +17,7 @@ export function AdminDashboard() {
           </div>
         ))}
       </div>
+      
       <Footer/>
     </div>
   );
