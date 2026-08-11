@@ -6,7 +6,7 @@ import {Home} from "./pages/customer/Home";
 import {Cart} from "./pages/customer/Cart";
 import {Checkout} from "./pages/customer/Checkout";
 import { MyOrders } from "./pages/customer/MyOrders";
-import {Dashboard} from "./pages/admin/Dashboard";
+import {AdminDashboard} from "./pages/admin/Dashboard";
 import "./auth.css";
 import "./home.css";
 import "./navbar-footer.css";
@@ -30,7 +30,7 @@ function App()
   <Route path="/cart" element={<Cart/>}/>
   <Route path="/checkout"element={<Checkout/>}/>
   <Route path="/my-orders" element={<MyOrders />} />
-  <Route path="/dashboard" element={<Dashboard/>}/>
+  <Route path="/dashboard" element={<AdminDashboard/>}/>
   </Routes>
   </BrowserRouter>
   );

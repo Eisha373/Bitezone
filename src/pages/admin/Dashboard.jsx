@@ -1,10 +1,12 @@
 import {dummyStats} from "../../data/DummyStats";
-import "./admin-navbar.css";
-import "./admin-dashboard.css";
+import { AdminNavbar } from "../../components/AdminNavbar";
+import {Footer} from "../../components/Footer";
+
 
 export function AdminDashboard() {
   return (
     <div className="admin-container">
+        <AdminNavbar/>
       <h1>Dashboard</h1>
       <div className="kpi-grid">
         {dummyStats.map((stat) => (
@@ -15,6 +17,7 @@ export function AdminDashboard() {
           </div>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 }
