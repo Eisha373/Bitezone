@@ -5,11 +5,13 @@ import {Logout} from"./pages/auth/Logout";
 import {Home} from "./pages/customer/Home";
 import {Cart} from "./pages/customer/Cart";
 import {Checkout} from "./pages/customer/Checkout";
+import { MyOrders } from "./pages/customer/MyOrders";
 import "./auth.css";
 import "./home.css";
 import "./navbar-footer.css";
 import "./cart.css";
 import "./checkout.css";
+import "./order.css";
 
 function App()
 {
@@ -23,6 +25,7 @@ function App()
   <Route path="/logout" element={<Logout/>}/>
   <Route path="/cart" element={<Cart/>}/>
   <Route path="/checkout"element={<Checkout/>}/>
+  <Route path="/my-orders" element={<MyOrders />} />
   </Routes>
   </BrowserRouter>
   );
