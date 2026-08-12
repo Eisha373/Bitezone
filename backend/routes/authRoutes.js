@@ -31,3 +31,36 @@ router.post("/signup", async (req, res) => {
 });
 
 export default router;
+router.post("/login", async (req, res)=>{
+    try{
+      const {email,password}=req.body;
+      const user=await User.findOne({email});
+      if(!user){
+        return res.status(400).json({message:"Invalid email or password"});
+      }
+      const match=await bcrypt.compare(password,user.password);
+      if(!match){
+        return res.status(400).json({message:"Invalid email or password"});
+      }
+      const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } 
+     
+    catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
