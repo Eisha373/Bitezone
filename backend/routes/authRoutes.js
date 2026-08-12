@@ -30,7 +30,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-export default router;
 router.post("/login", async (req, res)=>{
     try{
       const {email,password}=req.body;
@@ -64,3 +63,4 @@ router.post("/login", async (req, res)=>{
     return res.status(500).json({ message: error.message });
   }
 });
+export default router;
