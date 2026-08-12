@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
  import dotenv from "dotenv";
   import cors from "cors";
   
@@ -15,3 +15,7 @@ import mongoose from "mongoose";
    app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
     const PORT = process.env.PORT || 5000; 
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+    
+
+    
