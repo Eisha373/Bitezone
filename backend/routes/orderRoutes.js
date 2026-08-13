@@ -106,4 +106,19 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+router.get("/stats/summary", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const pendingOrders = await Order.countDocuments({ status: "Pending" });
+
+    const allOrders = await Order.find();
+    const totalRevenue = allOrders.reduce((sum, order) => sum + order.totalAmount, 0);
+
+    res.json({ totalOrders, totalRevenue, pendingOrders });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 export default router;
