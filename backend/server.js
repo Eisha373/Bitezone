@@ -4,7 +4,7 @@ import mongoose from "mongoose";
   import cors from "cors";
   import authRoutes from "./routes/authRoutes.js";
   import productRoutes from "./routes/productRoutes.js";
-
+import orderRoutes from "./routes/orderRoutes.js";
   
   dotenv.config(); 
 
@@ -17,6 +17,8 @@ import mongoose from "mongoose";
    app.use(express.json()); 
    app.use("/api/auth", authRoutes);
    app.use("/api/products", productRoutes);
+   app.use("/api/orders", orderRoutes);
+
 
    app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
     const PORT = process.env.PORT || 5000; 
