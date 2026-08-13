@@ -1,23 +1,23 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
-import {useState} from "react";
 export function ProductCard({ product }) {
   const [quantity, setQuantity] = useState(1);
-  
-  function handleIncrement(){
-    setQuantity(quantity+1);
+
+  function handleIncrement() {
+    setQuantity(quantity + 1);
   }
-  function handleDecrement(){
-    if(quantity>1){
-      setQuantity(quantity-1);
+  function handleDecrement() {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
     }
   }
 
   return (
     <div className="product-card">
-      <img src={product.image} alt={product.name} className="product-image" />
+      <img src={product.imageLink} alt={product.name} className="product-image" />
       <h3>{product.name}</h3>
-     <p className="product-price">Price: Rs {product.price}</p>
+      <p className="product-price">Price: Rs {product.price}</p>
 
       <div className="quantity-control">
         <button className="qty-btn" onClick={handleDecrement}>-</button>
@@ -26,10 +26,9 @@ export function ProductCard({ product }) {
       </div>
       <div className="product-action">
         <Link to="/Cart">
-        <button className="add-to-cart-btn">Add to Cart</button>
+          <button className="add-to-cart-btn">Add to Cart</button>
         </Link>
       </div>
-      
     </div>
   );
 }
