@@ -1,10 +1,43 @@
 import { AdminNavbar } from "../../components/AdminNavbar";
 import { Footer } from "../../components/Footer";
-import { dummyAdminOrders } from "../../data/DummyAdminOrders";
+import { useState, useEffect } from "react";
 import "../../admin.css";
 
 export function OrderHistory() {
-  const customerNames = [...new Set(dummyAdminOrders.map((order) => order.customerName))];
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch("http://localhost:5000/api/orders", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError(data.message || "Failed to load order history");
+          return;
+        }
+
+        setOrders(data);
+      } catch {
+        setError("Something went wrong. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchOrders();
+  }, []);
+
+  const customerNames = [...new Set(orders.map((order) => order.customer?.name))];
 
   return (
     <div>
@@ -13,20 +46,23 @@ export function OrderHistory() {
       <div className="admin-container">
         <h1>Customer Order History</h1>
 
+        {loading && <p>Loading order history...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
         {customerNames.map((customer) => {
-          const customerOrders = dummyAdminOrders.filter(
-            (order) => order.customerName === customer
+          const customerOrders = orders.filter(
+            (order) => order.customer?.name === customer
           );
 
           return (
             <div className="customer-history-block" key={customer}>
               <h2>{customer}</h2>
               {customerOrders.map((order) => (
-                <div className="admin-order-row" key={order.id}>
-                  <p>Order #{order.id}</p>
-                  <p className="order-date">{order.date}</p>
-                  <p>Rs {order.totalPrice}</p>
-                  <span className={`status-badge status-${order.status.toLowerCase()}`}>
+                <div className="admin-order-row" key={order._id}>
+                  <p>Order #{order._id.slice(-6)}</p>
+                  <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p>Rs {order.totalAmount}</p>
+                  <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
                     {order.status}
                   </span>
                 </div>

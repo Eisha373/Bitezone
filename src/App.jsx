@@ -29,17 +29,17 @@ function App()
 <CartProvider>
 <BrowserRouter>
 <Routes>
-  <Route path="/" element={<Home/>}/>
+  <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login/>}/>
   <Route path="/signup" element={<Signup/>}/>
   <Route path="/logout" element={<Logout/>}/>
-  <Route path="/cart" element={<Cart/>}/>
+  <Route path="/cart" element={ <Cart /> } />
   <Route path="/checkout"element={<Checkout/>}/>
   <Route path="/my-orders" element={<MyOrders />} />
-  <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+  <Route path="/admin/dashboard" element={<AdminDashboard />} />
   <Route path="/admin/history" element={<OrderHistory/>}/>
   <Route path="/order-tracking/:id" element={<OrderTracking />} />
-    <Route path="/admin/orders" element={<OrdersList/>}/>
+   <Route path="/admin/orders" element={<OrdersList />} />
 
   </Routes>
   </BrowserRouter>

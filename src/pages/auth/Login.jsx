@@ -10,8 +10,8 @@ export function Login() {
   const [error, setError] = useState("");
 
   async function handleLogin(e) {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); 
+      setError("");
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -35,7 +35,7 @@ export function Login() {
       } else {
         navigate("/");
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
     }
   }

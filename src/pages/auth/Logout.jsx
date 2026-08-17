@@ -6,7 +6,7 @@ export function Logout(){
     const navigate = useNavigate();
 
     function handleConfirmLogout(){
-      localStorage.removeItem("user");
+
       navigate("./login");
     }
     function handleCancelLogout(){
