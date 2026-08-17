@@ -9,6 +9,7 @@ import { MyOrders } from "./pages/customer/MyOrders";
 import {AdminDashboard} from "./pages/admin/Dashboard";
 import {OrderHistory} from "./pages/admin/OrderHistory";
 import {OrdersList} from "./pages/admin/OrdersList";
+import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
 import "./auth.css";
 import "./home.css";
@@ -24,7 +25,7 @@ import "./admin.css";
 function App()
 {
   return(
-    
+
 <CartProvider>
 <BrowserRouter>
 <Routes>
@@ -37,6 +38,7 @@ function App()
   <Route path="/my-orders" element={<MyOrders />} />
   <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
   <Route path="/admin/history" element={<OrderHistory/>}/>
+  <Route path="/order-tracking/:id" element={<OrderTracking />} />
     <Route path="/admin/orders" element={<OrdersList/>}/>
 
   </Routes>

@@ -55,7 +55,9 @@
 }
 
 .status-badge {
-  padding: 4px 12px;
+  padding: 7px 12px;
+  margin-top:10px;
+  margin-bottom:15px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 600;
