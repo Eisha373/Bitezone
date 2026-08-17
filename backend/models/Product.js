@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const productSchema=new mongoose.Schema(
         {
             name:{type:String,required:true},
+                price: { type: Number, required: true, min: 0 },
             description: { type: String },
             imageLink: { type: String, required: true },
             category: { type: String, enum: ["pizza", "burger", "nuggets","sandwich", "fries", "pasta"], required: true },},  

@@ -40,6 +40,15 @@
     border-radius: 6px;
     cursor: pointer;
 }
+.cart-badge {
+  background: #0843cf;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
 .footer{
     display:flex;
     flex-direction:row;
