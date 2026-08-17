@@ -9,6 +9,7 @@ import { MyOrders } from "./pages/customer/MyOrders";
 import {AdminDashboard} from "./pages/admin/Dashboard";
 import {OrderHistory} from "./pages/admin/OrderHistory";
 import {OrdersList} from "./pages/admin/OrdersList";
+import { CartProvider } from "./context/CartContext";
 import "./auth.css";
 import "./home.css";
 import "./navbar-footer.css";
@@ -23,7 +24,8 @@ import "./admin.css";
 function App()
 {
   return(
-
+    
+<CartProvider>
 <BrowserRouter>
 <Routes>
   <Route path="/" element={<Home/>}/>
@@ -39,6 +41,7 @@ function App()
 
   </Routes>
   </BrowserRouter>
+  </CartProvider>
   );
 }
   export default App;
