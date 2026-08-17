@@ -1,5 +1,19 @@
-import {Link} from "react-router-dom";
-export function AdminNavbar(){
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
+export function AdminNavbar() {
+  const navigate = useNavigate();
+  const { cartItems,clearCart } = useCart();
+
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  function handleLogoutClick() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+        clearCart();
+    navigate("/login");
+  }
+
   return (
     <nav className="admin-navbar">
       <div className="admin-navbar-brand">
@@ -7,10 +21,15 @@ export function AdminNavbar(){
         <span className="admin-tag">Admin</span>
       </div>
       <div className="admin-navbar-links">
+        <Link to="/">Menu</Link>
+        <Link to="/cart">
+          Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+        </Link>
         <Link to="/admin/dashboard">Dashboard</Link>
         <Link to="/admin/orders">Orders</Link>
         <Link to="/admin/history">Order history</Link>
-        <button className="logout-btn">Logout</button>
+        
+        <button className="logout-btn" onClick={handleLogoutClick}>Logout</button>
       </div>
     </nav>
   );
