@@ -1,0 +1,80 @@
+.navbar{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    background-color:rgb(242, 147, 113);
+    padding:3rem;
+    align-items:center;
+    box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+.navbar-logo a{
+    font-size: 2rem;
+    font-weight: bold;
+    color: #202020;
+    text-decoration: none;
+}
+.navbar-links{
+    display:flex;
+    font-size:1.1rem;
+    align-items:center;
+    justify-content:center;
+    gap:3rem;
+    padding:0%;
+    list-style:none;
+}
+.navbar-links a{
+    text-decoration:none;
+    color: #333;
+    transition: color 0.3s;
+}
+.navbar-links a:hover{
+    color: #6372fc;
+}
+.logout-button{
+    background-color: #b83607;
+    font-size:1rem;
+    font-weight:500;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.cart-badge {
+  background: #0843cf;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+.footer{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    padding: 1.5rem;
+    background-color: #f1f1f1;
+    margin-top: 1rem;
+}
+.footer-content{
+    display:flex;
+    flex-direction:column;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:2rem;
+}
+.footer-links{
+    display:flex;
+    flex-direction:row;
+    gap:1rem;
+}
+.footer-links a{
+    text-decoration:none;
+    color: #333;
+    transition: color 0.3s;
+}
+.footer-links a:hover{
+    color: #6372fc;
+}

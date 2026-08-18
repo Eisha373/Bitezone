@@ -1,0 +1,79 @@
+.orders-container {
+  padding: 30px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.orders-container h1 {
+  margin-bottom: 20px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 18px 20px;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.order-date {
+  color: #777;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.order-items-summary {
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.order-total {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.view-details-btn {
+  background-color: #6372fc;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 7px 12px;
+  margin-top:10px;
+  margin-bottom:15px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-preparing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-delivered {
+  background-color: #d4edda;
+  color: #155724;
+}
