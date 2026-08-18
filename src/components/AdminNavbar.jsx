@@ -3,15 +3,13 @@ import { useCart } from "../context/CartContext";
 
 export function AdminNavbar() {
   const navigate = useNavigate();
-  const { cartItems,clearCart } = useCart();
+  const { cartItems } = useCart();
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   function handleLogoutClick() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-        clearCart();
-    navigate("/login");
+    
+    navigate("/logout");
   }
 
   return (

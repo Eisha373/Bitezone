@@ -1,19 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+
 import "../navbar-footer.css";
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { cartItems,clearCart } = useCart();
+  const { cartItems } = useCart();
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   function handleLogoutClick() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-        clearCart();
-
-    navigate("/login");
+     navigate("/logout");
   }
 
   return (
