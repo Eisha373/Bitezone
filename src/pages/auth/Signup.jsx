@@ -35,7 +35,7 @@ export function Signup() {
         return;
       }
 
-      navigate("/login");
+      navigate("/menu");
     } catch {
       setError("Something went wrong. Please try again.");
     }
@@ -51,7 +51,7 @@ export function Signup() {
           <input
             type="text"
             id="full-name"
-            placeholder="e.g.Ali"
+            placeholder="e.g.Ali Raza"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

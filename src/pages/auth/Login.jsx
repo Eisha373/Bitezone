@@ -33,7 +33,7 @@ export function Login() {
       if (data.user.role === "admin") {
         navigate("/admin/dashboard");
       } else {
-        navigate("/");
+        navigate("/menu");
       }
     } catch {
       setError("Something went wrong. Please try again.");

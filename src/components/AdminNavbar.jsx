@@ -19,7 +19,7 @@ export function AdminNavbar() {
         <span className="admin-tag">Admin</span>
       </div>
       <div className="admin-navbar-links">
-        <Link to="/">Menu</Link>
+        <Link to="/menu">Menu</Link>
         <Link to="/cart">
           Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
         </Link>
