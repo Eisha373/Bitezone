@@ -35,7 +35,14 @@ export function Signup() {
         return;
       }
 
-      navigate("/menu");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (data.user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/menu");
+      }
     } catch {
       setError("Something went wrong. Please try again.");
     }
