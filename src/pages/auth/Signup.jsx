@@ -22,7 +22,7 @@ export function Signup() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, password, role }),
@@ -35,8 +35,15 @@ export function Signup() {
         return;
       }
 
-      navigate("/login");
-    } catch (err) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (data.user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/menu");
+      }
+    } catch {
       setError("Something went wrong. Please try again.");
     }
   }
@@ -51,7 +58,7 @@ export function Signup() {
           <input
             type="text"
             id="full-name"
-            placeholder="e.g.Ali"
+            placeholder="e.g.Ali Raza"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

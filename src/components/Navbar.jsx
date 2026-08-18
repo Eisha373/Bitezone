@@ -16,10 +16,10 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <Link to="/">Bitezone 🍔</Link>
+        <Link to="/menu">Bitezone 🍔</Link>
       </div>
       <ul className="navbar-links">
-        <li> <Link to="/">Menu</Link></li>
+        <li> <Link to="/menu">Menu</Link></li>
         <li>
           <Link to="/cart">
             Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}

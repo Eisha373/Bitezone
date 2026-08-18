@@ -12,7 +12,7 @@ export function AdminDashboard() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/orders/stats/summary", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/stats/summary`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -26,7 +26,7 @@ export function AdminDashboard() {
         }
 
         setStats(data);
-      } catch (err) {
+      } catch{
         setError("Something went wrong. Please try again.");
       } finally {
         setLoading(false);

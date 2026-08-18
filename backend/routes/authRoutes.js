@@ -23,8 +23,23 @@ router.post("/signup", async (req, res) => {
       password: hashedPassword,
       role: role || "customer",
     });
+    const token = jwt.sign(
+      { id: newUser._id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
-    return res.status(201).json({ message: "Registration Successful!", userId: newUser._id });
+
+    return res.status(201).json({
+      message: "Registration Successful!",
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
   } catch (e) {
     return res.status(500).json({ message: e.message });
   }
