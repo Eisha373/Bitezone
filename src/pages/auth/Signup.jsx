@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
 export function Signup() {
@@ -119,7 +120,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     className="toggle-password-btn"
     onClick={() => setShowPassword(!showPassword)}
   >
-    {showPassword ? "Hide" : "Show"}
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
   </button>
 </div>
           <label htmlFor="confirm-password">Confirm Password:</label>
@@ -138,7 +139,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     className="toggle-password-btn"
     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
   >
-    {showConfirmPassword ? "Hide" : "Show"}
+    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
   </button>
 </div>
 

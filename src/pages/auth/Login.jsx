@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 import "../../auth.css";
 
 export function Login() {
@@ -74,7 +76,7 @@ export function Login() {
     className="toggle-password-btn"
     onClick={() => setShowPassword(!showPassword)}
   >
-    {showPassword ? "Hide" : "Show"}
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
   </button>
 </div>
           <button type="submit">Login</button>
