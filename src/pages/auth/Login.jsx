@@ -7,6 +7,7 @@ export function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   async function handleLogin(e) {
@@ -59,15 +60,23 @@ export function Login() {
           />
 
           <label htmlFor="password">Password:</label>
+          <div className="password-field">
           <input
-            type="password"
+          type={showPassword ? "text" : "password"}
             id="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
+          <button
+    type="button"
+    className="toggle-password-btn"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? "Hide" : "Show"}
+  </button>
+</div>
           <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>

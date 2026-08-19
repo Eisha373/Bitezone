@@ -11,6 +11,8 @@ export function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -33,7 +35,6 @@ export function Signup() {
     return;
   }
 
- 
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -104,24 +105,42 @@ export function Signup() {
           />
 
           <label htmlFor="password">Password:</label>
+          <div className="password-field">
           <input
-            type="password"
+          type={showPassword ? "text" : "password"}
             id="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
+          <button
+    type="button"
+    className="toggle-password-btn"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? "Hide" : "Show"}
+  </button>
+</div>
           <label htmlFor="confirm-password">Confirm Password:</label>
+          <div className="password-field">
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             id="confirm-password"
             placeholder="Re-enter your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
+          
+          <button
+    type="button"
+    className="toggle-password-btn"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+  >
+    {showConfirmPassword ? "Hide" : "Show"}
+  </button>
+</div>
 
           <div className="role-based-selector">
             <label htmlFor="role">Role:</label>

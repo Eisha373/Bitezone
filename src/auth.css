@@ -194,3 +194,25 @@ margin-top:25px;
   display: block;
   margin: 0 auto 15px;
 }
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 60px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #6372fc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
