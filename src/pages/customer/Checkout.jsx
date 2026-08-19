@@ -9,9 +9,11 @@ export function Checkout() {
   const navigate = useNavigate();
   const { cartItems, totalPrice, clearCart } = useCart();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const savedUser = JSON.parse(localStorage.getItem("user")) || {};
+
+  const [fullName, setFullName] = useState(savedUser.name || "");
+  const [email, setEmail] = useState(savedUser.email || "");
+  const [phone, setPhone] = useState(savedUser.phone || "");
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
 
