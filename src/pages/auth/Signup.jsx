@@ -3,6 +3,10 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
+/*added valid email,phone,password */
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^03\d{9}$/; // e.g. 03001234567 (11 digits, starts with 03)
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 export function Signup() {
@@ -14,9 +18,36 @@ export function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  function handleEmailChange(e) {
+    const value = e.target.value;
+    setEmail(value);
+
+    /*condition to check valid email*/
+    
+    if (value && !EMAIL_PATTERN.test(value)) {
+      setEmailError("Enter a valid email address, e.g. ali123@example.com");
+    } else {
+      setEmailError("");
+    }
+  }
+
+  function handlePhoneChange(e) {
+    // keep only digits, cap at 11 characters as the user types
+    const value = e.target.value.replace(/\D/g, "").slice(0, 11);
+    setPhone(value);
+
+    if (value && !PHONE_PATTERN.test(value)) {
+      setPhoneError("Enter an 11-digit number e.g. 03079864522");
+    } else {
+      setPhoneError("");
+    }
+  }
 
   function handlePasswordChange(e) {
     const value = e.target.value;
@@ -34,6 +65,16 @@ export function Signup() {
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+
+    if (!EMAIL_PATTERN.test(email)) {
+      setEmailError("Enter a valid email address, e.g. ali123@example.com");
+      return;
+    }
+
+    if (!PHONE_PATTERN.test(phone)) {
+      setPhoneError("Enter an 11-digit number e.g. 03001234567");
+      return;
+    }
 
     if (!PASSWORD_PATTERN.test(password)) {
       setError("Password doesn't meet the required format");
@@ -77,7 +118,9 @@ export function Signup() {
       <div className="auth-card">
         <h2>Create Account</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleSignup}>
+        {/* noValidate stops the browser's native bubbles so our custom popups
+            are the only validation UI the user ever sees */}
+        <form onSubmit={handleSignup} noValidate>
           <label htmlFor="full-name">Full Name:</label>
           <input
             type="text"
@@ -89,43 +132,68 @@ export function Signup() {
           />
 
           <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="e.g.ali123@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label htmlFor="phone">Phone:</label>
-          <input
-            type="tel"
-            id="phone"
-            placeholder="e.g.03001234567"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-
-          <label htmlFor="password">Password:</label>
-          <div className="password-field">
+          <div className="field-wrapper">
             <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
+              type="email"
+              id="email"
+              placeholder="e.g.ali123@example.com"
+              value={email}
+              onChange={handleEmailChange}
               required
             />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            {emailError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{emailError}</span>
+              </div>
+            )}
           </div>
-          {passwordError && <p className="field-error">{passwordError}</p>}
+
+          <label htmlFor="phone">Phone:</label>
+          <div className="field-wrapper">
+            <input
+              type="tel"
+              id="phone"
+              placeholder="e.g.03001234567"
+              value={phone}
+              onChange={handlePhoneChange}
+              inputMode="numeric"
+              maxLength={11}
+              required
+            />
+            {phoneError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{phoneError}</span>
+              </div>
+            )}
+          </div>
+
+          <label htmlFor="password">Password:</label>
+          <div className="field-wrapper">
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+            {passwordError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{passwordError}</span>
+              </div>
+            )}
+          </div>
 
           <label htmlFor="confirm-password">Confirm Password:</label>
           <div className="password-field">
