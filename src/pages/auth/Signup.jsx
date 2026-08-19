@@ -25,19 +25,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     return;
   }
 
-  const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_-])/;
-  if (!strongPasswordRegex.test(password)) {
-    setError("Password must include at least one uppercase letter, one lowercase letter, and one number");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    setError("Passwords do not match");
-    return;
-  }
-
-
-    if (password !== confirmPassword) {
+   if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
@@ -113,6 +101,10 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
+  title="Must be at least 8 characters and include an uppercase letter, a lowercase letter,
+  a number and a special character"
+
             required
           />
           <button
