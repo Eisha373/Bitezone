@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
 export function Signup() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -12,20 +14,33 @@ export function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  function handlePasswordChange(e) {
+    const value = e.target.value;
+    setPassword(value);
+
+    if (value && !PASSWORD_PATTERN.test(value)) {
+      setPasswordError(
+        "Must be 8+ characters with uppercase, lowercase, number & special character"
+      );
+    } else {
+      setPasswordError("");
+    }
+  }
 
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
 
+    if (!PASSWORD_PATTERN.test(password)) {
+      setError("Password doesn't meet the required format");
+      return;
+    }
 
-  if (password.length < 8) {
-    setError("Password must be at least 8 characters long");
-    return;
-  }
-
-   if (password !== confirmPassword) {
+    if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
@@ -95,45 +110,41 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
           <label htmlFor="password">Password:</label>
           <div className="password-field">
-          <input
-          type={showPassword ? "text" : "password"}
-            id="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
-  title="Must be at least 8 characters and include an uppercase letter, a lowercase letter,
-  a number and a special character"
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            <button
+              type="button"
+              className="toggle-password-btn"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          {passwordError && <p className="field-error">{passwordError}</p>}
 
-            required
-          />
-          <button
-    type="button"
-    className="toggle-password-btn"
-    onClick={() => setShowPassword(!showPassword)}
-  >
-    {showPassword ? <FaEyeSlash /> : <FaEye />}
-  </button>
-</div>
           <label htmlFor="confirm-password">Confirm Password:</label>
           <div className="password-field">
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            id="confirm-password"
-            placeholder="Re-enter your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          
-          <button
-    type="button"
-    className="toggle-password-btn"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-  >
-    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-  </button>
-</div>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirm-password"
+              placeholder="Re-enter your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="toggle-password-btn"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
 
           <div className="role-based-selector">
             <label htmlFor="role">Role:</label>

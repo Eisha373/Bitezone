@@ -222,3 +222,8 @@ margin-top:25px;
 .toggle-password-btn:hover {
   color: #4a56e2;
 }
+.field-error {
+  color: #c0392b;
+  font-size: 13px;
+  margin: 4px 0 8px;
+}
