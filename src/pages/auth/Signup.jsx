@@ -16,6 +16,25 @@ export function Signup() {
     e.preventDefault();
     setError("");
 
+
+  if (password.length < 8) {
+    setError("Password must be at least 8 characters long");
+    return;
+  }
+
+  const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_-])/;
+  if (!strongPasswordRegex.test(password)) {
+    setError("Password must include at least one uppercase letter, one lowercase letter, and one number");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    setError("Passwords do not match");
+    return;
+  }
+
+ 
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
