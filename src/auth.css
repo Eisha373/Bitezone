@@ -227,3 +227,52 @@ margin-top:25px;
   font-size: 13px;
   margin: 4px 0 8px;
 }
+.password-field-wrapper {
+  position: relative;
+}
+
+.password-popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 280px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.password-popup::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 20px;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-left: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  transform: rotate(45deg);
+}
+
+.password-popup-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
