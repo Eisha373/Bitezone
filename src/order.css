@@ -77,3 +77,34 @@
   background-color: #d4edda;
   color: #155724;
 }
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 20px 24px;
+  }
+}
+
+/* Phones — header wraps, button goes full width */
+@media (max-width: 500px) {
+  .orders-container {
+    padding: 16px;
+  }
+  .order-card {
+    padding: 14px 16px;
+  }
+  .order-card-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .view-details-btn {
+    width: 100%;
+    margin-top: 6px;
+  }
+  .status-badge {
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+}

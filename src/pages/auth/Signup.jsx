@@ -3,8 +3,9 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
-/*added valid email,phone,password */
+/*added valid name, email,phone,password pattern*/
 
+const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^03\d{9}$/; // e.g. 03001234567 (11 digits, starts with 03)
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
@@ -23,13 +24,25 @@ export function Signup() {
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const [nameError, setNameError] = useState("");
+
+function handleNameChange(e) {
+  const value = e.target.value;
+  setName(value);
+
+  if (value && !NAME_PATTERN.test(value)) {
+    setNameError("Enter a valid name (letters only, min 3 characters)");
+  } else {
+    setNameError("");
+  }
+}
 
   function handleEmailChange(e) {
     const value = e.target.value;
     setEmail(value);
 
     /*condition to check valid email*/
-    
+
     if (value && !EMAIL_PATTERN.test(value)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
     } else {
@@ -65,6 +78,11 @@ export function Signup() {
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+
+    if (!NAME_PATTERN.test(name)) {
+  setNameError("Enter a valid name (letters only, min 3 characters)");
+  return;
+}
 
     if (!EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
@@ -122,14 +140,22 @@ export function Signup() {
             are the only validation UI the user ever sees */}
         <form onSubmit={handleSignup} noValidate>
           <label htmlFor="full-name">Full Name:</label>
-          <input
-            type="text"
-            id="full-name"
-            placeholder="e.g.Ali Raza"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+<div className="field-wrapper">
+  <input
+    type="text"
+    id="full-name"
+    placeholder="e.g.Ali Raza"
+    value={name}
+    onChange={handleNameChange}
+    required
+  />
+  {nameError && (
+    <div className="field-popup">
+      <span className="field-popup-icon">!</span>
+      <span>{nameError}</span>
+    </div>
+  )}
+</div>
 
           <label htmlFor="email">Email:</label>
           <div className="field-wrapper">

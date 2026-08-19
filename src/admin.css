@@ -16,7 +16,6 @@
 
 .admin-order-row {
   display: flex;
-  margin-left:50px;
   align-items: center;
   justify-content: space-between;
   background: white;
@@ -64,19 +63,66 @@
   font-weight: 600;
 }
 
-.status-pending
- { background-color: #fff3cd; 
-    color: #856404; 
+.status-pending { background-color: #fff3cd; color: #856404; }
+.status-preparing { background-color: #cce5ff; color: #004085; }
+.status-delivered { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 20px 24px;
+  }
+  .admin-container h1 {
+    font-size: 1.6rem;
+  }
+  .customer-history-block h2 {
+    margin-left: 12px;
+    font-size: 1.15rem;
+  }
+  .admin-order-row {
+    padding: 12px 16px;
+  }
 }
-.status-preparing {
-     background-color: #cce5ff;
-      color: #004085; 
-    }
-.status-delivered { 
-    background-color: #d4edda; 
-    color: #155724; 
+
+/* Phones — stack info, status and select vertically */
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 16px;
+  }
+  .admin-container h1 {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+  .customer-history-block h2 {
+    margin-left: 4px;
+    font-size: 1.05rem;
+  }
+  .admin-order-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .admin-order-info p {
+    margin-left: 0; /* no room to indent on small screens */
+  }
+  .status-select {
+    width: 100%;
+  }
+  .status-badge {
+    font-size: 0.75rem;
+  }
 }
-.status-cancelled { 
-    background-color: #f8d7da;
-     color: #721c24;
-     }
+
+@media (max-width: 360px) {
+  .admin-container {
+    padding: 12px;
+  }
+  .admin-order-row {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}

@@ -78,3 +78,59 @@
 .footer-links a:hover{
     color: #6372fc;
 }
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1.5rem 2rem;
+  }
+  .navbar-logo a {
+    font-size: 1.5rem;
+  }
+  .navbar-links {
+    gap: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Phones — wrap navbar, shrink logo/links/footer */
+@media (max-width: 600px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 12px;
+    justify-content: center;
+    text-align: center;
+  }
+  .navbar-logo a {
+    font-size: 1.3rem;
+  }
+  .navbar-links {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+  }
+  .logout-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  .footer {
+    padding: 1rem;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar-links {
+    gap: 0.7rem;
+    font-size: 0.85rem;
+  }
+}
