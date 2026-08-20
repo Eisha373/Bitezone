@@ -11,6 +11,7 @@ import { OrderHistory } from "./pages/admin/OrderHistory";
 import { OrdersList } from "./pages/admin/OrdersList";
 import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
+import { AdminProducts } from "./pages/admin/AdminProducts";
 import "./auth.css";
 import "./home.css";
 import "./navbar-footer.css";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/admin/history" element={<OrderHistory />} />
           <Route path="/order-tracking/:id" element={<OrderTracking />} />
           <Route path="/admin/orders" element={<OrdersList />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

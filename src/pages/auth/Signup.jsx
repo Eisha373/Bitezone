@@ -225,7 +225,7 @@ export function Signup() {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                placeholder="e.Home1234@"
+                placeholder="e.g,.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
                 required
