@@ -26,7 +26,7 @@ export function AdminNavbar() {
         <Link to="/cart">
           Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
         </Link>
-                <li><Link to="/my-orders">My Orders</Link></li>
+        <Link to="/my-orders">My Orders</Link>
 
         <Link to="/admin/orders">Orders</Link>
         <Link to="/admin/history">Order history</Link>
