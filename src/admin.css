@@ -22,9 +22,15 @@
   background: white;
   padding: 15px 20px;
   border-radius: 13px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.08);
   gap: 8px;
   flex-wrap: wrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-order-row:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .admin-order-info h3 {
@@ -293,6 +299,45 @@
 .confirm-actions .confirm-delete-btn {
   background: #dc2626;
   color: #fff;
+}
+.filters-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: #f97316;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: white;
+}
+
+@media (max-width: 600px) {
+  .filters-bar {
+    flex-direction: column;
+  }
+  .filter-input,
+  .filter-select {
+    width: 100%;
+  }
 }
 /* ===== MEDIA QUERIES ===== */
 
