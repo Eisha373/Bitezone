@@ -13,7 +13,11 @@ router.post("/signup", async (req, res) => {
     if (emailExist) {
       return res.status(400).json({ message: "Email already registered" });
     }
-
+const phoneExist = await User.findOne({ phone });
+    if (phoneExist) {
+      return res.status(400).json({ message: "Phone number already registered" });
+    }
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
