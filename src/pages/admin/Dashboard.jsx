@@ -49,8 +49,13 @@ export function AdminDashboard() {
       <AdminNavbar />
       <h1>Dashboard</h1>
 
-      {loading && <p>Loading stats...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
 
       <div className="kpi-grid">
         {kpiCards.map((stat) => (
@@ -60,6 +65,9 @@ export function AdminDashboard() {
           </div>
         ))}
       </div>
+      </>
+        )
+      }
 
       <Footer />
     </div>

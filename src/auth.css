@@ -79,6 +79,7 @@
     margin-bottom:5px;
     padding:5px 8px;
     border-radius:5px;
+    box-sizing: border-box;
     border:1px solid #ccc;
     font-size:0.85rem;
     outline:none;
@@ -89,17 +90,31 @@
 .auth-card select:focus{
     border-color:blue;
 }
+
 .auth-card button[type="submit"]{
     margin-top:10px;
     padding:10px 12px;
     border-radius:25px;
     border:none;
+    outline:none;              
     background-color:#d65335;
     color:white;
     font-size:0.95rem;
     cursor:pointer;
     transition:background-color 0.1s ease;
 }
+
+.auth-card button[type="submit"]:focus-visible{
+    outline: 2px solid #6372fc;
+    outline-offset: 2px;
+}
+
+.auth-card button[type="submit"]:focus,
+.auth-card button[type="submit"]:focus-visible{
+    outline:none;
+    box-shadow:0 0 0 2px rgba(214,83,53,0.35); 
+}
+
 .role-based-selector{
   margin-top: 8px;
   margin-bottom: 8px;
@@ -228,6 +243,10 @@ margin-top:25px;
    appears when there's an active error, so it never affects layout. */
 .field-wrapper {
   position: relative;
+}
+.field-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .field-popup {

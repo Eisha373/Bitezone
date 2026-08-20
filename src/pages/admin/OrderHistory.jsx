@@ -46,9 +46,13 @@ export function OrderHistory() {
       <div className="admin-container">
         <h1>Customer Order History</h1>
 
-        {loading && <p>Loading order history...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
+        {loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
         {customerNames.map((customer) => {
           const customerOrders = orders.filter(
             (order) => order.customer?.name === customer
@@ -68,8 +72,11 @@ export function OrderHistory() {
                 </div>
               ))}
             </div>
+            
           );
         })}
+        </>
+          )}
       </div>
 
       <Footer />

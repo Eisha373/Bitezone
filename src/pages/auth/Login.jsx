@@ -9,14 +9,30 @@ export function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   async function handleLogin(e) {
     e.preventDefault(); 
       setError("");
+      setEmailError("");
+  setPasswordError("");
 
-    try {
+  let hasError = false;
+  if (!email) {
+    setEmailError("Please enter your email");
+    hasError = true;
+  }
+  if (!password) {
+    setPasswordError("Please enter your password");
+    hasError = true;
+  }
+  if (hasError) 
+    return;
+
+  try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,38 +63,54 @@ export function Login() {
     <div className="auth-container">
       <div className="auth-card">
         <img src="/images/burger-logo(1).jpg" alt="Bitezone Logo" className="auth-logo" />
-
         <h2>Welcome to Bitezone</h2>
+        
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} noValidate>
           <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label htmlFor="password">Password:</label>
-          <div className="password-field">
-          <input
-          type={showPassword ? "text" : "password"}
-            id="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-    type="button"
-    className="toggle-password-btn"
-    onClick={() => setShowPassword(!showPassword)}
-  >
-    {showPassword ? <FaEyeSlash /> : <FaEye />}
-  </button>
+<div className="field-wrapper">
+  <input
+    type="email"
+    id="email"
+    placeholder="Enter your Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+  {emailError && (
+    <div className="field-popup">        
+      <span className="field-popup-icon">!</span>
+      <span>{emailError}</span>
+    </div>
+  )}
 </div>
+
+<label htmlFor="password">Password:</label>
+<div className="field-wrapper">
+  <div className="password-field">
+    <input
+      type={showPassword ? "text" : "password"}
+      id="password"
+      placeholder="Enter your Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+    <button
+      type="button"
+      className="toggle-password-btn"
+      onClick={() => setShowPassword(!showPassword)}
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </button>
+  </div>
+  {/* customized popup for password */}
+  {passwordError && (
+    <div className="field-popup">
+      <span className="field-popup-icon">!</span>
+      <span>{passwordError}</span>
+    </div>
+  )}
+</div>
+         
           <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>

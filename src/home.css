@@ -44,9 +44,6 @@
   font-size: 1rem;
   margin: 8px 0;
 }
-.qty-btn:hover {
-  background-color: #eee;
-}
 
 .add-to-cart-btn {
   background-color: #ff6b35;
@@ -83,7 +80,6 @@
   margin-top: 10px;
 }
 .qty-btn{
-  
   color:black;
   border: 10px;
   padding: 2px 4px 2px 2px;
@@ -93,4 +89,65 @@
 }
 .qty-btn:hover {
   background-color: #eee;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 20px 24px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .home-container h1 {
+    font-size: 1.6rem;
+  }
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+}
+
+/* Phones — force 2 columns, tighten card content */
+@media (max-width: 480px) {
+  .home-container {
+    padding: 16px;
+  }
+  .home-container h1 {
+    font-size: 1.3rem;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .product-card {
+    padding: 10px;
+  }
+  .product-image {
+    height: 110px;
+  }
+  .product-card h3 {
+    font-size: 0.85rem;
+  }
+  .product-price {
+    font-size: 0.9rem;
+    margin: 5px 0;
+  }
+  .add-to-cart-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small phones — single column */
+@media (max-width: 340px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .product-image {
+    height: 150px;
+  }
 }

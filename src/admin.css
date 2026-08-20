@@ -1,11 +1,12 @@
 .admin-container {
-  padding: 30px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
 }
 
 .admin-container h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
+    margin-bottom: 24px;
+
 }
 
 .orders-table {
@@ -16,7 +17,6 @@
 
 .admin-order-row {
   display: flex;
-  margin-left:50px;
   align-items: center;
   justify-content: space-between;
   background: white;
@@ -64,19 +64,291 @@
   font-weight: 600;
 }
 
-.status-pending
- { background-color: #fff3cd; 
-    color: #856404; 
+.status-pending { background-color: #fff3cd; color: #856404; }
+.status-preparing { background-color: #cce5ff; color: #004085; }
+.status-delivered { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* Page-wide centered loader */
+.page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 18px;
+  color: #6b7280;
 }
-.status-preparing {
-     background-color: #cce5ff;
-      color: #004085; 
-    }
-.status-delivered { 
-    background-color: #d4edda; 
-    color: #155724; 
+
+/* Product form */
+.product-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
 }
-.status-cancelled { 
-    background-color: #f8d7da;
-     color: #721c24;
-     }
+
+.product-form h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.product-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.product-form input,
+.product-form select {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.product-form input:focus,
+.product-form select:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.product-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.product-form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.product-form-actions button[type="submit"] {
+  background: #3a3632;
+  color: #fff;
+}
+
+.product-form-actions button[type="submit"]:hover {
+  background: #2d4ce8;
+}
+
+.product-form-actions button[type="button"] {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.product-form-actions button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+/* Products grid */
+.admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.admin-product-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-product-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-product-card h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.admin-product-card p {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-product-actions button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.admin-product-actions button:hover {
+  background: #e5e7eb;
+}
+
+.admin-product-actions .delete-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-product-actions .delete-btn:hover {
+  background: #fecaca;
+}
+.add-to-cart-btn-admin {
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-checkout-btn{
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-to-cart-btn-admin:hover {
+  background: #3178ea;
+}
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.confirm-card p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-actions button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-actions button:first-child {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.confirm-actions .confirm-delete-btn {
+  background: #dc2626;
+  color: #fff;
+}
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 20px 24px;
+  }
+  .admin-container h1 {
+    font-size: 1.6rem;
+  }
+  .customer-history-block h2 {
+    margin-left: 12px;
+    font-size: 1.15rem;
+  }
+  .admin-order-row {
+    padding: 12px 16px;
+  }
+}
+
+/* Phones — stack info, status and select vertically */
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 16px;
+  }
+  .admin-container h1 {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+  .customer-history-block h2 {
+    margin-left: 4px;
+    font-size: 1.05rem;
+  }
+  .admin-order-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .admin-order-info p {
+    margin-left: 0; /* no room to indent on small screens */
+  }
+  .status-select {
+    width: 100%;
+  }
+  .status-badge {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-container {
+    padding: 12px;
+  }
+  .admin-order-row {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}

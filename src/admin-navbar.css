@@ -47,8 +47,59 @@
     padding: 0.5rem 1rem;
     border-radius: 6px;
     cursor: pointer;
-
  }
  .logout-btn:hover{
   background-color:#e1e7f2;
  }
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .admin-navbar {
+    padding: 1.5rem;
+  }
+  .admin-navbar-brand {
+    font-size: 1.5rem;
+  }
+  .admin-tag {
+    font-size: 16px;
+  }
+  .admin-navbar-links {
+    gap: 16px;
+  }
+}
+
+/* Phones — stack brand/tag and links, wrap if needed */
+@media (max-width: 600px) {
+  .admin-navbar {
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 12px;
+  }
+  .admin-navbar-brand {
+    font-size: 1.2rem;
+  }
+  .admin-tag {
+    font-size: 13px;
+  }
+  .admin-navbar-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .admin-navbar-links a {
+    font-size: 0.9rem;
+  }
+  .logout-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-navbar-links a {
+    font-size: 0.8rem;
+  }
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
+import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../order.css";
 
@@ -47,13 +47,18 @@ export function OrderTracking() {
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       <div className="orders-container">
         <h1>Order Tracking</h1>
 
-        {loading && <p>Loading order...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
 
         {order && (
           <div className="order-card">
@@ -81,6 +86,8 @@ export function OrderTracking() {
   </p>
 )}
           </div>
+        )}
+        </>
         )}
       </div>
 

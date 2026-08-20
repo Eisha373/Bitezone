@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { useCart } from "../../context/CartContext";
+import { AppNavbar } from "../../components/AppNavbar";
 import "../../cart.css";
 
 export function Cart() {
   const { cartItems, updateQuantity, totalPrice,removeFromCart } = useCart();
 
   const isCartEmpty = cartItems.length === 0;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
 
   function handleIncrement(id, currentQuantity) {
     updateQuantity(id, currentQuantity + 1);
@@ -23,7 +26,7 @@ export function Cart() {
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       <div className="cart-container">
         <h1>Your Cart</h1>
@@ -56,7 +59,7 @@ export function Cart() {
             <div className="cart-summary">
               <h2>Total: Rs {totalPrice}</h2>
               <Link to="/checkout">
-                <button className="checkout-btn">Proceed to Checkout</button>
+                <button className={isAdmin ?"admin-checkout-btn":"checkout-btn"}>Proceed to Checkout</button>
               </Link>
             </div>
           </>
