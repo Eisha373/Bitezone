@@ -5,7 +5,7 @@ import "../../admin.css";
 
 const CATEGORIES = ["pizza", "burger", "sandwich", "fries", "pasta", "nuggets"];
 
-export function AdminProducts() {
+export function ProductsManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

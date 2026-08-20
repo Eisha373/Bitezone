@@ -8,7 +8,6 @@ export function AdminNavbar() {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   function handleLogoutClick() {
-    
     navigate("/logout");
   }
 
@@ -26,8 +25,8 @@ export function AdminNavbar() {
         <Link to="/admin/dashboard">Dashboard</Link>
         <Link to="/admin/orders">Orders</Link>
         <Link to="/admin/history">Order history</Link>
-        <Link to="/admin/productsManagement">Products</Link>
-        
+        <Link to="/admin/products">Products</Link>
+
         <button className="logout-btn" onClick={handleLogoutClick}>Logout</button>
       </div>
     </nav>

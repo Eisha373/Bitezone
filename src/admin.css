@@ -68,6 +68,157 @@
 .status-delivered { background-color: #d4edda; color: #155724; }
 .status-cancelled { background-color: #f8d7da; color: #721c24; }
 
+/* Page-wide centered loader */
+.page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+/* Product form */
+.product-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  margin: 20px 0 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-form h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.product-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.product-form input,
+.product-form select {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.product-form input:focus,
+.product-form select:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.product-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.product-form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.product-form-actions button[type="submit"] {
+  background: #f97316;
+  color: #fff;
+}
+
+.product-form-actions button[type="submit"]:hover {
+  background: #ea580c;
+}
+
+.product-form-actions button[type="button"] {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.product-form-actions button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+/* Products grid */
+.admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.admin-product-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-product-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-product-card h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.admin-product-card p {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-product-actions button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.admin-product-actions button:hover {
+  background: #e5e7eb;
+}
+
+.admin-product-actions .delete-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-product-actions .delete-btn:hover {
+  background: #fecaca;
+}
+
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */
