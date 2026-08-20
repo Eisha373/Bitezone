@@ -17,6 +17,9 @@ export function Checkout() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
+
   async function handlePlaceOrder(e) {
     e.preventDefault();
     setError("");
@@ -74,7 +77,7 @@ export function Checkout() {
             <label htmlFor="address">Address:</label>
             <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your address" required />
-            <button type="submit">Place Order</button>
+            <button type="submit"className={isAdmin?"admin-checkout":"customer-checkout"}>Place Order</button>
           </form>
         </div>
 

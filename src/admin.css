@@ -102,7 +102,7 @@
   font-weight: 600;
   color: #374151;
   margin-top: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .product-form input,
@@ -230,12 +230,17 @@
   cursor: pointer;
 }
 .admin-checkout-btn{
-  background: #374151;
-  color:white;
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .add-to-cart-btn-admin:hover {
-  background: #374151;
+  background: #3178ea;
 }
 
 .confirm-overlay {

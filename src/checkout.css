@@ -53,7 +53,7 @@
   border-color: #6372fc;
 }
 
-.checkout-card button[type="submit"] {
+.customer-checkout[type="submit"] {
   margin-top: 20px;
   padding: 12px;
   background-color: #ff6b35;
@@ -65,9 +65,24 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+.admin-checkout[type="submit"]{
+margin-top: 20px;
+  padding: 12px;
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.customer-checkout[type="submit"]:hover {
+  background-color: #e0552a;
+}
 
-.checkout-card button[type="submit"]:hover {
-  background-color: #2832f3;
+.admin-checkout[type="submit"]:hover {
+  background-color: #2d3546;
 }
 
 .order-summary-card {
