@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
+import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import { useCart } from "../../context/CartContext";
 import "../../checkout.css";
@@ -55,7 +55,7 @@ export function Checkout() {
 
   return (
     <div className="checkout-container">
-      <Navbar />
+      <AppNavbar />
 
       <div className="checkout-content">
         <div className="checkout-card">

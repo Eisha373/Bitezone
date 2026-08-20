@@ -87,7 +87,7 @@
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   max-width: 500px;
-  margin: 0 0 32px;
+  margin: 0 auto 32px;
   display: flex;
   flex-direction: column;
 }
@@ -134,12 +134,12 @@
 }
 
 .product-form-actions button[type="submit"] {
-  background: #f97316;
+  background: #3a3632;
   color: #fff;
 }
 
 .product-form-actions button[type="submit"]:hover {
-  background: #ea580c;
+  background: #2d4ce8;
 }
 
 .product-form-actions button[type="button"] {
@@ -228,6 +228,10 @@
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
+}
+.admin-checkout-btn{
+  background: #374151;
+  color:white;
 }
 
 .add-to-cart-btn-admin:hover {

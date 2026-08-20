@@ -9,6 +9,9 @@ export function Cart() {
 
   const isCartEmpty = cartItems.length === 0;
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
+
   function handleIncrement(id, currentQuantity) {
     updateQuantity(id, currentQuantity + 1);
   }
@@ -56,7 +59,7 @@ export function Cart() {
             <div className="cart-summary">
               <h2>Total: Rs {totalPrice}</h2>
               <Link to="/checkout">
-                <button className="checkout-btn">Proceed to Checkout</button>
+                <button className={isAdmin ?"admin-checkout-btn":"checkout-btn"}>Proceed to Checkout</button>
               </Link>
             </div>
           </>
