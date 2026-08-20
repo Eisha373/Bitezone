@@ -18,14 +18,16 @@ export function AdminNavbar() {
         <span className="admin-tag">Admin</span>
       </div>
       <div className="admin-navbar-links">
+        
+        <Link to="/admin/dashboard">Dashboard</Link>
+                <Link to="/admin/products">Products</Link>
+
         <Link to="/menu">Menu</Link>
         <Link to="/cart">
           Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
         </Link>
-        <Link to="/admin/dashboard">Dashboard</Link>
         <Link to="/admin/orders">Orders</Link>
         <Link to="/admin/history">Order history</Link>
-        <Link to="/admin/products">Products</Link>
 
         <button className="logout-btn" onClick={handleLogoutClick}>Logout</button>
       </div>

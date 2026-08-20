@@ -111,7 +111,7 @@ export function ProductsManagement() {
     }
   }
 
-    return (
+      return (
     <div>
       <AppNavbar />
 
@@ -188,17 +188,21 @@ export function ProductsManagement() {
             </form>
 
             <div className="admin-products-grid">
-              {products.map((product) => (
-                <div className="admin-product-card" key={product._id}>
-                  <img src={product.imageLink} alt={product.name} className="admin-product-image" />
-                  <h3>{product.name}</h3>
-                  <p>Rs {product.price} · {product.category}</p>
-                  <div className="admin-product-actions">
-                    <button onClick={() => handleEditClick(product)}>Edit</button>
-                    <button onClick={() => handleDelete(product._id)} className="delete-btn">Delete</button>
+              {products.length === 0 ? (
+                <p className="empty-state">No products yet. Add your first product using the form above.</p>
+              ) : (
+                products.map((product) => (
+                  <div className="admin-product-card" key={product._id}>
+                    <img src={product.imageLink} alt={product.name} className="admin-product-image" />
+                    <h3>{product.name}</h3>
+                    <p>Rs {product.price} · {product.category}</p>
+                    <div className="admin-product-actions">
+                      <button onClick={() => handleEditClick(product)}>Edit</button>
+                      <button onClick={() => handleDelete(product._id)} className="delete-btn">Delete</button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </>
         )}

@@ -75,7 +75,7 @@ export function OrdersList() {
         {error && <p style={{ color: "red" }}>{error}</p>}
 {loading ? (
           <div className="page-loader">
-            <p>Loading products...</p>
+            <p>Loading...</p>
           </div>
         ) : (
           <>
