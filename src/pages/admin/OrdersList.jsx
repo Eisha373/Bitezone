@@ -103,7 +103,7 @@ const [sortBy, setSortBy] = useState("date");
           <div className="filters-bar">
   <input
     type="text"
-    placeholder="Search by customer name..."
+    placeholder="Search by customer name"
     value={searchName}
     onChange={(e) => setSearchName(e.target.value)}
     className="filter-input"
@@ -111,7 +111,7 @@ const [sortBy, setSortBy] = useState("date");
 
   <input
     type="text"
-    placeholder="Search by Order ID..."
+    placeholder="Search by Order ID"
     value={searchId}
     onChange={(e) => setSearchId(e.target.value)}
     className="filter-input"
