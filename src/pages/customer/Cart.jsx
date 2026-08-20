@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { useCart } from "../../context/CartContext";
+import { AppNavbar } from "../../components/AppNavbar";
 import "../../cart.css";
 
 export function Cart() {
@@ -23,7 +23,7 @@ export function Cart() {
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       <div className="cart-container">
         <h1>Your Cart</h1>

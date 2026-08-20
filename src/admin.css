@@ -220,7 +220,71 @@
 .admin-product-actions .delete-btn:hover {
   background: #fecaca;
 }
+.add-to-cart-btn-admin {
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
+.add-to-cart-btn-admin:hover {
+  background: #374151;
+}
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.confirm-card p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-actions button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-actions button:first-child {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.confirm-actions .confirm-delete-btn {
+  background: #dc2626;
+  color: #fff;
+}
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */

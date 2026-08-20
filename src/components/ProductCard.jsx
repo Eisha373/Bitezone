@@ -5,6 +5,9 @@ export function ProductCard({ product }) {
   const [quantity, setQuantity] = useState(1);
   const {addToCart}=useCart();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
+
   function handleIncrement() {
     setQuantity(quantity + 1);
   }
@@ -32,7 +35,7 @@ setQuantity(1);
       </div>
       <div className="product-action">
         
-          <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
+            <button className={isAdmin ?"add-to-cart-btn-admin":"add-to-cart-btn"} onClick={handleAddToCart}>Add to Cart</button>
       </div>
     </div>
   );

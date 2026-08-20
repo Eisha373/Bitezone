@@ -3,13 +3,14 @@ import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../admin.css";
 
-const CATEGORIES = ["pizza", "burger", "sandwich", "fries", "pasta", "nuggets"];
+const CATEGORIES = ["pizza", "burger", "sandwich", "fries", "pasta", "nuggets","shawarma"];
 
 export function ProductsManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editingId, setEditingId] = useState(null);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -89,28 +90,33 @@ export function ProductsManagement() {
     });
   }
 
-  async function handleDelete(id) {
-    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
-    if (!confirmDelete) return;
+  function handleDeleteClick(id) {
+  setDeleteTargetId(id);
+}
 
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+async function confirmDelete() {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${deleteTargetId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      if (!response.ok) {
-        setError("Failed to delete product");
-        return;
-      }
-
-      fetchProducts();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    if (!response.ok) {
+      setError("Failed to delete product");
+      return;
     }
-  }
 
+    setDeleteTargetId(null);
+    fetchProducts();
+  } catch {
+    setError("Something went wrong. Please try again.");
+  }
+}
+
+function cancelDelete() {
+  setDeleteTargetId(null);
+}
       return (
     <div>
       <AppNavbar />
@@ -133,7 +139,7 @@ export function ProductsManagement() {
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Product name"
+                placeholder="Enter Product name"
                 value={form.name}
                 onChange={handleFormChange}
                 required
@@ -144,7 +150,7 @@ export function ProductsManagement() {
                 type="number"
                 id="price"
                 name="price"
-                placeholder="Price"
+                placeholder="Enter Product Price"
                 value={form.price}
                 onChange={handleFormChange}
                 min="0"
@@ -156,18 +162,18 @@ export function ProductsManagement() {
                 type="text"
                 id="imageLink"
                 name="imageLink"
-                placeholder="Image URL"
+                placeholder="Insert Image URL"
                 value={form.imageLink}
                 onChange={handleFormChange}
                 required
               />
 
-              <label htmlFor="description">Description:</label>
+              <label htmlFor="description">Description:(optional)</label>
               <input
                 type="text"
                 id="description"
                 name="description"
-                placeholder="Description (optional)"
+                placeholder="Enter Product Description"
                 value={form.description}
                 onChange={handleFormChange}
               />
@@ -198,8 +204,7 @@ export function ProductsManagement() {
                     <p>Rs {product.price} · {product.category}</p>
                     <div className="admin-product-actions">
                       <button onClick={() => handleEditClick(product)}>Edit</button>
-                      <button onClick={() => handleDelete(product._id)} className="delete-btn">Delete</button>
-                    </div>
+<button onClick={() => handleDeleteClick(product._id)} className="delete-btn">Delete</button>                    </div>
                   </div>
                 ))
               )}
@@ -207,6 +212,17 @@ export function ProductsManagement() {
           </>
         )}
       </div>
+      {deleteTargetId && (
+  <div className="confirm-overlay">
+    <div className="confirm-card">
+      <p>Are you sure you want to delete this product?</p>
+      <div className="confirm-actions">
+        <button onClick={cancelDelete}>Cancel</button>
+        <button onClick={confirmDelete} className="confirm-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+)}
 
       <Footer />
     </div>
