@@ -71,7 +71,7 @@ const [passwordError, setPasswordError] = useState("");
   <input
     type="email"
     id="email"
-    placeholder="Email"
+    placeholder="Enter your Email"
     value={email}
     onChange={(e) => setEmail(e.target.value)}
   />
@@ -89,7 +89,7 @@ const [passwordError, setPasswordError] = useState("");
     <input
       type={showPassword ? "text" : "password"}
       id="password"
-      placeholder="Password"
+      placeholder="Enter your Password"
       value={password}
       onChange={(e) => setPassword(e.target.value)}
     />

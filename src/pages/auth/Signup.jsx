@@ -8,7 +8,7 @@ import "../../auth.css";
 const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // e.g. 03001234567 (11 digits, starts with 03)
-const PHONE_PATTERN = /^03\d{9}$/; 
+const PHONE_PATTERN = /^03\d{9}$/;
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 export function Signup() {
@@ -27,18 +27,18 @@ export function Signup() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-const [nameError, setNameError] = useState("");
+  const [nameError, setNameError] = useState("");
 
-function handleNameChange(e) {
-  const value = e.target.value;
-  setName(value);
+  function handleNameChange(e) {
+    const value = e.target.value;
+    setName(value);
 
-  if (value && !NAME_PATTERN.test(value)) {
-    setNameError("Enter a valid name (letters only)");
-  } else {
-    setNameError("");
+    if (value && !NAME_PATTERN.test(value)) {
+      setNameError("Enter a valid name (letters only)");
+    } else {
+      setNameError("");
+    }
   }
-}
 
   function handleEmailChange(e) {
     const value = e.target.value;
@@ -79,28 +79,29 @@ function handleNameChange(e) {
     }
   }
 
-{/*added function to handle ConfirmPasswordChange*/}
+  {/*added function to handle ConfirmPasswordChange*/}
 
   function handleConfirmPasswordChange(e) {
-  const value = e.target.value;
-  setConfirmPassword(value);
+    const value = e.target.value;
+    setConfirmPassword(value);
 
-  if (!value) {
-    setConfirmPasswordError("Please re-enter your password");
-  } else if (value !== password) {
-    setConfirmPasswordError("Passwords do not match");
-  } else {
-    setConfirmPasswordError("");
+    if (!value) {
+      setConfirmPasswordError("Please re-enter your password");
+    } else if (value !== password) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
   }
-}
+
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
 
     if (!NAME_PATTERN.test(name)) {
-  setNameError("Enter a valid name (letters only, min 3 characters)");
-  return;
-}
+      setNameError("Enter a valid name (letters only, min 3 characters)");
+      return;
+    }
 
     if (!EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
@@ -114,6 +115,16 @@ function handleNameChange(e) {
 
     if (!PASSWORD_PATTERN.test(password)) {
       setError("Password doesn't meet the required format");
+      return;
+    }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError("Please re-enter your password");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
       return;
     }
 
@@ -153,22 +164,22 @@ function handleNameChange(e) {
             are the only validation UI the user ever sees */}
         <form onSubmit={handleSignup} noValidate>
           <label htmlFor="full-name">Full Name:</label>
-<div className="field-wrapper">
-  <input
-    type="text"
-    id="full-name"
-    placeholder="e.g.Ali Raza"
-    value={name}
-    onChange={handleNameChange}
-    required
-  />
-  {nameError && (
-    <div className="field-popup">
-      <span className="field-popup-icon">!</span>
-      <span>{nameError}</span>
-    </div>
-  )}
-</div>
+          <div className="field-wrapper">
+            <input
+              type="text"
+              id="full-name"
+              placeholder="e.g.Ali Raza"
+              value={name}
+              onChange={handleNameChange}
+              required
+            />
+            {nameError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{nameError}</span>
+              </div>
+            )}
+          </div>
 
           <label htmlFor="email">Email:</label>
           <div className="field-wrapper">
@@ -236,32 +247,32 @@ function handleNameChange(e) {
           </div>
 
           <label htmlFor="confirm-password">Confirm Password:</label>
-<div className="field-wrapper">
-  <div className="password-field">
-    <input
-      type={showConfirmPassword ? "text" : "password"}
-      id="confirm-password"
-      placeholder="Re-enter your password"
-      value={confirmPassword}
-      onChange={handleConfirmPasswordChange}
-      required
-    />
-    {/*added popup for missing confirm password field*/}
-    <button
-      type="button"
-      className="toggle-password-btn"
-      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-    >
-      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-    </button>
-  </div>
-  {confirmPasswordError && (
-    <div className="field-popup">
-      <span className="field-popup-icon">!</span>
-      <span>{confirmPasswordError}</span>
-    </div>
-  )}
-</div>
+          <div className="field-wrapper">
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirm-password"
+                placeholder="Re-enter your password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                required
+              />
+              {/*added popup for missing confirm password field*/}
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+            {confirmPasswordError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{confirmPasswordError}</span>
+              </div>
+            )}
+          </div>
 
           <div className="role-based-selector">
             <label htmlFor="role">Role:</label>
