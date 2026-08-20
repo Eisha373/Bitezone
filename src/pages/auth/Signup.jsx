@@ -54,7 +54,8 @@ function handleNameChange(e) {
   }
 
   function handlePhoneChange(e) {
-    // keep only digits, cap at 11 characters as the user types
+    /* keep only digits, cap at 11 characters as the user types*/
+
     const value = e.target.value.replace(/\D/g, "").slice(0, 11);
     setPhone(value);
 
@@ -77,7 +78,8 @@ function handleNameChange(e) {
       setPasswordError("");
     }
   }
-//added function to handle ConfirmPasswordChange
+
+{/*added function to handle ConfirmPasswordChange*/}
 
   function handleConfirmPasswordChange(e) {
   const value = e.target.value;
@@ -244,7 +246,7 @@ function handleNameChange(e) {
       onChange={handleConfirmPasswordChange}
       required
     />
-    //added popup for missing confirm password field
+    {/*added popup for missing confirm password field*/}
     <button
       type="button"
       className="toggle-password-btn"

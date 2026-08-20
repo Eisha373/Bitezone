@@ -65,8 +65,6 @@ const [passwordError, setPasswordError] = useState("");
         <img src="/images/burger-logo(1).jpg" alt="Bitezone Logo" className="auth-logo" />
         <h2>Welcome to Bitezone</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        //added noValidate attribute to avoid browser default popup
-
         <form onSubmit={handleLogin} noValidate>
           <label htmlFor="email">Email:</label>
 <div className="field-wrapper">
@@ -77,10 +75,8 @@ const [passwordError, setPasswordError] = useState("");
     value={email}
     onChange={(e) => setEmail(e.target.value)}
   />
-  //added customized popup for email field
-
   {emailError && (
-    <div className="field-popup">
+    <div className="field-popup">        
       <span className="field-popup-icon">!</span>
       <span>{emailError}</span>
     </div>
@@ -89,14 +85,23 @@ const [passwordError, setPasswordError] = useState("");
 
 <label htmlFor="password">Password:</label>
 <div className="field-wrapper">
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-  />
-  //added customized popup for password field
+  <div className="password-field">
+    <input
+      type={showPassword ? "text" : "password"}
+      id="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+    <button
+      type="button"
+      className="toggle-password-btn"
+      onClick={() => setShowPassword(!showPassword)}
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </button>
+  </div>
+  {/* customized popup for password */}
   {passwordError && (
     <div className="field-popup">
       <span className="field-popup-icon">!</span>
@@ -104,14 +109,7 @@ const [passwordError, setPasswordError] = useState("");
     </div>
   )}
 </div>
-          <button
-    type="button"
-    className="toggle-password-btn"
-    onClick={() => setShowPassword(!showPassword)}
-  >
-    {showPassword ? <FaEyeSlash /> : <FaEye />}
-  </button>
-
+         
           <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
