@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { OrderCard } from "../../components/OrderCard";
-import { Navbar } from "../../components/Navbar";
+import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../order.css";
 
@@ -42,7 +42,7 @@ export function MyOrders() {
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       <div className="orders-container">
         <h1>My Orders</h1>
