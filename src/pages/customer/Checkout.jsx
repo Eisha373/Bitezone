@@ -15,6 +15,7 @@ export function Checkout() {
   const [email, setEmail] = useState(savedUser.email || "");
   const [phone, setPhone] = useState(savedUser.phone || "");
   const [address, setAddress] = useState("");
+  const[addressError,setAddressError]=useState("");
   const [error, setError] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -23,6 +24,16 @@ export function Checkout() {
   async function handlePlaceOrder(e) {
     e.preventDefault();
     setError("");
+    setAddressError("");
+
+    let hasError = false;
+  if (!address) {
+    setAddressError("Please enter your address");
+    hasError = true;
+  }
+  
+    if (hasError) 
+    return;
 
     try {
       const token = localStorage.getItem("token");
@@ -64,7 +75,7 @@ export function Checkout() {
         <div className="checkout-card">
           <h2>Delivery Details</h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
-          <form onSubmit={handlePlaceOrder}>
+          <form onSubmit={handlePlaceOrder} noValidate>
             <label htmlFor="full-name">Full Name:</label>
             <input type="text" id="full-name" value={fullName} onChange={(e) => setFullName(e.target.value)}
               placeholder="Enter your name" required />
@@ -75,8 +86,21 @@ export function Checkout() {
             <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}
               placeholder="Enter your phone" required />
             <label htmlFor="address">Address:</label>
-            <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your address" required />
+            <div className="field-wrapper">
+  <input
+    type="text"
+    id="address"
+    placeholder="Enter your address"
+    value={address}
+    onChange={(e) => setAddress(e.target.value)}
+  />
+  {addressError && (
+    <div className="field-popup">        
+      <span className="field-popup-icon">!</span>
+      <span>{addressError}</span>
+    </div>
+  )}
+</div>
             <button type="submit"className={isAdmin?"admin-checkout":"customer-checkout"}>Place Order</button>
           </form>
         </div>

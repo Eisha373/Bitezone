@@ -64,6 +64,7 @@ const [passwordError, setPasswordError] = useState("");
       <div className="auth-card">
         <img src="/images/burger-logo(1).jpg" alt="Bitezone Logo" className="auth-logo" />
         <h2>Welcome to Bitezone</h2>
+        
         {error && <p style={{ color: "red" }}>{error}</p>}
         <form onSubmit={handleLogin} noValidate>
           <label htmlFor="email">Email:</label>
