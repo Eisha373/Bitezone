@@ -81,7 +81,7 @@ export function Checkout() {
           </form>
         </div>
 
-        <div className="order-summary-card">
+        <div className={isAdmin ?"order-summary-admin":"order-summary-card"}>
           <h2>Order Summary</h2>
           {cartItems.map((item) => (
             <div className="summary-item" key={item._id}>

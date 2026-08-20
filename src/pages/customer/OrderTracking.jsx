@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
+import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../order.css";
 
@@ -47,7 +47,7 @@ export function OrderTracking() {
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       <div className="orders-container">
         <h1>Order Tracking</h1>
