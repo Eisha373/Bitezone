@@ -7,7 +7,8 @@ import "../../auth.css";
 
 const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_PATTERN = /^03\d{9}$/; // e.g. 03001234567 (11 digits, starts with 03)
+// e.g. 03001234567 (11 digits, starts with 03)
+const PHONE_PATTERN = /^03\d{9}$/; 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 export function Signup() {
@@ -22,6 +23,8 @@ export function Signup() {
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  //added usestate for confirm password field
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 const [nameError, setNameError] = useState("");
@@ -31,7 +34,7 @@ function handleNameChange(e) {
   setName(value);
 
   if (value && !NAME_PATTERN.test(value)) {
-    setNameError("Enter a valid name (letters only, min 3 characters)");
+    setNameError("Enter a valid name (letters only)");
   } else {
     setNameError("");
   }
@@ -74,7 +77,20 @@ function handleNameChange(e) {
       setPasswordError("");
     }
   }
+//added function to handle ConfirmPasswordChange
 
+  function handleConfirmPasswordChange(e) {
+  const value = e.target.value;
+  setConfirmPassword(value);
+
+  if (!value) {
+    setConfirmPasswordError("Please re-enter your password");
+  } else if (value !== password) {
+    setConfirmPasswordError("Passwords do not match");
+  } else {
+    setConfirmPasswordError("");
+  }
+}
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
@@ -96,11 +112,6 @@ function handleNameChange(e) {
 
     if (!PASSWORD_PATTERN.test(password)) {
       setError("Password doesn't meet the required format");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
       return;
     }
 
@@ -201,6 +212,7 @@ function handleNameChange(e) {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                placeholder="e.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
                 required
@@ -222,23 +234,32 @@ function handleNameChange(e) {
           </div>
 
           <label htmlFor="confirm-password">Confirm Password:</label>
-          <div className="password-field">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              id="confirm-password"
-              placeholder="Re-enter your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
+<div className="field-wrapper">
+  <div className="password-field">
+    <input
+      type={showConfirmPassword ? "text" : "password"}
+      id="confirm-password"
+      placeholder="Re-enter your password"
+      value={confirmPassword}
+      onChange={handleConfirmPasswordChange}
+      required
+    />
+    //added popup for missing confirm password field
+    <button
+      type="button"
+      className="toggle-password-btn"
+      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    >
+      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+    </button>
+  </div>
+  {confirmPasswordError && (
+    <div className="field-popup">
+      <span className="field-popup-icon">!</span>
+      <span>{confirmPasswordError}</span>
+    </div>
+  )}
+</div>
 
           <div className="role-based-selector">
             <label htmlFor="role">Role:</label>
