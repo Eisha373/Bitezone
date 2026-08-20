@@ -38,14 +38,21 @@ export function Home() {
       <div className="home-container">
         <h1>Menu</h1>
 
-        {loading && <p>Loading menu...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
+        {loading ?(
+<div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
         <div className="product-grid">
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
+        
+       </>
+        )}
       </div>
 
       <Footer />

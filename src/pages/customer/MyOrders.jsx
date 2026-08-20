@@ -47,9 +47,13 @@ export function MyOrders() {
       <div className="orders-container">
         <h1>My Orders</h1>
 
-        {loading && <p>Loading orders...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
+{loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
         {hasOrders ? (
           <div className="orders-list">
             {orders.map((order) => (
@@ -58,6 +62,8 @@ export function MyOrders() {
           </div>
         ) : (
           !loading && <p className="empty-state">You haven't placed any orders yet.</p>
+        )}
+        </>
         )}
       </div>
 

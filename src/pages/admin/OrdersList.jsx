@@ -72,9 +72,13 @@ export function OrdersList() {
       <div className="admin-container">
         <h1>Orders List</h1>
 
-        {loading && <p>Loading orders...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
+{loading ? (
+          <div className="page-loader">
+            <p>Loading products...</p>
+          </div>
+        ) : (
+          <>
         <div className="orders-table">
           {orders.map((order) => (
             <div className="admin-order-row" key={order._id}>
@@ -99,6 +103,8 @@ export function OrdersList() {
             </div>
           ))}
         </div>
+        </>
+        )}
       </div>
       <Footer />
     </div>

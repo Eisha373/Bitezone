@@ -52,8 +52,13 @@ export function OrderTracking() {
       <div className="orders-container">
         <h1>Order Tracking</h1>
 
-        {loading && <p>Loading order...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <>
 
         {order && (
           <div className="order-card">
@@ -81,6 +86,8 @@ export function OrderTracking() {
   </p>
 )}
           </div>
+        )}
+        </>
         )}
       </div>
 

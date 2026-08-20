@@ -111,7 +111,7 @@ export function AdminProducts() {
     }
   }
 
-  return (
+    return (
     <div>
       <AppNavbar />
 
@@ -119,70 +119,89 @@ export function AdminProducts() {
         <h1>Manage Products</h1>
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <form className="product-form" onSubmit={handleSubmit}>
-          <h2>{editingId ? "Edit Product" : "Add New Product"}</h2>
-
-          <input
-            type="text"
-            name="name"
-            placeholder="Product name"
-            value={form.name}
-            onChange={handleFormChange}
-            required
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={form.price}
-            onChange={handleFormChange}
-            min="0"
-            required
-          />
-          <input
-            type="text"
-            name="imageLink"
-            placeholder="Image URL"
-            value={form.imageLink}
-            onChange={handleFormChange}
-            required
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Description (optional)"
-            value={form.description}
-            onChange={handleFormChange}
-          />
-          <select name="category" value={form.category} onChange={handleFormChange}>
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-
-          <div className="product-form-actions">
-            <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
-            {editingId && (
-              <button type="button" onClick={resetForm}>Cancel</button>
-            )}
+        {loading ? (
+          <div className="page-loader">
+            <p>Loading...</p>
           </div>
-        </form>
+        ) : (
+          <>
+            <form className="product-form" onSubmit={handleSubmit}>
+              <h2>{editingId ? "Edit Product" : "Add New Product"}</h2>
 
-        {loading && <p>Loading products...</p>}
+              <label htmlFor="name">Product Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Product name"
+                value={form.name}
+                onChange={handleFormChange}
+                required
+              />
 
-        <div className="admin-products-grid">
-          {products.map((product) => (
-            <div className="admin-product-card" key={product._id}>
-              <img src={product.imageLink} alt={product.name} className="admin-product-image" />
-              <h3>{product.name}</h3>
-              <p>Rs {product.price} · {product.category}</p>
-              <div className="admin-product-actions">
-                <button onClick={() => handleEditClick(product)}>Edit</button>
-                <button onClick={() => handleDelete(product._id)} className="delete-btn">Delete</button>
+              <label htmlFor="price">Price:</label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                placeholder="Price"
+                value={form.price}
+                onChange={handleFormChange}
+                min="0"
+                required
+              />
+
+              <label htmlFor="imageLink">Image URL:</label>
+              <input
+                type="text"
+                id="imageLink"
+                name="imageLink"
+                placeholder="Image URL"
+                value={form.imageLink}
+                onChange={handleFormChange}
+                required
+              />
+
+              <label htmlFor="description">Description:</label>
+              <input
+                type="text"
+                id="description"
+                name="description"
+                placeholder="Description (optional)"
+                value={form.description}
+                onChange={handleFormChange}
+              />
+
+              <label htmlFor="category">Category:</label>
+              <select id="category" name="category" value={form.category} onChange={handleFormChange}>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+
+              <div className="product-form-actions">
+                <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
+                {editingId && (
+                  <button type="button" onClick={resetForm}>Cancel</button>
+                )}
               </div>
+            </form>
+
+            <div className="admin-products-grid">
+              {products.map((product) => (
+                <div className="admin-product-card" key={product._id}>
+                  <img src={product.imageLink} alt={product.name} className="admin-product-image" />
+                  <h3>{product.name}</h3>
+                  <p>Rs {product.price} · {product.category}</p>
+                  <div className="admin-product-actions">
+                    <button onClick={() => handleEditClick(product)}>Edit</button>
+                    <button onClick={() => handleDelete(product._id)} className="delete-btn">Delete</button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
 
       <Footer />
