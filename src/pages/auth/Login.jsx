@@ -15,28 +15,15 @@ export function Login() {
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
-  function handleEmailBlur() {
-    if (!email) {
-      setEmailError("Please enter your email");
-    } else {
-      setEmailError("");
-    }
-  }
-
   function handlePasswordChange(e) {
     setPassword(e.target.value);
-  }
-  function handlePasswordBlur() {
-    if (!password) {
-      setPasswordError("Please enter your password");
-    } else {
-      setPasswordError("");
-    }
   }
 
   async function handleLogin(e) {
     e.preventDefault();
     setError("");
+    setEmailError("");
+    setPasswordError("");
 
     let hasError = false;
     if (!email) {
@@ -92,7 +79,6 @@ export function Login() {
               placeholder="Enter your Email"
               value={email}
               onChange={handleEmailChange}
-              onBlur={handleEmailBlur}
             />
             {emailError && (
               <div className="field-popup">
@@ -111,7 +97,6 @@ export function Login() {
                 placeholder="Enter your Password"
                 value={password}
                 onChange={handlePasswordChange}
-                onBlur={handlePasswordBlur}
               />
               <button
                 type="button"

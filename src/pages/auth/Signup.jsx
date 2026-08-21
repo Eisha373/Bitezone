@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { DELIVERY_ZONES } from "../../data/deliveryZones";
 import "../../auth.css";
 
 const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
@@ -13,112 +14,99 @@ export function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [area, setArea] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [areaError, setAreaError] = useState("");
+  const [addressError, setAddressError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [nameError, setNameError] = useState("");
 
   function handleNameChange(e) {
     setName(e.target.value);
   }
-  function handleNameBlur() {
-    if (name && !NAME_PATTERN.test(name)) {
-      setNameError("Enter a valid name (letters only)");
-    } else {
-      setNameError("");
-    }
-  }
-
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
-  function handleEmailBlur() {
-    if (email && !EMAIL_PATTERN.test(email)) {
-      setEmailError("Enter a valid email address, e.g. ali123@example.com");
-    } else {
-      setEmailError("");
-    }
-  }
-
   function handlePhoneChange(e) {
     const value = e.target.value.replace(/\D/g, "").slice(0, 11);
     setPhone(value);
   }
-  function handlePhoneBlur() {
-    if (phone && !PHONE_PATTERN.test(phone)) {
-      setPhoneError("Enter an 11-digit number e.g. 03079864522");
-    } else {
-      setPhoneError("");
-    }
+  function handleAreaChange(e) {
+    setArea(e.target.value);
   }
-
+  function handleAddressChange(e) {
+    setAddress(e.target.value);
+  }
   function handlePasswordChange(e) {
     setPassword(e.target.value);
   }
-  function handlePasswordBlur() {
-    if (password && !PASSWORD_PATTERN.test(password)) {
-      setPasswordError(
-        "Must be 8+ characters with uppercase, lowercase, number & special character"
-      );
-    } else {
-      setPasswordError("");
-    }
-  }
-
   function handleConfirmPasswordChange(e) {
     setConfirmPassword(e.target.value);
-  }
-  function handleConfirmPasswordBlur() {
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please re-enter your password");
-    } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Passwords do not match");
-    } else {
-      setConfirmPasswordError("");
-    }
   }
 
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+    setNameError("");
+    setEmailError("");
+    setPhoneError("");
+    setAreaError("");
+    setAddressError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+
+    let hasError = false;
 
     if (!NAME_PATTERN.test(name)) {
       setNameError("Enter a valid name (letters only)");
-      return;
+      hasError = true;
     }
     if (!EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
-      return;
+      hasError = true;
     }
     if (!PHONE_PATTERN.test(phone)) {
       setPhoneError("Enter an 11-digit number e.g. 03001234567");
-      return;
+      hasError = true;
+    }
+    if (!area) {
+      setAreaError("Please select your delivery area");
+      hasError = true;
+    }
+    if (!address.trim()) {
+      setAddressError("Please enter your address");
+      hasError = true;
     }
     if (!PASSWORD_PATTERN.test(password)) {
-      setPasswordError("Must be 8+ characters with uppercase, lowercase, number & special character");
-      return;
+      setPasswordError(
+        "Must be 8+ characters with uppercase, lowercase, number & special character"
+      );
+      hasError = true;
     }
     if (!confirmPassword) {
       setConfirmPasswordError("Please re-enter your password");
-      return;
-    }
-    if (password !== confirmPassword) {
+      hasError = true;
+    } else if (confirmPassword !== password) {
       setConfirmPasswordError("Passwords do not match");
-      return;
+      hasError = true;
     }
+
+    if (hasError) return;
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password, role }),
+        body: JSON.stringify({ name, email, phone, area, address, password, role }),
       });
 
       const data = await response.json();
@@ -155,7 +143,6 @@ export function Signup() {
               placeholder="e.g.Ali Raza"
               value={name}
               onChange={handleNameChange}
-              onBlur={handleNameBlur}
               required
             />
             {nameError && (
@@ -174,7 +161,6 @@ export function Signup() {
               placeholder="e.g.ali123@example.com"
               value={email}
               onChange={handleEmailChange}
-              onBlur={handleEmailBlur}
               required
             />
             {emailError && (
@@ -193,7 +179,6 @@ export function Signup() {
               placeholder="e.g.03001234567"
               value={phone}
               onChange={handlePhoneChange}
-              onBlur={handlePhoneBlur}
               inputMode="numeric"
               maxLength={11}
               required
@@ -202,6 +187,42 @@ export function Signup() {
               <div className="field-popup">
                 <span className="field-popup-icon">!</span>
                 <span>{phoneError}</span>
+              </div>
+            )}
+          </div>
+
+          <label htmlFor="area">Delivery Area:</label>
+          <div className="field-wrapper">
+            <select id="area" value={area} onChange={handleAreaChange} required>
+              <option value="">Select your area</option>
+              {Object.keys(DELIVERY_ZONES).map((zone) => (
+                <option key={zone} value={zone}>
+                  {zone}
+                </option>
+              ))}
+            </select>
+            {areaError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{areaError}</span>
+              </div>
+            )}
+          </div>
+
+          <label htmlFor="address">Address:</label>
+          <div className="field-wrapper">
+            <input
+              type="text"
+              id="address"
+              placeholder="House #, street, landmark"
+              value={address}
+              onChange={handleAddressChange}
+              required
+            />
+            {addressError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{addressError}</span>
               </div>
             )}
           </div>
@@ -215,7 +236,6 @@ export function Signup() {
                 placeholder="e.g,.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
-                onBlur={handlePasswordBlur}
                 required
               />
               <button
@@ -243,7 +263,6 @@ export function Signup() {
                 placeholder="Re-enter your password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
-                onBlur={handleConfirmPasswordBlur}
                 required
               />
               <button
