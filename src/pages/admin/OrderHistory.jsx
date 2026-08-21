@@ -7,9 +7,9 @@ export function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchName, setSearchName] = useState("");
-const [searchId, setSearchId] = useState("");
-const [statusFilter, setStatusFilter] = useState("All");
-const [sortBy, setSortBy] = useState("date");
+  const [searchId, setSearchId] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [sortBy, setSortBy] = useState("date");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -40,27 +40,27 @@ const [sortBy, setSortBy] = useState("date");
 
     fetchOrders();
   }, []);
-  const filteredOrders = orders
-  .filter((order) =>
-    order.customer?.name?.toLowerCase().includes(searchName.toLowerCase())
-  )
-  .filter((order) =>
-    order._id.toLowerCase().includes(searchId.toLowerCase())
-  )
-  .filter((order) =>
-    statusFilter === "All" ? true : order.status === statusFilter
-  )
-  .sort((a, b) => {
-    if (sortBy === "price") return b.totalAmount - a.totalAmount;
-    if (sortBy === "quantity") return b.items.length - a.items.length;
-    return new Date(b.createdAt) - new Date(a.createdAt); // default: date
-  });
 
+  const filteredOrders = orders
+    .filter((order) =>
+      order.customer?.name?.toLowerCase().includes(searchName.toLowerCase())
+    )
+    .filter((order) =>
+      order._id.toLowerCase().includes(searchId.toLowerCase())
+    )
+    .filter((order) =>
+      statusFilter === "All" ? true : order.status === statusFilter
+    )
+    .sort((a, b) => {
+      if (sortBy === "price") return b.totalAmount - a.totalAmount;
+      if (sortBy === "quantity") return b.items.length - a.items.length;
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
   const customerNames = [...new Set(orders.map((order) => order.customer?.name))];
 
   return (
-    <div>
+    <div className="page-wrapper">
       <AdminNavbar />
 
       <div className="admin-container">
@@ -73,71 +73,75 @@ const [sortBy, setSortBy] = useState("date");
           </div>
         ) : (
           <>
-          <div className="filters-bar">
-  <input
-    type="text"
-    placeholder="Search by customer name"
-    value={searchName}
-    onChange={(e) => setSearchName(e.target.value)}
-    className="filter-input"
-  />
+            <div className="filters-bar">
+              <input
+                type="text"
+                placeholder="Search by customer name"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className="filter-input"
+              />
 
-  <input
-    type="text"
-    placeholder="Search by Order ID"
-    value={searchId}
-    onChange={(e) => setSearchId(e.target.value)}
-    className="filter-input"
-  />
+              <input
+                type="text"
+                placeholder="Search by Order ID"
+                value={searchId}
+                onChange={(e) => setSearchId(e.target.value)}
+                className="filter-input"
+              />
 
-  <select
-    className="filter-select"
-    value={statusFilter}
-    onChange={(e) => setStatusFilter(e.target.value)}
-  >
-    <option value="All">All Statuses</option>
-    <option value="Pending">Pending</option>
-    <option value="Preparing">Preparing</option>
-    <option value="Out for delivery">Out for delivery</option>
-    <option value="Delivered">Delivered</option>
-    <option value="Cancelled">Cancelled</option>
-  </select>
+              <select
+                className="filter-select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Preparing">Preparing</option>
+                <option value="Out for delivery">Out for delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
 
-  <select
-    className="filter-select"
-    value={sortBy}
-    onChange={(e) => setSortBy(e.target.value)}
-  >
-    <option value="date">Sort by Date</option>
-    <option value="price">Sort by Price</option>
-    <option value="quantity">Sort by Quantity</option>
-  </select>
-</div>
-        {customerNames.map((customer) => {
-          const customerOrders = filteredOrders.filter(
-            (order) => order.customer?.name === customer
-          );
-
-          return (
-            <div className="customer-history-block" key={customer}>
-              <h2>{customer}</h2>
-              {customerOrders.map((order) => (
-            <div className={`admin-order-row ${order.status.toLowerCase().replace(/\s+/g, "-")}`}
-                key={order._id}
->                  <p>Order #{order._id.slice(-6)}</p>
-                  <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
-                  <p>Rs {order.totalAmount}</p>
-                  <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
-                    {order.status}
-                  </span>
-                </div>
-              ))}
+              <select
+                className="filter-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="date">Sort by Date</option>
+                <option value="price">Sort by Price</option>
+                <option value="quantity">Sort by Quantity</option>
+              </select>
             </div>
-            
-          );
-        })}
-        </>
-          )}
+
+            {customerNames.map((customer) => {
+              const customerOrders = filteredOrders.filter(
+                (order) => order.customer?.name === customer
+              );
+
+              return (
+                <div className="customer-history-block" key={customer}>
+                  <h2>{customer}</h2>
+                  <div className="orders-table">
+                    {customerOrders.map((order) => (
+                      <div
+                        className={`admin-order-row ${order.status.toLowerCase().replace(/\s+/g, "-")}`}
+                        key={order._id}
+                      >
+                        <p>Order #{order._id.slice(-6)}</p>
+                        <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
+                        <p>Rs {order.totalAmount}</p>
+                        <span className={`status-badge status-${order.status.toLowerCase().replace(/\s+/g, "-")}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
       </div>
 
       <Footer />

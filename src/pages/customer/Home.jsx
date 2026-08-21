@@ -32,8 +32,9 @@ export function Home() {
   }, []);
 
   return (
-    <div>
-      <AppNavbar />
+    
+    <div className="page-wrapper">
+    <AppNavbar />
 
       <div className="home-container">
         <h1>Menu</h1>

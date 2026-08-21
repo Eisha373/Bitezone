@@ -1,11 +1,212 @@
 .admin-container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 32px 24px;
 }
 
 .admin-container h1 {
   margin-bottom: 24px;
+}
+
+/* Yeh poora block admin.css mein add karo */
+
+.product-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-form h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.product-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.product-form input,
+.product-form select {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.product-form input:focus,
+.product-form select:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.product-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.product-form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.product-form-actions button[type="submit"] {
+  background: #1c1c1e;
+  color: #fff;
+}
+
+.product-form-actions button[type="submit"]:hover {
+  background: #f97316;
+}
+
+.product-form-actions button[type="button"] {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.product-form-actions button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+.admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.admin-product-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-product-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-product-card h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.admin-product-card p {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-product-actions button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.admin-product-actions button:hover {
+  background: #e5e7eb;
+}
+
+.admin-product-actions .delete-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-product-actions .delete-btn:hover {
+  background: #fecaca;
+}
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.confirm-card p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-actions button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-actions button:first-child {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.confirm-actions .confirm-delete-btn {
+  background: #dc2626;
+  color: #fff;
+}
+
+.empty-state {
+  text-align: center;
+  color: #777;
+  padding: 40px 20px;
+  grid-column: 1 / -1;
 }
 
 /* ===== Filters Bar ===== */
@@ -22,7 +223,7 @@
 .filter-input,
 .filter-select {
   flex: 1;
-  min-width: 160px;
+  min-width: 200px;
   padding: 9px 14px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -40,7 +241,7 @@
 .orders-table {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
 .admin-order-row {
@@ -90,7 +291,7 @@
 }
 
 .customer-history-block {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .customer-history-block h2 {
@@ -159,7 +360,11 @@
   min-height: 100vh;
 }
 
-.page-wrapper .admin-container {
+.page-wrapper .admin-container
+.page-wrapper .home-container,
+.page-wrapper .cart-container,
+.page-wrapper .checkout-container,
+.page-wrapper .orders-container  {
   flex: 1;
 }
 
