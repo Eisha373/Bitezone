@@ -151,7 +151,7 @@ export function Checkout() {
                <span>Rs {deliveryCharge}</span> 
                </div>
             <hr />
-                 <div className="summary-total"> 
+                 <div className="summary-total total-row"> 
                   <span>Total</span>
                    <span>Rs {finalTotal}</span> 
                    </div>

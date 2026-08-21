@@ -239,8 +239,8 @@ margin-top:25px;
   --primary-dark: #6372fc;
 }
 .theme-admin {
-  --primary: #6c2bd9;
-  --primary-dark: #4b1a99;
+  --primary: #1c1c1e;
+  --primary-dark: #1d1c1e;
 }
 
 .logout-actions button:first-child{

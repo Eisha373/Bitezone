@@ -86,6 +86,17 @@ margin-top: 25px;
   font-size: 1rem;
   transition: background-color 0.2s ease;
 }
+.admin-checkout-btn{
+  background-color: #1c1c1e;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */

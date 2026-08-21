@@ -1,9 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useCart } from "../context/CartContext";
+
 
 export function AdminNavbar() {
   const navigate = useNavigate();
+    const { cartItems } = useCart();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
 
   function handleLogoutClick() {
     navigate("/logout");
@@ -29,8 +36,10 @@ export function AdminNavbar() {
           {dropdownOpen && (
             <ul className="nav-dropdown-menu">
               <li><Link to="/menu">Menu</Link></li>
-              <li><Link to="/cart">Cart</Link></li>
-              <li><Link to="/my-orders">My Orders</Link></li>
+             <li><Link to="/cart">
+            Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </Link></li>            
+           <li><Link to="/my-orders">My Orders</Link></li>
             </ul>
           )}
         </li>
