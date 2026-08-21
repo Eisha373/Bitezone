@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AdminNavbar } from "../../components/AdminNavbar";
 import { Footer } from "../../components/Footer";
+import "../../admin.css";
 
 export function AdminDashboard() {
   const [stats, setStats] = useState(null);
