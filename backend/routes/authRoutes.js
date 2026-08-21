@@ -7,8 +7,7 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
-
+const { name, email, phone, area, address, password, role } = req.body;
     const emailExist = await User.findOne({ email });
     if (emailExist) {
       return res.status(400).json({ message: "Email already registered" });
@@ -24,6 +23,8 @@ const phoneExist = await User.findOne({ phone });
       name,
       email,
       phone,
+      area,
+      address,
       password: hashedPassword,
       role: role || "customer",
     });
@@ -42,6 +43,8 @@ const phoneExist = await User.findOne({ phone });
         name: newUser.name,
         email: newUser.email,
         phone:newUser.phone,
+        area:newUser.area,
+        address:newUser.address,
         role: newUser.role,
       },
     });
@@ -75,6 +78,8 @@ router.post("/login", async (req, res)=>{
         name: user.name,
         email: user.email,
         phone:user.phone,
+        area:user.area,
+        address:user.address,
         role: user.role,
       },
     });

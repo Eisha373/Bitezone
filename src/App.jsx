@@ -21,6 +21,7 @@ import "./order.css";
 import "./admin-navbar.css";
 import "./admin-dashboard.css";
 import "./admin.css";
+import "./App.css";
 
 function App() {
   return (

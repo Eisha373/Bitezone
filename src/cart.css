@@ -7,10 +7,15 @@
 margin-bottom:20px;
 }
 .empty-state{
-    text-align:center;
-    font-size:1rem;
-    padding:30px 40px;
-    color:black;
+    text-align: center;
+  font-size: 1rem;
+  color: #6b7280;
+  background: #fff;
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 .cart-items{
     display:flex;
@@ -39,8 +44,8 @@ flex:1;
 margin-bottom: 5px;
 }
 .remove-btn {
-  background-color: #4773f9;
-  color: white;
+  background-color: #fee2e2;
+  color: #991b1b;
   border: none;
   padding: 8px 16px;
   border-radius: 25px;
@@ -50,7 +55,11 @@ margin-bottom: 5px;
   transition: background-color 0.2s ease;
 }
 .remove-btn:hover {
-  opacity: 0.6;
+  background-color: #fecaca;
+}
+
+.checkout-btn:hover {
+  background-color: #ea580c;
 }
 .cart-item-subtotal{
     color:black;
@@ -77,10 +86,17 @@ margin-top: 25px;
   font-size: 1rem;
   transition: background-color 0.2s ease;
 }
-.checkout-btn:hover{
-    background-color: #2e2ef3;
+.admin-checkout-btn{
+  background-color: #1c1c1e;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
 }
-
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */

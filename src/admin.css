@@ -1,85 +1,15 @@
 .admin-container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 32px 24px;
 }
 
 .admin-container h1 {
-    margin-bottom: 24px;
-
+  margin-bottom: 24px;
 }
 
-.orders-table {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+/* Yeh poora block admin.css mein add karo */
 
-.admin-order-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  padding: 15px 20px;
-  border-radius: 13px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.admin-order-info h3 {
-  margin-bottom: 3px;
-}
-.admin-order-info p{
-    margin-left:15px;
-}
-
-.order-date {
-  font-size: 0.85rem;
-  color: #777;
-}
-
-.status-select {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.customer-history-block {
-  margin-bottom: 30px;
-}
-
-.customer-history-block h2 {
-    margin-left:30px;
-  margin-bottom: 12px;
-  font-size: 1.3rem;
-}
-
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status-pending { background-color: #fff3cd; color: #856404; }
-.status-preparing { background-color: #cce5ff; color: #004085; }
-.status-delivered { background-color: #d4edda; color: #155724; }
-.status-cancelled { background-color: #f8d7da; color: #721c24; }
-
-/* Page-wide centered loader */
-.page-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh;
-  font-size: 18px;
-  color: #6b7280;
-}
-
-/* Product form */
 .product-form {
   background: #fff;
   border-radius: 12px;
@@ -134,12 +64,12 @@
 }
 
 .product-form-actions button[type="submit"] {
-  background: #3a3632;
+  background: #1c1c1e;
   color: #fff;
 }
 
 .product-form-actions button[type="submit"]:hover {
-  background: #2d4ce8;
+  background: #f97316;
 }
 
 .product-form-actions button[type="button"] {
@@ -151,7 +81,6 @@
   background: #e5e7eb;
 }
 
-/* Products grid */
 .admin-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -220,28 +149,6 @@
 .admin-product-actions .delete-btn:hover {
   background: #fecaca;
 }
-.add-to-cart-btn-admin {
-  background: #1f2937;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.admin-checkout-btn{
-  background: #1f2937;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.add-to-cart-btn-admin:hover {
-  background: #3178ea;
-}
 
 .confirm-overlay {
   position: fixed;
@@ -294,9 +201,247 @@
   background: #dc2626;
   color: #fff;
 }
-/* ===== MEDIA QUERIES ===== */
 
-/* Tablets */
+.empty-state {
+  text-align: center;
+  color: #777;
+  padding: 40px 20px;
+  grid-column: 1 / -1;
+}
+
+/* ===== Filters Bar ===== */
+.filters-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  background: #f9fafb;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-input,
+.filter-select {
+  flex: 1;
+  min-width: 200px;
+  padding: 9px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  background: white;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #f97316;
+}
+
+/* ===== Orders List ===== */
+.orders-table {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 14px;
+  border-left: 4px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
+  gap: 12px;
+  flex-wrap: wrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-order-row:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07), 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Status-based left border */
+.admin-order-row.pending { border-left-color: #ffc107; }
+.admin-order-row.preparing { border-left-color: #007bff; }
+.admin-order-row.out-for-delivery { border-left-color: #17a2b8; }
+.admin-order-row.delivered { border-left-color: #28a745; }
+.admin-order-row.cancelled { border-left-color: #dc3545; }
+
+.admin-order-info h3 {
+  margin-bottom: 3px;
+}
+.admin-order-info p {
+  margin-left: 15px;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.status-select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.customer-history-block {
+  margin-bottom: 40px;
+}
+
+.customer-history-block h2 {
+  margin-left: 30px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+/* ===== Status Badges — ALL statuses covered ===== */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-pending { background-color: #fff3cd; color: #856404; }
+.status-preparing { background-color: #cce5ff; color: #004085; }
+.status-out-for-delivery { background-color: #cfe2ff; color: #084298; }
+.status-delivered { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* ===== KPI Cards (Dashboard) ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08), 0 14px 32px rgba(0, 0, 0, 0.12);
+}
+
+.kpi-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #1c1c1e;
+}
+
+.kpi-trend {
+  font-size: 12px;
+  color: #16a34a;
+}
+
+/* ===== Page-wide layout fix (footer positioning) ===== */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-wrapper .admin-container,
+.page-wrapper .home-container,
+.page-wrapper .cart-container,
+.page-wrapper .checkout-container,
+.page-wrapper .orders-container {
+  flex: 1;
+}
+
+/* ===== Page-wide centered loader ===== */
+.page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.nav-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-dropdown-label {
+  color: #d1d5db;
+  font-weight: 500;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1c1c1e;
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 140px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  list-style: none;
+}
+
+.nav-dropdown-menu li {
+  padding: 0;
+}
+
+.nav-dropdown-menu li a {
+  display: block;
+  padding: 8px 16px;
+  color: #d1d5db;
+  text-decoration: none;
+}
+
+.nav-dropdown-menu li a:hover {
+  background: #2d2d30;
+  color: #f97316;
+}
+.admin-navbar-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-navbar-links li {
+  display: flex;
+  align-items: center;
+}
+
+.admin-navbar-links a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.admin-navbar-links a:hover {
+  color: #f97316;
+}
+
+/* ===== MEDIA QUERIES ===== */
 @media (max-width: 768px) {
   .admin-container {
     padding: 20px 24px;
@@ -311,9 +456,13 @@
   .admin-order-row {
     padding: 12px 16px;
   }
+  .admin-navbar {
+    padding: 1rem 1.5rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
 
-/* Phones — stack info, status and select vertically */
 @media (max-width: 600px) {
   .admin-container {
     padding: 16px;
@@ -333,13 +482,24 @@
     gap: 10px;
   }
   .admin-order-info p {
-    margin-left: 0; /* no room to indent on small screens */
+    margin-left: 0;
   }
   .status-select {
     width: 100%;
   }
   .status-badge {
     font-size: 0.75rem;
+  }
+  .filters-bar {
+    flex-direction: column;
+  }
+  .filter-input,
+  .filter-select {
+    width: 100%;
+  }
+  .admin-navbar-links {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 

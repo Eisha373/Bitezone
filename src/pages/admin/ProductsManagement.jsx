@@ -118,8 +118,9 @@ function cancelDelete() {
   setDeleteTargetId(null);
 }
       return (
-    <div>
-      <AppNavbar />
+        
+    <div className="page-wrapper">
+    <AppNavbar />
 
       <div className="admin-container">
         <h1>Manage Products</h1>

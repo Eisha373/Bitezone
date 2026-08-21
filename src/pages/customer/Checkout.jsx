@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import { useCart } from "../../context/CartContext";
+import { DELIVERY_ZONES } from "../../data/deliveryZones";
 import "../../checkout.css";
 
 export function Checkout() {
@@ -14,8 +15,13 @@ export function Checkout() {
   const [fullName, setFullName] = useState(savedUser.name || "");
   const [email, setEmail] = useState(savedUser.email || "");
   const [phone, setPhone] = useState(savedUser.phone || "");
-  const [address, setAddress] = useState("");
-  const[addressError,setAddressError]=useState("");
+  const [area, setArea] = useState(savedUser.area || "");
+  const [address, setAddress] = useState(savedUser.address || "");
+  const deliveryCharge = DELIVERY_ZONES[area] || 0;
+  const finalTotal = totalPrice + deliveryCharge;
+
+  const [areaError, setAreaError] = useState("");
+  const [addressError, setAddressError] = useState("");
   const [error, setError] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -24,16 +30,20 @@ export function Checkout() {
   async function handlePlaceOrder(e) {
     e.preventDefault();
     setError("");
+    setAreaError("");
     setAddressError("");
 
     let hasError = false;
-  if (!address) {
-    setAddressError("Please enter your address");
-    hasError = true;
-  }
-  
-    if (hasError) 
-    return;
+    if (!area) {
+      setAreaError("Please select your delivery area");
+      hasError = true;
+    }
+    if (!address) {
+      setAddressError("Please enter your address");
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -49,7 +59,7 @@ export function Checkout() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ items, deliveryAddress: address }),
+        body: JSON.stringify({ items, deliveryArea: area, deliveryAddress: address }),
       });
 
       const data = await response.json();
@@ -61,10 +71,9 @@ export function Checkout() {
 
       clearCart();
       navigate("/my-orders");
-    } 
-    catch{
-  setError("Something went wrong. Please try again.");
-}
+    } catch {
+      setError("Something went wrong. Please try again.");
+    }
   }
 
   return (
@@ -85,27 +94,46 @@ export function Checkout() {
             <label htmlFor="phone">Phone No.:</label>
             <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}
               placeholder="Enter your phone" required />
+
+            <label htmlFor="area">Delivery Area:</label>
+            <div className="field-wrapper">
+              <select id="area" value={area} onChange={(e) => setArea(e.target.value)} required>
+                <option value="">Select your area</option>
+                {Object.keys(DELIVERY_ZONES).map((zone) => (
+                  <option key={zone} value={zone}>{zone}</option>
+                ))}
+              </select>
+              {areaError && (
+                <div className="field-popup">
+                  <span className="field-popup-icon">!</span>
+                  <span>{areaError}</span>
+                </div>
+              )}
+            </div>
+
             <label htmlFor="address">Address:</label>
             <div className="field-wrapper">
-  <input
-    type="text"
-    id="address"
-    placeholder="Enter your address"
-    value={address}
-    onChange={(e) => setAddress(e.target.value)}
-  />
-  {addressError && (
-    <div className="field-popup">        
-      <span className="field-popup-icon">!</span>
-      <span>{addressError}</span>
-    </div>
-  )}
-</div>
-            <button type="submit"className={isAdmin?"admin-checkout":"customer-checkout"}>Place Order</button>
+              <input
+                type="text"
+                id="address"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+              {addressError && (
+                <div className="field-popup">
+                  <span className="field-popup-icon">!</span>
+                  <span>{addressError}</span>
+                </div>
+              )}
+            </div>
+
+            <button type="submit" className={isAdmin ? "admin-checkout" : "customer-checkout"}>Place Order</button>
           </form>
         </div>
 
-        <div className={isAdmin ?"order-summary-admin":"order-summary-card"}>
+        <div className={isAdmin ? "order-summary-admin" : "order-summary-card"}>
           <h2>Order Summary</h2>
           {cartItems.map((item) => (
             <div className="summary-item" key={item._id}>
@@ -115,9 +143,18 @@ export function Checkout() {
           ))}
           <hr />
           <div className="summary-total">
-            <span>Total</span>
-            <span>Rs {totalPrice}</span>
-          </div>
+             <span>Subtotal</span> 
+             <span>Rs {totalPrice}</span> 
+             </div> 
+             <div className="summary-total">
+               <span>Delivery {area && `(${area})`}</span> 
+               <span>Rs {deliveryCharge}</span> 
+               </div>
+            <hr />
+                 <div className="summary-total total-row"> 
+                  <span>Total</span>
+                   <span>Rs {finalTotal}</span> 
+                   </div>
         </div>
       </div>
 

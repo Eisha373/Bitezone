@@ -1,13 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { DELIVERY_ZONES } from "../../data/deliveryZones";
 import "../../auth.css";
-
-/*added valid name, email,phone,password pattern*/
 
 const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// e.g. 03001234567 (11 digits, starts with 03)
 const PHONE_PATTERN = /^03\d{9}$/;
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
@@ -16,123 +14,109 @@ export function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [area, setArea] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [areaError, setAreaError] = useState("");
+  const [addressError, setAddressError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  //added usestate for confirm password field
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [nameError, setNameError] = useState("");
+
+  const [areaOpen, setAreaOpen] = useState(false);
+  const areaRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (areaRef.current && !areaRef.current.contains(e.target)) {
+        setAreaOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   function handleNameChange(e) {
-    const value = e.target.value;
-    setName(value);
-
-    if (value && !NAME_PATTERN.test(value)) {
-      setNameError("Enter a valid name (letters only)");
-    } else {
-      setNameError("");
-    }
+    setName(e.target.value);
   }
-
   function handleEmailChange(e) {
-    const value = e.target.value;
-    setEmail(value);
-
-    /*condition to check valid email*/
-
-    if (value && !EMAIL_PATTERN.test(value)) {
-      setEmailError("Enter a valid email address, e.g. ali123@example.com");
-    } else {
-      setEmailError("");
-    }
+    setEmail(e.target.value);
   }
-
   function handlePhoneChange(e) {
-    /* keep only digits, cap at 11 characters as the user types*/
-
     const value = e.target.value.replace(/\D/g, "").slice(0, 11);
     setPhone(value);
-
-    if (value && !PHONE_PATTERN.test(value)) {
-      setPhoneError("Enter an 11-digit number e.g. 03079864522");
-    } else {
-      setPhoneError("");
-    }
   }
-
+  function handleAddressChange(e) {
+    setAddress(e.target.value);
+  }
   function handlePasswordChange(e) {
-    const value = e.target.value;
-    setPassword(value);
-
-    if (value && !PASSWORD_PATTERN.test(value)) {
-      setPasswordError(
-        "Must be 8+ characters with uppercase, lowercase, number & special character"
-      );
-    } else {
-      setPasswordError("");
-    }
+    setPassword(e.target.value);
   }
-
-  {/*added function to handle ConfirmPasswordChange*/}
-
   function handleConfirmPasswordChange(e) {
-    const value = e.target.value;
-    setConfirmPassword(value);
-
-    if (!value) {
-      setConfirmPasswordError("Please re-enter your password");
-    } else if (value !== password) {
-      setConfirmPasswordError("Passwords do not match");
-    } else {
-      setConfirmPasswordError("");
-    }
+    setConfirmPassword(e.target.value);
   }
 
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+    setNameError("");
+    setEmailError("");
+    setPhoneError("");
+    setAreaError("");
+    setAddressError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+
+    let hasError = false;
 
     if (!NAME_PATTERN.test(name)) {
-      setNameError("Enter a valid name (letters only, min 3 characters)");
-      return;
+      setNameError("Enter a valid name (letters only)");
+      hasError = true;
     }
-
     if (!EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
-      return;
+      hasError = true;
     }
-
     if (!PHONE_PATTERN.test(phone)) {
       setPhoneError("Enter an 11-digit number e.g. 03001234567");
-      return;
+      hasError = true;
     }
-
+    if (!area) {
+      setAreaError("Please select your delivery area");
+      hasError = true;
+    }
+    if (!address.trim()) {
+      setAddressError("Please enter your address");
+      hasError = true;
+    }
     if (!PASSWORD_PATTERN.test(password)) {
-      setError("Password doesn't meet the required format");
-      return;
+      setPasswordError(
+        "Must be 8+ characters with uppercase, lowercase, number & special character"
+      );
+      hasError = true;
     }
-
     if (!confirmPassword) {
       setConfirmPasswordError("Please re-enter your password");
-      return;
+      hasError = true;
+    } else if (confirmPassword !== password) {
+      setConfirmPasswordError("Passwords do not match");
+      hasError = true;
     }
 
-    if (password !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
-      return;
-    }
+    if (hasError) return;
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password, role }),
+        body: JSON.stringify({ name, email, phone, area, address, password, role }),
       });
 
       const data = await response.json();
@@ -160,14 +144,14 @@ export function Signup() {
       <div className="auth-card">
         <h2>Create Account</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {/* noValidate stops the browser's native bubbles so our custom popups
-            are the only validation UI the user ever sees */}
-        <form onSubmit={handleSignup} noValidate>
+        <form onSubmit={handleSignup} noValidate autoComplete="on">
           <label htmlFor="full-name">Full Name:</label>
           <div className="field-wrapper">
             <input
               type="text"
               id="full-name"
+              name="name"
+              autoComplete="name"
               placeholder="e.g.Ali Raza"
               value={name}
               onChange={handleNameChange}
@@ -186,6 +170,8 @@ export function Signup() {
             <input
               type="email"
               id="email"
+              name="email"
+              autoComplete="email"
               placeholder="e.g.ali123@example.com"
               value={email}
               onChange={handleEmailChange}
@@ -204,6 +190,8 @@ export function Signup() {
             <input
               type="tel"
               id="phone"
+              name="phone"
+              autoComplete="tel"
               placeholder="e.g.03001234567"
               value={phone}
               onChange={handlePhoneChange}
@@ -219,12 +207,73 @@ export function Signup() {
             )}
           </div>
 
+          <label htmlFor="area">Delivery Area:</label>
+          <div className="field-wrapper">
+            <div className="custom-select" ref={areaRef}>
+              <button
+                type="button"
+                id="area"
+                className="custom-select-trigger"
+                onClick={() => setAreaOpen((o) => !o)}
+              >
+                <span className={area ? "" : "placeholder"}>
+                  {area || "Select your area"}
+                </span>
+                <span className="custom-select-arrow">▾</span>
+              </button>
+              {areaOpen && (
+                <ul className="custom-select-options">
+                  {Object.keys(DELIVERY_ZONES).map((zone) => (
+                    <li
+                      key={zone}
+                      className={zone === area ? "selected" : ""}
+                      onClick={() => {
+                        setArea(zone);
+                        setAreaOpen(false);
+                      }}
+                    >
+                      {zone}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {areaError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{areaError}</span>
+              </div>
+            )}
+          </div>
+
+          <label htmlFor="address">Address:</label>
+          <div className="field-wrapper">
+            <input
+              type="text"
+              id="address"
+              name="address"
+              autoComplete="street-address"
+              placeholder="House #, street, landmark"
+              value={address}
+              onChange={handleAddressChange}
+              required
+            />
+            {addressError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{addressError}</span>
+              </div>
+            )}
+          </div>
+
           <label htmlFor="password">Password:</label>
           <div className="field-wrapper">
             <div className="password-field">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                name="password"
+                autoComplete="new-password"
                 placeholder="e.g,.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
@@ -252,12 +301,13 @@ export function Signup() {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirm-password"
+                name="confirmPassword"
+                autoComplete="new-password"
                 placeholder="Re-enter your password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 required
               />
-              {/*added popup for missing confirm password field*/}
               <button
                 type="button"
                 className="toggle-password-btn"
