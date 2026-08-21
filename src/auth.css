@@ -243,6 +243,7 @@ margin-top:25px;
    appears when there's an active error, so it never affects layout. */
 .field-wrapper {
   position: relative;
+  margin-bottom: 20px;
 }
 .field-wrapper input {
   width: 100%;
@@ -251,7 +252,7 @@ margin-top:25px;
 
 .field-popup {
   position: absolute;
-  top: calc(100% + 4px);
+  top: 100%; 
   left: 0;
   z-index: 10;
   display: flex;
