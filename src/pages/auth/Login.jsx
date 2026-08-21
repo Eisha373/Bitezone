@@ -70,12 +70,14 @@ export function Login() {
         <h2>Welcome to Bitezone</h2>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleLogin} noValidate>
+        <form onSubmit={handleLogin} noValidate autoComplete="on">
           <label htmlFor="email">Email:</label>
           <div className="field-wrapper">
             <input
               type="email"
               id="email"
+              name="email"
+              autoComplete="username"
               placeholder="Enter your Email"
               value={email}
               onChange={handleEmailChange}
@@ -94,6 +96,8 @@ export function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                name="password"
+                autoComplete="current-password"
                 placeholder="Enter your Password"
                 value={password}
                 onChange={handlePasswordChange}

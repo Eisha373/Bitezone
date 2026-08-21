@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { DELIVERY_ZONES } from "../../data/deliveryZones";
 import "../../auth.css";
@@ -30,6 +30,19 @@ export function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [areaOpen, setAreaOpen] = useState(false);
+  const areaRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (areaRef.current && !areaRef.current.contains(e.target)) {
+        setAreaOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   function handleNameChange(e) {
     setName(e.target.value);
   }
@@ -39,9 +52,6 @@ export function Signup() {
   function handlePhoneChange(e) {
     const value = e.target.value.replace(/\D/g, "").slice(0, 11);
     setPhone(value);
-  }
-  function handleAreaChange(e) {
-    setArea(e.target.value);
   }
   function handleAddressChange(e) {
     setAddress(e.target.value);
@@ -134,12 +144,14 @@ export function Signup() {
       <div className="auth-card">
         <h2>Create Account</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleSignup} noValidate>
+        <form onSubmit={handleSignup} noValidate autoComplete="on">
           <label htmlFor="full-name">Full Name:</label>
           <div className="field-wrapper">
             <input
               type="text"
               id="full-name"
+              name="name"
+              autoComplete="name"
               placeholder="e.g.Ali Raza"
               value={name}
               onChange={handleNameChange}
@@ -158,6 +170,8 @@ export function Signup() {
             <input
               type="email"
               id="email"
+              name="email"
+              autoComplete="email"
               placeholder="e.g.ali123@example.com"
               value={email}
               onChange={handleEmailChange}
@@ -176,6 +190,8 @@ export function Signup() {
             <input
               type="tel"
               id="phone"
+              name="phone"
+              autoComplete="tel"
               placeholder="e.g.03001234567"
               value={phone}
               onChange={handlePhoneChange}
@@ -193,14 +209,35 @@ export function Signup() {
 
           <label htmlFor="area">Delivery Area:</label>
           <div className="field-wrapper">
-            <select id="area" value={area} onChange={handleAreaChange} required>
-              <option value="">Select your area</option>
-              {Object.keys(DELIVERY_ZONES).map((zone) => (
-                <option key={zone} value={zone}>
-                  {zone}
-                </option>
-              ))}
-            </select>
+            <div className="custom-select" ref={areaRef}>
+              <button
+                type="button"
+                id="area"
+                className="custom-select-trigger"
+                onClick={() => setAreaOpen((o) => !o)}
+              >
+                <span className={area ? "" : "placeholder"}>
+                  {area || "Select your area"}
+                </span>
+                <span className="custom-select-arrow">▾</span>
+              </button>
+              {areaOpen && (
+                <ul className="custom-select-options">
+                  {Object.keys(DELIVERY_ZONES).map((zone) => (
+                    <li
+                      key={zone}
+                      className={zone === area ? "selected" : ""}
+                      onClick={() => {
+                        setArea(zone);
+                        setAreaOpen(false);
+                      }}
+                    >
+                      {zone}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             {areaError && (
               <div className="field-popup">
                 <span className="field-popup-icon">!</span>
@@ -214,6 +251,8 @@ export function Signup() {
             <input
               type="text"
               id="address"
+              name="address"
+              autoComplete="street-address"
               placeholder="House #, street, landmark"
               value={address}
               onChange={handleAddressChange}
@@ -233,6 +272,8 @@ export function Signup() {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                name="password"
+                autoComplete="new-password"
                 placeholder="e.g,.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
@@ -260,6 +301,8 @@ export function Signup() {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirm-password"
+                name="confirmPassword"
+                autoComplete="new-password"
                 placeholder="Re-enter your password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
