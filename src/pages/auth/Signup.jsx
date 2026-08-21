@@ -3,11 +3,8 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
-/*added valid name, email,phone,password pattern*/
-
 const NAME_PATTERN = /^[A-Za-z\s]{3,50}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// e.g. 03001234567 (11 digits, starts with 03)
 const PHONE_PATTERN = /^03\d{9}$/;
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
@@ -23,17 +20,16 @@ export function Signup() {
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  //added usestate for confirm password field
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [nameError, setNameError] = useState("");
 
   function handleNameChange(e) {
-    const value = e.target.value;
-    setName(value);
-
-    if (value && !NAME_PATTERN.test(value)) {
+    setName(e.target.value);
+  }
+  function handleNameBlur() {
+    if (name && !NAME_PATTERN.test(name)) {
       setNameError("Enter a valid name (letters only)");
     } else {
       setNameError("");
@@ -41,12 +37,10 @@ export function Signup() {
   }
 
   function handleEmailChange(e) {
-    const value = e.target.value;
-    setEmail(value);
-
-    /*condition to check valid email*/
-
-    if (value && !EMAIL_PATTERN.test(value)) {
+    setEmail(e.target.value);
+  }
+  function handleEmailBlur() {
+    if (email && !EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
     } else {
       setEmailError("");
@@ -54,12 +48,11 @@ export function Signup() {
   }
 
   function handlePhoneChange(e) {
-    /* keep only digits, cap at 11 characters as the user types*/
-
     const value = e.target.value.replace(/\D/g, "").slice(0, 11);
     setPhone(value);
-
-    if (value && !PHONE_PATTERN.test(value)) {
+  }
+  function handlePhoneBlur() {
+    if (phone && !PHONE_PATTERN.test(phone)) {
       setPhoneError("Enter an 11-digit number e.g. 03079864522");
     } else {
       setPhoneError("");
@@ -67,10 +60,10 @@ export function Signup() {
   }
 
   function handlePasswordChange(e) {
-    const value = e.target.value;
-    setPassword(value);
-
-    if (value && !PASSWORD_PATTERN.test(value)) {
+    setPassword(e.target.value);
+  }
+  function handlePasswordBlur() {
+    if (password && !PASSWORD_PATTERN.test(password)) {
       setPasswordError(
         "Must be 8+ characters with uppercase, lowercase, number & special character"
       );
@@ -79,15 +72,13 @@ export function Signup() {
     }
   }
 
-  {/*added function to handle ConfirmPasswordChange*/}
-
   function handleConfirmPasswordChange(e) {
-    const value = e.target.value;
-    setConfirmPassword(value);
-
-    if (!value) {
+    setConfirmPassword(e.target.value);
+  }
+  function handleConfirmPasswordBlur() {
+    if (!confirmPassword) {
       setConfirmPasswordError("Please re-enter your password");
-    } else if (value !== password) {
+    } else if (confirmPassword !== password) {
       setConfirmPasswordError("Passwords do not match");
     } else {
       setConfirmPasswordError("");
@@ -99,30 +90,25 @@ export function Signup() {
     setError("");
 
     if (!NAME_PATTERN.test(name)) {
-      setNameError("Enter a valid name (letters only, min 3 characters)");
+      setNameError("Enter a valid name (letters only)");
       return;
     }
-
     if (!EMAIL_PATTERN.test(email)) {
       setEmailError("Enter a valid email address, e.g. ali123@example.com");
       return;
     }
-
     if (!PHONE_PATTERN.test(phone)) {
       setPhoneError("Enter an 11-digit number e.g. 03001234567");
       return;
     }
-
     if (!PASSWORD_PATTERN.test(password)) {
-      setError("Password doesn't meet the required format");
+      setPasswordError("Must be 8+ characters with uppercase, lowercase, number & special character");
       return;
     }
-
     if (!confirmPassword) {
       setConfirmPasswordError("Please re-enter your password");
       return;
     }
-
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       return;
@@ -160,8 +146,6 @@ export function Signup() {
       <div className="auth-card">
         <h2>Create Account</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {/* noValidate stops the browser's native bubbles so our custom popups
-            are the only validation UI the user ever sees */}
         <form onSubmit={handleSignup} noValidate>
           <label htmlFor="full-name">Full Name:</label>
           <div className="field-wrapper">
@@ -171,6 +155,7 @@ export function Signup() {
               placeholder="e.g.Ali Raza"
               value={name}
               onChange={handleNameChange}
+              onBlur={handleNameBlur}
               required
             />
             {nameError && (
@@ -189,6 +174,7 @@ export function Signup() {
               placeholder="e.g.ali123@example.com"
               value={email}
               onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
               required
             />
             {emailError && (
@@ -207,6 +193,7 @@ export function Signup() {
               placeholder="e.g.03001234567"
               value={phone}
               onChange={handlePhoneChange}
+              onBlur={handlePhoneBlur}
               inputMode="numeric"
               maxLength={11}
               required
@@ -228,6 +215,7 @@ export function Signup() {
                 placeholder="e.g,.Home1234@"
                 value={password}
                 onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
                 required
               />
               <button
@@ -255,9 +243,9 @@ export function Signup() {
                 placeholder="Re-enter your password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
+                onBlur={handleConfirmPasswordBlur}
                 required
               />
-              {/*added popup for missing confirm password field*/}
               <button
                 type="button"
                 className="toggle-password-btn"

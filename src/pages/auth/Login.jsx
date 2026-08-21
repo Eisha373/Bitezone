@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 import "../../auth.css";
 
 export function Login() {
@@ -10,29 +8,48 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
-const [passwordError, setPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleLogin(e) {
-    e.preventDefault(); 
-      setError("");
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+  function handleEmailBlur() {
+    if (!email) {
+      setEmailError("Please enter your email");
+    } else {
       setEmailError("");
-  setPasswordError("");
-
-  let hasError = false;
-  if (!email) {
-    setEmailError("Please enter your email");
-    hasError = true;
+    }
   }
-  if (!password) {
-    setPasswordError("Please enter your password");
-    hasError = true;
-  }
-  if (hasError) 
-    return;
 
-  try {
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+  function handlePasswordBlur() {
+    if (!password) {
+      setPasswordError("Please enter your password");
+    } else {
+      setPasswordError("");
+    }
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    setError("");
+
+    let hasError = false;
+    if (!email) {
+      setEmailError("Please enter your email");
+      hasError = true;
+    }
+    if (!password) {
+      setPasswordError("Please enter your password");
+      hasError = true;
+    }
+    if (hasError) return;
+
+    try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -64,53 +81,54 @@ const [passwordError, setPasswordError] = useState("");
       <div className="auth-card">
         <img src="/images/burger-logo(1).jpg" alt="Bitezone Logo" className="auth-logo" />
         <h2>Welcome to Bitezone</h2>
-        
+
         {error && <p style={{ color: "red" }}>{error}</p>}
         <form onSubmit={handleLogin} noValidate>
           <label htmlFor="email">Email:</label>
-<div className="field-wrapper">
-  <input
-    type="email"
-    id="email"
-    placeholder="Enter your Email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-  />
-  {emailError && (
-    <div className="field-popup">        
-      <span className="field-popup-icon">!</span>
-      <span>{emailError}</span>
-    </div>
-  )}
-</div>
+          <div className="field-wrapper">
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your Email"
+              value={email}
+              onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
+            />
+            {emailError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{emailError}</span>
+              </div>
+            )}
+          </div>
 
-<label htmlFor="password">Password:</label>
-<div className="field-wrapper">
-  <div className="password-field">
-    <input
-      type={showPassword ? "text" : "password"}
-      id="password"
-      placeholder="Enter your Password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-    <button
-      type="button"
-      className="toggle-password-btn"
-      onClick={() => setShowPassword(!showPassword)}
-    >
-      {showPassword ? <FaEyeSlash /> : <FaEye />}
-    </button>
-  </div>
-  {/* customized popup for password */}
-  {passwordError && (
-    <div className="field-popup">
-      <span className="field-popup-icon">!</span>
-      <span>{passwordError}</span>
-    </div>
-  )}
-</div>
-         
+          <label htmlFor="password">Password:</label>
+          <div className="field-wrapper">
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Enter your Password"
+                value={password}
+                onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+            {passwordError && (
+              <div className="field-popup">
+                <span className="field-popup-icon">!</span>
+                <span>{passwordError}</span>
+              </div>
+            )}
+          </div>
+
           <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
