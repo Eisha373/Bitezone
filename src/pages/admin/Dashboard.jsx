@@ -45,35 +45,31 @@ export function AdminDashboard() {
       ]
     : [];
 
-  return (
-    <div className="page-wrapper">
-  <AdminNavbar />
+ return (
+  <div className="page-wrapper">
+    <AdminNavbar />
+
     <div className="admin-container">
-      
       <h1>Dashboard</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading ? (
-          <div className="page-loader">
-            <p>Loading...</p>
-          </div>
-        ) : (
-          <>
-
-      <div className="kpi-grid">
-        {kpiCards.map((stat) => (
-          <div className="kpi-card" key={stat.label}>
-            <p className="kpi-label">{stat.label}</p>
-            <h2 className="kpi-value">{stat.value}</h2>
-          </div>
-        ))}
-      </div>
-      </>
-        )
-      }
-
-      <Footer />
-      </div>
+        <div className="page-loader">
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <div className="kpi-grid">
+          {kpiCards.map((stat) => (
+            <div className="kpi-card" key={stat.label}>
+              <p className="kpi-label">{stat.label}</p>
+              <h2 className="kpi-value">{stat.value}</h2>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-  );
+
+    <Footer />
+  </div>
+);
 }
