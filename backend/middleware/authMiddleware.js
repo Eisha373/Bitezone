@@ -12,7 +12,7 @@ req.user=decoded;
 next();
 }
 catch(error){
-return res.status(401).json({message:"Invalid orExpired Token",error:error.message});
+return res.status(401).json({message:"Invalid or Expired Token",error:error.message});
 }
 };
 const isAdmin=(req,res,next)=>{
