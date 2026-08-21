@@ -45,8 +45,10 @@ export function AdminDashboard() {
     : [];
 
   return (
+    <div className="page-wrapper">
+  <AdminNavbar />
     <div className="admin-container">
-      <AdminNavbar />
+      
       <h1>Dashboard</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -70,6 +72,7 @@ export function AdminDashboard() {
       }
 
       <Footer />
+      </div>
     </div>
   );
 }

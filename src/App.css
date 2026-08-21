@@ -115,6 +115,22 @@
     height: 18px;
   }
 
+  html, body, #root {
+  height: 100%;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-wrapper .admin-container,
+.page-wrapper .home-container,
+.page-wrapper .cart-container {
+  flex: 1;   
+}
+
   a {
     color: var(--text-h);
     font-size: 16px;

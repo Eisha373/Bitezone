@@ -122,8 +122,9 @@ const [sortBy, setSortBy] = useState("date");
             <div className="customer-history-block" key={customer}>
               <h2>{customer}</h2>
               {customerOrders.map((order) => (
-                <div className="admin-order-row" key={order._id}>
-                  <p>Order #{order._id.slice(-6)}</p>
+            <div className={`admin-order-row ${order.status.toLowerCase().replace(/\s+/g, "-")}`}
+                key={order._id}
+>                  <p>Order #{order._id.slice(-6)}</p>
                   <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
                   <p>Rs {order.totalAmount}</p>
                   <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>

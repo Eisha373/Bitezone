@@ -88,8 +88,9 @@ const [sortBy, setSortBy] = useState("date");
 
 
   return (
-    <div>
-      <AdminNavbar />
+    
+<div className="page-wrapper">
+    <AdminNavbar />
       <div className="admin-container">
         <h1>Orders List</h1>
 
