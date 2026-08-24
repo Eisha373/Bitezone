@@ -89,9 +89,9 @@ function ResetPassword() {
         setStatusType("error");
         setStatusMessage(data.message || "Something went wrong");
       }
-    } catch {
+    } catch(err) {
       setStatusType("error");
-      setStatusMessage("Server error. Please try again later.");
+      setStatusMessage(err.message||"Server error. Please try again later.");
     } finally {
       setLoading(false);
     }
