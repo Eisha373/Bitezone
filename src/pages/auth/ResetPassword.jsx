@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./auth.css";
 
-function ResetPassword() {
+export function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
 
@@ -168,4 +168,3 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
