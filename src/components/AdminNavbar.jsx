@@ -32,7 +32,7 @@ export function AdminNavbar() {
           onMouseEnter={() => setDropdownOpen(true)}
           onMouseLeave={() => setDropdownOpen(false)}
         >
-          <span className="nav-dropdown-label">More ▾</span>
+          {cartCount > 0 && <span className="nav-dropdown-label cart-badge">{cartCount} More ▾</span>}
           {dropdownOpen && (
             <ul className="nav-dropdown-menu">
               <li><Link to="/menu">Menu</Link></li>

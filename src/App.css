@@ -10,7 +10,9 @@ html, body, #root {
 
 .page-wrapper .admin-container,
 .page-wrapper .home-container,
-.page-wrapper .cart-container {
+.page-wrapper .cart-container,
+.page-wrapper .checkout-container,
+.page-wrapper .orders-container {
   flex: 1;
 }
 .counter {
