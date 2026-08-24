@@ -212,8 +212,7 @@ function handleImageChange(e) {
 
     // Show existing image
     setImagePreview(product.imageLink || "");
-
-    setError("");
+     setError("");
 
     // Scroll to top/form
     window.scrollTo({
@@ -280,27 +279,13 @@ function handleImageChange(e) {
     setDeleteTargetId(null);
   }
 
-  // =========================================================
-  // JSX
-  // =========================================================
-
   return (
     <div className="page-wrapper">
       <AppNavbar />
 
       <div className="admin-container">
         <h1>Manage Products</h1>
-
-        {/* Error Message */}
-        {error && (
-          <p
-            style={{
-              color: "red",
-              marginBottom: "15px",
-              fontWeight: "500",
-            }}
-          >
-            {error}
+        {error && ( <p style={{color: "red",marginBottom: "15px",fontWeight: "500", }}>{error}
           </p>
         )}
 
@@ -310,10 +295,6 @@ function handleImageChange(e) {
           </div>
         ) : (
           <>
-            {/* =================================================
-                PRODUCT FORM
-            ================================================= */}
-
             <form className="product-form" onSubmit={handleSubmit}>
               <h2>
                 {editingId ? "Edit Product" : "Add New Product"}
@@ -410,7 +391,7 @@ function handleImageChange(e) {
 
         <span>
           <strong>Browse Image</strong>
-          <small>Choose an image from your computer</small>
+          <small>Browse an image</small>
         </span>
       </button>
 
