@@ -86,17 +86,21 @@ export function Checkout() {
           {error && <p style={{ color: "red" }}>{error}</p>}
           <form onSubmit={handlePlaceOrder} noValidate>
             <label htmlFor="full-name">Full Name:</label>
+
             <input type="text" id="full-name" value={fullName} onChange={(e) => setFullName(e.target.value)}
               placeholder="Enter your name" required />
             <label htmlFor="email">Email:</label>
+
             <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email" required />
             <label htmlFor="phone">Phone No.:</label>
+
             <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}
               placeholder="Enter your phone" required />
 
             <label htmlFor="area">Delivery Area:</label>
             <div className="field-wrapper">
+              
               <select id="area" value={area} onChange={(e) => setArea(e.target.value)} required>
                 <option value="">Select your area</option>
                 {Object.keys(DELIVERY_ZONES).map((zone) => (

@@ -17,24 +17,17 @@ export function ProductsManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Editing
   const [editingId, setEditingId] = useState(null);
-
-  // Delete confirmation
   const [deleteTargetId, setDeleteTargetId] = useState(null);
-
-  // Image preview
   const [imagePreview, setImagePreview] = useState("");
-
-  // Product form
-  const [form, setForm] = useState({
+const [imagePickerOpen, setImagePickerOpen] = useState(false);
+const [imagePickerMode, setImagePickerMode] = useState("");
+   const [form, setForm] = useState({
     name: "",
     price: "",
     description: "",
     imageLink: "",
-    category: "burger",
-  });
+    category: "burger"});
 
   // Load products when component opens
   useEffect(() => {
@@ -73,68 +66,44 @@ export function ProductsManagement() {
   // =========================================================
 
   function handleFormChange(e) {
-    const { name, value } = e.target;
+  setForm((prev) => ({
+    ...prev,
+    [e.target.name]: e.target.value,
+  }));
+}
+
+function handleImageChange(e) {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    setError("Please select a valid image file.");
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    setError("Image size must be less than 2 MB.");
+    return;
+  }
+
+  setError("");
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    const imageData = reader.result;
 
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      imageLink: imageData,
     }));
 
-    // If admin manually enters an image URL,
-    // show it immediately in preview
-    if (name === "imageLink") {
-      setImagePreview(value);
-    }
-  }
+    setImagePreview(imageData);
+  };
 
-  // =========================================================
-  // HANDLE IMAGE FILE
-  // =========================================================
-
-  function handleImageChange(e) {
-    const file = e.target.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    // Check file type
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file.");
-      e.target.value = "";
-      return;
-    }
-
-    // Maximum file size = 2 MB
-    if (file.size > 2 * 1024 * 1024) {
-      setError("Image size must be less than 2 MB.");
-      e.target.value = "";
-      return;
-    }
-
-    setError("");
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const imageData = reader.result;
-
-      // Save Base64 image inside imageLink
-      setForm((prev) => ({
-        ...prev,
-        imageLink: imageData,
-      }));
-
-      // Show image immediately
-      setImagePreview(imageData);
-    };
-
-    reader.onerror = () => {
-      setError("Failed to read the image.");
-    };
-
-    reader.readAsDataURL(file);
-  }
+  reader.readAsDataURL(file);
+}
 
   // =========================================================
   // RESET FORM
@@ -381,50 +350,121 @@ export function ProductsManagement() {
                 required
               />
 
-              {/* Image URL */}
-              <label htmlFor="imageLink">
-                Image URL:
-              </label>
+              <label className="image-field-label">
+  Product Image:
+</label>
 
-              <input
-                type="text"
-                id="imageLink"
-                name="imageLink"
-                placeholder="Insert Image URL"
-                value={
-                  form.imageLink.startsWith("data:image")
-                    ? ""
-                    : form.imageLink
-                }
-                onChange={handleFormChange}
-              />
+<div className="image-picker">
 
-              {/* Browse Image */}
-              <label htmlFor="imageFile">
-                Or Browse Image:
-              </label>
+  {/* Main button */}
+  <button
+    type="button"
+    className="image-picker-main"
+    onClick={() =>
+      setImagePickerOpen((prev) => !prev)
+    }
+  >
+    <span>
+      🖼️
+      {imagePreview ? " Change Product Image" : " Add Product Image"}
+    </span>
 
-              <input
-                type="file"
-                id="imageFile"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="image-file-input"
-              />
+    <span className="image-picker-arrow">
+      {imagePickerOpen ? "▲" : "▼"}
+    </span>
+  </button>
 
-              {/* Image Preview */}
-              {imagePreview && (
-                <div className="image-preview-container">
-                  <p>Image Preview:</p>
 
-                  <img
-                    src={imagePreview}
-                    alt="Product Preview"
-                    className="image-preview"
-                  />
-                </div>
-              )}
+  {/* Dropdown options */}
+  {imagePickerOpen && (
+    <div className="image-picker-menu">
 
+      {/* URL option */}
+      <button
+        type="button"
+        className="image-picker-option"
+        onClick={() => {
+          setImagePickerMode("url");
+          setImagePickerOpen(false);
+        }}
+      >
+        <span className="image-option-icon">🔗</span>
+
+        <span>
+          <strong>Insert Image URL</strong>
+          <small>Paste an image link</small>
+        </span>
+      </button>
+
+
+      {/* Browse option */}
+      <button
+        type="button"
+        className="image-picker-option"
+        onClick={() => {
+          setImagePickerOpen(false);
+          document.getElementById("imageFile").click();
+        }}
+      >
+        <span className="image-option-icon">📎</span>
+
+        <span>
+          <strong>Browse Image</strong>
+          <small>Choose an image from your computer</small>
+        </span>
+      </button>
+
+    </div>
+  )}
+
+</div>
+
+
+{/* URL input appears only when URL option is selected */}
+{imagePickerMode === "url" && (
+  <div className="image-url-input">
+    <input
+      type="text"
+      placeholder="Paste Image URL"
+      value={form.imageLink.startsWith("data:image") ? "" : form.imageLink}
+      onChange={(e) => {
+        setForm((prev) => ({
+          ...prev,
+          imageLink: e.target.value,
+        }));
+
+        setImagePreview(e.target.value);
+        setError("");
+      }}
+    />
+  </div>
+)}
+
+
+{/* Hidden file input */}
+<input
+  type="file"
+  id="imageFile"
+  accept="image/*"
+  onChange={handleImageChange}
+  className="hidden-file-input"
+/>
+
+
+{/* Preview */}
+{imagePreview && (
+  <div className="image-preview-container">
+
+    <p>Image Preview:</p>
+
+    <img
+      src={imagePreview}
+      alt="Product Preview"
+      className="image-preview"
+    />
+
+  </div>
+)}
               {/* Description */}
               <label htmlFor="description">
                 Description: (optional)

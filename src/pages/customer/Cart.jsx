@@ -19,9 +19,7 @@ export function Cart() {
   function handleDecrement(id, currentQuantity) {
   if (currentQuantity > 1) {
     updateQuantity(id, currentQuantity - 1);
-  } else {
-    removeFromCart(id);
-  }
+  } 
 }
 
   return (
@@ -48,7 +46,6 @@ export function Cart() {
                     <span className="qty-count">{item.quantity}</span>
                     <button className="qty-btn" onClick={() => handleIncrement(item._id, item.quantity)}>+</button>
                   </div>
-                  <p className="cart-item-subtotal">Rs {item.price * item.quantity}</p>
                 <button className="remove-btn" onClick={() => removeFromCart(item._id)} aria-label="Remove item">
       Remove
     </button>
