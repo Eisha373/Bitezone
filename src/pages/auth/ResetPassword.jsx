@@ -1,7 +1,7 @@
 import  { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./auth.css";
+import "../../auth.css";
 
 export function ResetPassword() {
   const { token } = useParams();
