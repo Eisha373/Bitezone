@@ -88,7 +88,7 @@
 
 .auth-card input:focus,
 .auth-card select:focus{
-    border-color:blue;
+    border-color:rgb(15, 15, 16);
 }
 
 .auth-card button[type="submit"]{

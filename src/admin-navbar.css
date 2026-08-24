@@ -6,7 +6,7 @@
   max-width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 2.5rem;
+  padding: 1.2rem 4rem;
   background: #1c1c1e;
   color: #f5f5f5;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -32,7 +32,7 @@
 .admin-navbar-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
 }
 
 .admin-navbar-links a {
@@ -45,6 +45,49 @@
 .admin-navbar-links a:hover {
   color: #f97316;
 }
+
+/* ===== MORE NAVIGATION BADGE ===== */
+
+.nav-dropdown-label {
+  color: #d1d5db;
+
+  font-weight: 500;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  cursor: pointer;
+}
+
+.more-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 18px;
+
+  height: 18px;
+
+  padding: 0 5px;
+
+  background: #ff6b35;
+
+  color: white;
+
+  border-radius: 50%;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  line-height: 1;
+}
+
 
 .logout-btn {
   background-color: #f97316;

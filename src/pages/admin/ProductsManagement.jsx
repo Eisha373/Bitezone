@@ -3,15 +3,31 @@ import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../admin.css";
 
-const CATEGORIES = ["pizza", "burger", "sandwich", "fries", "pasta", "nuggets","shawarma"];
+const CATEGORIES = [
+  "pizza",
+  "burger",
+  "sandwich",
+  "fries",
+  "pasta",
+  "nuggets",
+  "shawarma",
+];
 
 export function ProductsManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // Editing
   const [editingId, setEditingId] = useState(null);
+
+  // Delete confirmation
   const [deleteTargetId, setDeleteTargetId] = useState(null);
 
+  // Image preview
+  const [imagePreview, setImagePreview] = useState("");
+
+  // Product form
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -20,39 +36,164 @@ export function ProductsManagement() {
     category: "burger",
   });
 
+  // Load products when component opens
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // =========================================================
+  // FETCH PRODUCTS
+  // =========================================================
+
   async function fetchProducts() {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`
+      );
+
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to load products");
+      }
+
       setProducts(data);
-    } catch {
-      setError("Failed to load products");
+    } catch (error) {
+      setError(error.message || "Failed to load products");
     } finally {
       setLoading(false);
     }
   }
 
+  // =========================================================
+  // HANDLE NORMAL FORM INPUTS
+  // =========================================================
+
   function handleFormChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // If admin manually enters an image URL,
+    // show it immediately in preview
+    if (name === "imageLink") {
+      setImagePreview(value);
+    }
   }
 
-  function resetForm() {
-    setForm({ name: "", price: "", description: "", imageLink: "", category: "burger" });
-    setEditingId(null);
+  // =========================================================
+  // HANDLE IMAGE FILE
+  // =========================================================
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
+      e.target.value = "";
+      return;
+    }
+
+    // Maximum file size = 2 MB
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image size must be less than 2 MB.");
+      e.target.value = "";
+      return;
+    }
+
+    setError("");
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const imageData = reader.result;
+
+      // Save Base64 image inside imageLink
+      setForm((prev) => ({
+        ...prev,
+        imageLink: imageData,
+      }));
+
+      // Show image immediately
+      setImagePreview(imageData);
+    };
+
+    reader.onerror = () => {
+      setError("Failed to read the image.");
+    };
+
+    reader.readAsDataURL(file);
   }
+
+  // =========================================================
+  // RESET FORM
+  // =========================================================
+
+  function resetForm() {
+    setForm({
+      name: "",
+      price: "",
+      description: "",
+      imageLink: "",
+      category: "burger",
+    });
+
+    setImagePreview("");
+    setEditingId(null);
+    setError("");
+
+    // Reset file input
+    const fileInput = document.getElementById("imageFile");
+
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  }
+
+  // =========================================================
+  // ADD / UPDATE PRODUCT
+  // =========================================================
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     setError("");
+
+    // Validate image
+    if (!form.imageLink) {
+      setError("Please provide an image URL or browse for an image.");
+      return;
+    }
+
+    // Validate name
+    if (!form.name.trim()) {
+      setError("Product name is required.");
+      return;
+    }
+
+    // Validate price
+    if (form.price === "" || Number(form.price) < 0) {
+      setError("Please enter a valid price.");
+      return;
+    }
+
     const token = localStorage.getItem("token");
 
     const url = editingId
       ? `${import.meta.env.VITE_API_URL}/api/products/${editingId}`
       : `${import.meta.env.VITE_API_URL}/api/products`;
+
     const method = editingId ? "PUT" : "POST";
 
     try {
@@ -62,7 +203,10 @@ export function ProductsManagement() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...form, price: Number(form.price) }),
+        body: JSON.stringify({
+          ...form,
+          price: Number(form.price),
+        }),
       });
 
       const data = await response.json();
@@ -72,59 +216,124 @@ export function ProductsManagement() {
         return;
       }
 
+      // Reset form
       resetForm();
-      fetchProducts();
+
+      // Reload products
+      await fetchProducts();
     } catch {
       setError("Something went wrong. Please try again.");
     }
   }
 
+  // =========================================================
+  // EDIT PRODUCT
+  // =========================================================
+
   function handleEditClick(product) {
     setEditingId(product._id);
+
     setForm({
-      name: product.name,
-      price: product.price,
+      name: product.name || "",
+      price: product.price ?? "",
       description: product.description || "",
-      imageLink: product.imageLink,
-      category: product.category,
+      imageLink: product.imageLink || "",
+      category: product.category || "burger",
+    });
+
+    // Show existing image
+    setImagePreview(product.imageLink || "");
+
+    setError("");
+
+    // Scroll to top/form
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }
 
+  // =========================================================
+  // DELETE PRODUCT - OPEN CONFIRMATION
+  // =========================================================
+
   function handleDeleteClick(id) {
-  setDeleteTargetId(id);
-}
+    setDeleteTargetId(id);
+    setError("");
+  }
 
-async function confirmDelete() {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${deleteTargetId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  // =========================================================
+  // CONFIRM DELETE
+  // =========================================================
 
-    if (!response.ok) {
-      setError("Failed to delete product");
+  async function confirmDelete() {
+    if (!deleteTargetId) {
       return;
     }
 
-    setDeleteTargetId(null);
-    fetchProducts();
-  } catch {
-    setError("Something went wrong. Please try again.");
-  }
-}
+    try {
+      setError("");
 
-function cancelDelete() {
-  setDeleteTargetId(null);
-}
-      return (
-        
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products/${deleteTargetId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setError(data.message || "Failed to delete product");
+        return;
+      }
+
+      // Close confirmation
+      setDeleteTargetId(null);
+
+      // Reload products
+      await fetchProducts();
+    } catch {
+      setError("Something went wrong. Please try again.");
+    }
+  }
+
+  // =========================================================
+  // CANCEL DELETE
+  // =========================================================
+
+  function cancelDelete() {
+    setDeleteTargetId(null);
+  }
+
+  // =========================================================
+  // JSX
+  // =========================================================
+
+  return (
     <div className="page-wrapper">
-    <AppNavbar />
+      <AppNavbar />
 
       <div className="admin-container">
         <h1>Manage Products</h1>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {/* Error Message */}
+        {error && (
+          <p
+            style={{
+              color: "red",
+              marginBottom: "15px",
+              fontWeight: "500",
+            }}
+          >
+            {error}
+          </p>
+        )}
 
         {loading ? (
           <div className="page-loader">
@@ -132,10 +341,20 @@ function cancelDelete() {
           </div>
         ) : (
           <>
-            <form className="product-form" onSubmit={handleSubmit}>
-              <h2>{editingId ? "Edit Product" : "Add New Product"}</h2>
+            {/* =================================================
+                PRODUCT FORM
+            ================================================= */}
 
-              <label htmlFor="name">Product Name:</label>
+            <form className="product-form" onSubmit={handleSubmit}>
+              <h2>
+                {editingId ? "Edit Product" : "Add New Product"}
+              </h2>
+
+              {/* Product Name */}
+              <label htmlFor="name">
+                Product Name:
+              </label>
+
               <input
                 type="text"
                 id="name"
@@ -146,7 +365,11 @@ function cancelDelete() {
                 required
               />
 
-              <label htmlFor="price">Price:</label>
+              {/* Price */}
+              <label htmlFor="price">
+                Price:
+              </label>
+
               <input
                 type="number"
                 id="price"
@@ -158,18 +381,55 @@ function cancelDelete() {
                 required
               />
 
-              <label htmlFor="imageLink">Image URL:</label>
+              {/* Image URL */}
+              <label htmlFor="imageLink">
+                Image URL:
+              </label>
+
               <input
                 type="text"
                 id="imageLink"
                 name="imageLink"
                 placeholder="Insert Image URL"
-                value={form.imageLink}
+                value={
+                  form.imageLink.startsWith("data:image")
+                    ? ""
+                    : form.imageLink
+                }
                 onChange={handleFormChange}
-                required
               />
 
-              <label htmlFor="description">Description:(optional)</label>
+              {/* Browse Image */}
+              <label htmlFor="imageFile">
+                Or Browse Image:
+              </label>
+
+              <input
+                type="file"
+                id="imageFile"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="image-file-input"
+              />
+
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="image-preview-container">
+                  <p>Image Preview:</p>
+
+                  <img
+                    src={imagePreview}
+                    alt="Product Preview"
+                    className="image-preview"
+                  />
+                </div>
+              )}
+
+              {/* Description */}
+              <label htmlFor="description">
+                Description: (optional)
+              </label>
+
               <input
                 type="text"
                 id="description"
@@ -179,33 +439,96 @@ function cancelDelete() {
                 onChange={handleFormChange}
               />
 
-              <label htmlFor="category">Category:</label>
-              <select id="category" name="category" value={form.category} onChange={handleFormChange}>
+              {/* Category */}
+              <label htmlFor="category">
+                Category:
+              </label>
+
+              <select
+                id="category"
+                name="category"
+                value={form.category}
+                onChange={handleFormChange}
+              >
                 {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
                 ))}
               </select>
 
+              {/* Buttons */}
               <div className="product-form-actions">
-                <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
+                <button type="submit">
+                  {editingId
+                    ? "Update Product"
+                    : "Add Product"}
+                </button>
+
                 {editingId && (
-                  <button type="button" onClick={resetForm}>Cancel</button>
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                  >
+                    Cancel
+                  </button>
                 )}
               </div>
             </form>
 
+            {/* =================================================
+                PRODUCTS GRID
+            ================================================= */}
+
             <div className="admin-products-grid">
               {products.length === 0 ? (
-                <p className="empty-state">No products yet. Add your first product using the form above.</p>
+                <p className="empty-state">
+                  No products yet. Add your first product
+                  using the form above.
+                </p>
               ) : (
                 products.map((product) => (
-                  <div className="admin-product-card" key={product._id}>
-                    <img src={product.imageLink} alt={product.name} className="admin-product-image" />
+                  <div
+                    className="admin-product-card"
+                    key={product._id}
+                  >
+                    {/* Product Image */}
+                    <img
+                      src={product.imageLink}
+                      alt={product.name}
+                      className="admin-product-image"
+                    />
+
+                    {/* Product Name */}
                     <h3>{product.name}</h3>
-                    <p>Rs {product.price} · {product.category}</p>
+
+                    {/* Product Price + Category */}
+                    <p>
+                      Rs {product.price} ·{" "}
+                      {product.category}
+                    </p>
+
+                    {/* Actions */}
                     <div className="admin-product-actions">
-                      <button onClick={() => handleEditClick(product)}>Edit</button>
-<button onClick={() => handleDeleteClick(product._id)} className="delete-btn">Delete</button>                    </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleEditClick(product)
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDeleteClick(product._id)
+                        }
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))
               )}
@@ -213,17 +536,37 @@ function cancelDelete() {
           </>
         )}
       </div>
+
+      {/* =====================================================
+          DELETE CONFIRMATION MODAL
+      ===================================================== */}
+
       {deleteTargetId && (
-  <div className="confirm-overlay">
-    <div className="confirm-card">
-      <p>Are you sure you want to delete this product?</p>
-      <div className="confirm-actions">
-        <button onClick={cancelDelete}>Cancel</button>
-        <button onClick={confirmDelete} className="confirm-delete-btn">Delete</button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="confirm-overlay">
+          <div className="confirm-card">
+            <p>
+              Are you sure you want to delete this product?
+            </p>
+
+            <div className="confirm-actions">
+              <button
+                type="button"
+                onClick={cancelDelete}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={confirmDelete}
+                className="confirm-delete-btn"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
