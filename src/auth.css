@@ -156,7 +156,7 @@
 .custom-select-trigger {
   width: 100%;
   text-align: left;
-  padding: 10px 12px;
+  padding: 7px 9px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background: #fff;
@@ -239,27 +239,30 @@ margin-top:25px;
   --primary-dark: #6372fc;
 }
 .theme-admin {
-  --primary: #1c1c1e;
-  --primary-dark: #1d1c1e;
+  --primary: #2e2e30;
+  --primary-dark: #1f1f20;
+}
+.logout-cancel-btn {
+  background-color: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #f5f5f5;
 }
 
-.logout-actions button:first-child{
-    background-color: var(--primary, #d65335);
-    color:#121111;
-}
-.logout-actions button:first-child:hover{
-    background-color: var(--primary-dark, #6372fc);
-    color:white;
+.logout-cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
-.logout-actions button:last-child{
-    background-color: var(--primary, #d65335);
-    color:#121111;
+.logout-confirm-btn {
+  background-color: var(--primary, #d65335);
+  color: #fff;
+  border: none;
 }
-.logout-actions button:last-child:hover{
-    background-color: var(--primary-dark, #6372fc);
-    color:white;
+
+.logout-confirm-btn:hover {
+  background-color: var(--primary-dark, #6372fc);
 }
+
 .auth-logo {
   width: 60px;
   height: 60px;

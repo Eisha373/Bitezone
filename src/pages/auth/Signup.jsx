@@ -253,7 +253,7 @@ export function Signup() {
               id="address"
               name="address"
               autoComplete="street-address"
-              placeholder="House #, street, landmark"
+              placeholder="e.g.House #23, street abc,DHA phase 5"
               value={address}
               onChange={handleAddressChange}
               required
