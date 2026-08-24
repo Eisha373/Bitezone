@@ -14,7 +14,7 @@ import { CartProvider } from "./context/CartContext";
 import { ProductsManagement } from "./pages/admin/ProductsManagement";
 import { Welcome } from "./pages/Welcome";
 import { ForgotPassword } from "./pages/auth/ForgotPassword";
-import ResetPassword from "./ResetPassword";
+import {ResetPassword} from "./ResetPassword";
 import "./welcome.css";
 import "./auth.css";
 import "./home.css";
