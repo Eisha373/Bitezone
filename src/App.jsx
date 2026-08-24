@@ -13,6 +13,8 @@ import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
 import { ProductsManagement } from "./pages/admin/ProductsManagement";
 import { Welcome } from "./pages/Welcome";
+import { ForgotPassword } from "./pages/auth/ForgotPassword";
+import ResetPassword from "./ResetPassword";
 import "./welcome.css";
 import "./auth.css";
 import "./home.css";
@@ -44,6 +46,8 @@ function App() {
           <Route path="/order-tracking/:id" element={<OrderTracking />} />
           <Route path="/admin/orders" element={<OrdersList />} />
           <Route path="/admin/products" element={<ProductsManagement />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

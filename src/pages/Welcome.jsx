@@ -20,25 +20,23 @@ export function Welcome() {
   }, [navigate]);
 
   return (
-    <div className="welcome-container">
-      <div className="welcome-overlay">
-        <h1 className="welcome-heading">Welcome to Bitezone</h1>
-        <p className="welcome-subtext">
-          Real food, real fast — order in seconds, savor every bite.
-        </p>
-        <div className="welcome-actions">
-          <Link to="/login">
-            <button className="welcome-btn primary">
-              <FiLogIn /> Login
-            </button>
-          </Link>
-          <Link to="/signup">
-            <button className="welcome-btn secondary">
-              <FiUserPlus /> Sign Up
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+    <div className="welcome-actions">
+  <div className="welcome-action-group">
+    <Link to="/login">
+      <button className="welcome-btn primary">
+        <FiLogIn /> Login
+      </button>
+    </Link>
+    <span className="welcome-action-hint">Already have an account?</span>
+  </div>
+  <div className="welcome-action-group">
+    <Link to="/signup">
+      <button className="welcome-btn secondary">
+        <FiUserPlus /> Sign Up
+      </button>
+    </Link>
+    <span className="welcome-action-hint">New here? Sign up to continue</span>
+  </div>
+</div>
   );
 }
