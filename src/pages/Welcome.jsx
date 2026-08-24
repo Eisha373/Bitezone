@@ -20,23 +20,30 @@ export function Welcome() {
   }, [navigate]);
 
   return (
-    <div className="welcome-actions">
-  <div className="welcome-action-group">
-    <Link to="/login">
-      <button className="welcome-btn primary">
-        <FiLogIn /> Login
-      </button>
-    </Link>
-    <span className="welcome-action-hint">Already have an account?</span>
+  <div className="welcome-container">
+    <div className="welcome-overlay">
+      <h1 className="welcome-heading">Your Heading Here</h1>
+      <p className="welcome-subtext">Your subtext here</p>
+
+      <div className="welcome-actions">
+        <div className="welcome-action-group">
+          <Link to="/login">
+            <button className="welcome-btn primary">
+              <FiLogIn /> Login
+            </button>
+          </Link>
+          <span className="welcome-action-hint">Already have an account?</span>
+        </div>
+        <div className="welcome-action-group">
+          <Link to="/signup">
+            <button className="welcome-btn secondary">
+              <FiUserPlus /> Sign Up
+            </button>
+          </Link>
+          <span className="welcome-action-hint">New here? Sign up to continue</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div className="welcome-action-group">
-    <Link to="/signup">
-      <button className="welcome-btn secondary">
-        <FiUserPlus /> Sign Up
-      </button>
-    </Link>
-    <span className="welcome-action-hint">New here? Sign up to continue</span>
-  </div>
-</div>
-  );
+);
 }

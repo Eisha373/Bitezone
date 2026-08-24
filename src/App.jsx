@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Welcome } from "./pages/Welcome";
 import { Login } from "./pages/auth/Login";
 import { Signup } from "./pages/auth/Signup";
 import { Logout } from "./pages/auth/Logout";
@@ -12,7 +13,6 @@ import { OrdersList } from "./pages/admin/OrdersList";
 import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
 import { ProductsManagement } from "./pages/admin/ProductsManagement";
-import { Welcome } from "./pages/Welcome";
 import { ForgotPassword } from "./pages/auth/ForgotPassword";
 import {ResetPassword} from "./pages/auth/ResetPassword";
 import "./welcome.css";
