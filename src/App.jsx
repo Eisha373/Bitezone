@@ -12,6 +12,8 @@ import { OrdersList } from "./pages/admin/OrdersList";
 import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
 import { ProductsManagement } from "./pages/admin/ProductsManagement";
+import { Welcome } from "./pages/Welcome";
+import "./welcome.css";
 import "./auth.css";
 import "./home.css";
 import "./navbar-footer.css";
@@ -28,7 +30,8 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Welcome />} />
+          <Route path="/Welcome" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/logout" element={<Logout />} />

@@ -1,0 +1,95 @@
+.welcome-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/images/background-image.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.welcome-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.welcome-overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  padding: 20px;
+  max-width: 600px;
+}
+
+.welcome-heading {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.welcome-subtext {
+  font-size: 1.15rem;
+  color: #e5e5e5;
+  margin-bottom: 32px;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.welcome-btn {
+  padding: 12px 32px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+.welcome-btn.primary {
+  background-color: #f97316;
+  color: white;
+}
+
+.welcome-btn.primary:hover {
+  background-color: #ea6408;
+  transform: translateY(-2px);
+}
+
+.welcome-btn.secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.welcome-btn.secondary:hover {
+  background-color: white;
+  color: #1c1c1e;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .welcome-heading {
+    font-size: 2rem;
+  }
+  .welcome-subtext {
+    font-size: 1rem;
+  }
+  .welcome-btn {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+  }
+}

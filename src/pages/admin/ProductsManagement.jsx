@@ -230,10 +230,6 @@ function handleImageChange(e) {
     setError("");
   }
 
-  // =========================================================
-  // CONFIRM DELETE
-  // =========================================================
-
   async function confirmDelete() {
     if (!deleteTargetId) {
       return;
@@ -241,8 +237,7 @@ function handleImageChange(e) {
 
     try {
       setError("");
-
-      const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/products/${deleteTargetId}`,
@@ -270,10 +265,6 @@ function handleImageChange(e) {
       setError("Something went wrong. Please try again.");
     }
   }
-
-  // =========================================================
-  // CANCEL DELETE
-  // =========================================================
 
   function cancelDelete() {
     setDeleteTargetId(null);
@@ -399,7 +390,6 @@ function handleImageChange(e) {
   )}
 
 </div>
-
 
 {/* URL input appears only when URL option is selected */}
 {imagePickerMode === "url" && (
