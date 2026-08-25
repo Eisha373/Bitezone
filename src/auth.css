@@ -127,7 +127,7 @@
 .role-based-selector p{
   margin: 0;
   font-size: 0.9rem;
-  color: #444;
+  color: #070707;
   font-weight: 500;
 }
 
@@ -269,7 +269,7 @@
   flex: 1;
   height: 60px;
   padding: 0 20px;
-  border-radius: 32px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
@@ -279,13 +279,13 @@
 }
 
 /* Cancel button */
-.logout-cancel-btn {
+.theme-customer .logout-cancel-btn {
   background-color: #d65335;
   border: 1.5px solid #d65335 !important;
   color: #fff;
 }
 
-.logout-cancel-btn:hover {
+.theme-customer .logout-cancel-btn:hover {
   background-color: #fe9072;
   border-color: #fe9072!important;
   color: #fff;
@@ -305,16 +305,26 @@
 
 /* Admin confirm */
 .theme-admin .logout-confirm-btn {
-  background-color: #2e2e30;
+  background-color: #14b8a6;
   color: #ffffff;
-  border: 1.5px solid #2e2e30;
+  border: 1.5px solid #14b8a6;
 }
 
 .theme-admin .logout-confirm-btn:hover {
-  background-color: #1f1f20;
-  border-color: #1f1f20;
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
+/*Admin cancel btn*/
+.theme-admin .logout-cancel-btn {
+  background-color: #14b8a6;
+  color: #ffffff;
+  border: 1.5px solid #14b8a6;
 }
 
+.theme-admin .logout-cancel-btn:hover {
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
 /* Remove old margins */
 .logout-actions button {
   margin-left: 0;
@@ -331,13 +341,6 @@
   outline-offset: 3px;
 }
 
-
-.auth-logo {
-  width: 60px;
-  height: 60px;
-  display: block;
-  margin: 0 auto 15px;
-}
 
 .password-field {
   position: relative;

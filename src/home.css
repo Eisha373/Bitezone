@@ -206,13 +206,12 @@
 
 /* Admin */
 .add-to-cart-btn-admin {
-  background-color: #1c1c1e;
-
+  background-color: #241b2f;
   color: white;
 }
 
 .add-to-cart-btn-admin:hover {
-  background-color: #333;
+  background-color: #8b5cf6;
 }
 
 

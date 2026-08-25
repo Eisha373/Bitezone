@@ -69,7 +69,7 @@
 .admin-checkout[type="submit"]{
 margin-top: 20px;
   padding: 10px;
-  background-color: #1f2937;
+  background-color: #241b2f;
   color: white;
   border: none;
   border-radius: 25px;
@@ -83,7 +83,7 @@ margin-top: 20px;
 }
 
 .admin-checkout[type="submit"]:hover {
-  background-color: #2d3546;
+  background-color: #8b5cf6;
 }
 
 .order-summary-card,

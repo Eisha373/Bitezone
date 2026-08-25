@@ -23,7 +23,6 @@ import "./cart.css";
 import "./checkout.css";
 import "./order.css";
 import "./admin-navbar.css";
-import "./admin-dashboard.css";
 import "./admin.css";
 import "./App.css";
 
