@@ -27,17 +27,17 @@ export function Welcome() {
         </p>
         <div className="welcome-actions">
           <div>
+     <p className="welcome-helper-text">Already have an account?</p>
             <Link to="/login">
               <button className="welcome-btn primary">Login</button>
             </Link>
-            <p className="welcome-helper-text">Already have an account?</p>
           </div>
 
           <div>
+                 <p className="welcome-helper-text">New here? Sign up to continue</p>
             <Link to="/signup">
               <button className="welcome-btn secondary">Sign Up</button>
             </Link>
-            <p className="welcome-helper-text">New here? Sign up to continue</p>
           </div>
         </div>
       </div>
