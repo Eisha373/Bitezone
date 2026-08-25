@@ -1,8 +1,4 @@
 
-/* =========================
-   HOME PAGE
-========================= */
-
 .home-container {
   width: 100%;
   max-width: 1400px;
@@ -177,10 +173,8 @@
 
 .add-to-cart-btn-admin {
   width: 100%;
-
-  border: none;
-
-  padding: 9px 14px;
+border: none;
+padding: 9px 14px;
 background-color: #241b2f;
   color: white;
   border-radius: 20px;
@@ -195,8 +189,14 @@ background-color: #241b2f;
 
 /* Normal user */
 .add-to-cart-btn {
+  width: 100%;
+ border: none;
+border-radius: 20px;
+cursor: pointer;
+font-weight: 600;
+  transition: background-color 0.2s ease;
+  padding: 9px 14px;
   background-color: #ff6b35;
-
   color: white;
 }
 

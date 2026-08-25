@@ -252,10 +252,10 @@
 /* Buttons container */
 .logout-actions {
   display: flex;
-  gap: 30px;
-  margin-top: 38px;
-  width: 100%;
+  gap: 16px;
+  margin-top: 24px;
 }
+
 .logout-card {
   max-width: 580px;
   padding: 55px 65px 50px;
@@ -272,7 +272,7 @@
 
 .logout-actions button {
   flex: 1;
-  height: 60px;
+  height: 46px;
   padding: 0 20px;
   border-radius: 25px;
   font-size: 1rem;
@@ -330,11 +330,7 @@
   background-color: #8b5cf6;
   border-color: #8b5cf6;
 }
-/* Remove old margins */
-.logout-actions button {
-  margin-left: 0;
-  margin-right: 0;
-}
+
 
 /* Focus */
 .logout-actions button:focus {

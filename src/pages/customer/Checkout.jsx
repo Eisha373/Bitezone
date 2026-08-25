@@ -59,7 +59,7 @@ export function Checkout() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ items, deliveryArea: area, deliveryAddress: address }),
+body: JSON.stringify({ items, area, deliveryAddress: address }),
       });
 
       const data = await response.json();
