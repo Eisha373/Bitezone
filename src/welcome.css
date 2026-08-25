@@ -96,7 +96,7 @@
 }
 
 .welcome-btn.primary:hover {
-  background-color: #fa9d64;
+  background-color: #8a83ef;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(57, 73, 248, 0.45);
 }
@@ -108,13 +108,14 @@
 }
 
 .welcome-btn.secondary:hover {
-  background-color: #fa9d64;
+  background-color: #8a83ef;
   color:white;
   transform: translateY(-2px);
 }
 
 .welcome-helper-text {
-  font-size: 0.84rem;
-  color: #0a0a0a;
+  font-size: 0.95rem;
+  font-weight:250;
+  color: white;
   margin-top: 4px;
 }
