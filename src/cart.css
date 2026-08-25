@@ -57,6 +57,20 @@ margin-bottom: 5px;
 .remove-btn:hover {
   background-color: #fecaca;
 }
+.admin-remove-btn {
+  background-color: #241b2f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+.remove-btn:hover {
+  background-color:#8b5cf6;
+}
 
 .checkout-btn:hover {
   background-color: #ea580c;

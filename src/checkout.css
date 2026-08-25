@@ -85,7 +85,55 @@ margin-top: 20px;
 .admin-checkout[type="submit"]:hover {
   background-color: #8b5cf6;
 }
-
+.custom-select {
+  position: relative;
+}
+.custom-select-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 7px 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: inherit;
+  color: #333;
+}
+.custom-select-trigger .placeholder {
+  font-size:0.85rem;
+  color: #999;
+}
+.custom-select-arrow {
+  margin-left: 8px;
+  color: #666;
+}
+.custom-select-options {
+  position: static;
+  margin-top: 4px;
+  height: 38px;      /* shows ~1 item at a time */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  list-style: none;
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.custom-select-options li {
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.custom-select-options li:hover,
+.custom-select-options li.selected {
+  background: #f3f0ff;
+}
 .order-summary-card,
 .order-summary-admin {
   background: #d6d3d3;

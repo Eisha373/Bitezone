@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { FiLogIn, FiUserPlus } from "react-icons/fi";
 import "../welcome.css";
 
 export function Welcome() {
@@ -20,30 +19,28 @@ export function Welcome() {
   }, [navigate]);
 
   return (
-  <div className="welcome-container">
-    <div className="welcome-overlay">
-      <h1 className="welcome-heading">Welcome to Bitezone</h1>
-      <p className="welcome-subtext">Crave Fast, Deliver Fast at your Doorstep.</p>
+    <div className="welcome-container">
+      <div className="welcome-overlay">
+        <h1 className="welcome-heading">Welcome to Bitezone</h1>
+        <p className="welcome-subtext">
+          Cravings, delivered fast — your favorite food is just a few clicks away.
+        </p>
+        <div className="welcome-actions">
+          <div>
+     <p className="welcome-helper-text">Already have an account?</p>
+            <Link to="/login">
+              <button className="welcome-btn primary">Login</button>
+            </Link>
+          </div>
 
-      <div className="welcome-actions">
-        <div className="welcome-action-group">
-          <Link to="/login">
-            <button className="welcome-btn primary">
-              <FiLogIn /> Login
-            </button>
-          </Link>
-          <span className="welcome-action-hint">Already have an account?</span>
-        </div>
-        <div className="welcome-action-group">
-          <Link to="/signup">
-            <button className="welcome-btn secondary">
-              <FiUserPlus/> Sign Up
-            </button>
-          </Link>
-          <span className="welcome-action-hint">New here? Sign up to continue</span>
+          <div>
+                 <p className="welcome-helper-text">New here? Sign up to continue</p>
+            <Link to="/signup">
+              <button className="welcome-btn secondary">Sign Up</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }

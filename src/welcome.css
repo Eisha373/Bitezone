@@ -1,7 +1,8 @@
 .welcome-container {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: center;   
   align-items: center;
   background-image: url("/images/background-image.jpg");
   background-size: cover;
@@ -16,7 +17,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.55) 50%,
+    rgba(0,0,0,0.75) 100%
+  );
 }
 
 .welcome-overlay {
@@ -25,74 +31,91 @@
   text-align: center;
   color: white;
   padding: 20px;
-  max-width: 600px;
+  max-width: 480px;
+  width: 100%;
+}
+
+.welcome-badge {
+  display: inline-block;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid #f97316;
+  color: #f97316;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  letter-spacing: 0.3px;
 }
 
 .welcome-heading {
-  font-size: 3rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  line-height: 1.15;
+}
+.welcome-actions a {
+  text-decoration: none;
 }
 
 .welcome-subtext {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: #e5e5e5;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
+  line-height: 1.5;
 }
 
 .welcome-actions {
   display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 240px;   
+  margin: 0 auto;
 }
 
 .welcome-btn {
-  padding: 12px 32px;
+  padding: 12px 24px;   
+  font-size: 0.95rem;   
   border-radius: 25px;
-  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
+
 .welcome-btn.primary {
   background-color: #f97316;
   color: white;
+  box-shadow: 0 4px 14px rgba(246, 118, 38, 0.35);
 }
 
 .welcome-btn.primary:hover {
-  background-color: #ea6408;
+  background-color: #8a83ef;
   transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(57, 73, 248, 0.45);
 }
 
 .welcome-btn.secondary {
-  background-color: transparent;
+  background-color:#f97316;
   color: white;
-  border: 2px solid white;
+  border: #f97316;
 }
 
 .welcome-btn.secondary:hover {
-  background-color: white;
-  color: #1c1c1e;
+  background-color: #8a83ef;
+  color:white;
   transform: translateY(-2px);
 }
-.welcome-container::before {
-  background: radial-gradient(circle at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.4) 100%);
-}
 
-@media (max-width: 480px) {
-  .welcome-heading {
-    font-size: 2rem;
-  }
-  .welcome-subtext {
-    font-size: 1rem;
-  }
-  .welcome-btn {
-    padding: 10px 24px;
-    font-size: 0.9rem;
-  }
+.welcome-helper-text {
+  font-size: 0.95rem;
+  font-weight:250;
+  color: white;
+  margin-top: 4px;
 }
