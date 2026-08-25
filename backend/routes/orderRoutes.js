@@ -4,7 +4,7 @@ import Product from "../models/Product.js";
 import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 import { DELIVERY_ZONES } from "../data/deliveryZones.js";
 import { calculateEtaForNewOrder, recalcActiveOrdersEta } from "../utils/orderEta.js"; // added
-import { getIO } from "../utils/socket.js"; // added
+import { getIO } from "../utils/sockets.js"; // added
 
 const router = express.Router();
 

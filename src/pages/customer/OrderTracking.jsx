@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
-import socket from "../../utils/socket";       // added
+import socket from "../../utils/sockets";     
 import "../../order.css";
 
 export function OrderTracking() {
