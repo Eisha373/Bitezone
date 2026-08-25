@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema(
         price: { type: Number, required: true },
       },
     ],
-    area: { type: String, required: true }, 
+    area: { type: String, required: true },
     deliveryCharge: { type: Number, required: true, default: 0 },
     totalAmount: { type: Number, required: true, min: 0 },
     status: {
@@ -27,6 +27,13 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
     deliveryAddress: { type: String, required: true },
+    estimatedDeliveryTime: { type: Date },              // added
+    statusHistory: [                                    // added — real-time timeline
+      {
+        status: { type: String, required: true },
+        changedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

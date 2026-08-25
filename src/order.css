@@ -77,7 +77,23 @@
   background-color: #d4edda;
   color: #155724;
 }
-
+.status-timeline {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+.timeline-entry {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+}
+.timeline-status {
+  font-weight: 600;
+}
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */
