@@ -70,8 +70,7 @@ export function ResetPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/auth/reset-password/${token}`,
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/reset-password/${token}`, 
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,8 +97,9 @@ export function ResetPassword() {
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
+  <div className="auth-container">
+    <div className="auth-card">
+      <form onSubmit={handleSubmit}>
         <h2>Reset Password</h2>
 
         <label htmlFor="password">New Password:</label>
@@ -165,6 +165,6 @@ export function ResetPassword() {
         </button>
       </form>
     </div>
-  );
+  </div>
+);
 }
-
