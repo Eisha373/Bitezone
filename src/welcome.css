@@ -90,31 +90,31 @@
 }
 
 .welcome-btn.primary {
-  background-color: #241b2f;
+  background-color: #f97316;
   color: white;
-  box-shadow: 0 4px 14px rgba(95, 33, 240, 0.35);
+  box-shadow: 0 4px 14px rgba(246, 118, 38, 0.35);
 }
 
 .welcome-btn.primary:hover {
-  background-color: #8b5cf6;
+  background-color: #fa9d64;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(57, 73, 248, 0.45);
 }
 
 .welcome-btn.secondary {
-  background-color:#241b2f;
+  background-color:#f97316;
   color: white;
-  border: #241b2f;
+  border: #f97316;
 }
 
 .welcome-btn.secondary:hover {
-  background-color: white;
-  color:#8b5cf6;
+  background-color: #fa9d64;
+  color:white;
   transform: translateY(-2px);
 }
 
 .welcome-helper-text {
-  font-size: 0.82rem;
-  color: #b8bcc4;
+  font-size: 0.84rem;
+  color: #0a0a0a;
   margin-top: 4px;
 }
