@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
@@ -23,6 +23,19 @@ export function Checkout() {
   const [areaError, setAreaError] = useState("");
   const [addressError, setAddressError] = useState("");
   const [error, setError] = useState("");
+
+  const [areaOpen, setAreaOpen] = useState(false);
+  const areaRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (areaRef.current && !areaRef.current.contains(e.target)) {
+        setAreaOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.role === "admin";
@@ -59,7 +72,8 @@ export function Checkout() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-body: JSON.stringify({ items, area, deliveryAddress: address }),
+        body: JSON.stringify({ items, area, deliveryAddress: address }),
+        
       });
 
       const data = await response.json();
@@ -84,29 +98,72 @@ body: JSON.stringify({ items, area, deliveryAddress: address }),
         <div className="checkout-card">
           <h2>Delivery Details</h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
-          <form onSubmit={handlePlaceOrder} noValidate>
+          <form onSubmit={handlePlaceOrder} noValidate autoComplete="on">
             <label htmlFor="full-name">Full Name:</label>
-
-            <input type="text" id="full-name" value={fullName} onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter your name" required />
+            <input
+              type="text"
+              id="full-name"
+              name="fullName"
+              autoComplete="name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your name"
+              required
+            />
             <label htmlFor="email">Email:</label>
-
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email" required />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
             <label htmlFor="phone">Phone No.:</label>
-
-            <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}
-              placeholder="Enter your phone" required />
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autoComplete="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter your phone"
+              required
+            />
 
             <label htmlFor="area">Delivery Area:</label>
             <div className="field-wrapper">
-              
-              <select id="area" value={area} onChange={(e) => setArea(e.target.value)} required>
-                <option value="">Select your area</option>
-                {Object.keys(DELIVERY_ZONES).map((zone) => (
-                  <option key={zone} value={zone}>{zone}</option>
-                ))}
-              </select>
+              <div className="custom-select" ref={areaRef}>
+                <button
+                  type="button"
+                  id="area"
+                  className="custom-select-trigger"
+                  onClick={() => setAreaOpen((o) => !o)}
+                >
+                  <span className={area ? "" : "placeholder"}>
+                    {area || "Select your area"}
+                  </span>
+                  <span className="custom-select-arrow">▾</span>
+                </button>
+                {areaOpen && (
+                  <ul className="custom-select-options">
+                    {Object.keys(DELIVERY_ZONES).map((zone) => (
+                      <li
+                        key={zone}
+                        className={zone === area ? "selected" : ""}
+                        onClick={() => {
+                          setArea(zone);
+                          setAreaOpen(false);
+                        }}
+                      >
+                        {zone}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               {areaError && (
                 <div className="field-popup">
                   <span className="field-popup-icon">!</span>
@@ -120,6 +177,8 @@ body: JSON.stringify({ items, area, deliveryAddress: address }),
               <input
                 type="text"
                 id="address"
+                name="address"
+                autoComplete="street-address"
                 placeholder="Enter your address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
@@ -133,7 +192,9 @@ body: JSON.stringify({ items, area, deliveryAddress: address }),
               )}
             </div>
 
-            <button type="submit" className={isAdmin ? "admin-checkout" : "customer-checkout"}>Place Order</button>
+            <button type="submit" className={isAdmin ? "admin-checkout" : "customer-checkout"}>
+              Place Order
+            </button>
           </form>
         </div>
 
@@ -147,18 +208,18 @@ body: JSON.stringify({ items, area, deliveryAddress: address }),
           ))}
           <hr />
           <div className="summary-total">
-             <span>Subtotal</span> 
-             <span>Rs {totalPrice}</span> 
-             </div> 
-             <div className="summary-total">
-               <span>Delivery {area && `(${area})`}</span> 
-               <span>Rs {deliveryCharge}</span> 
-               </div>
-            <hr />
-                 <div className="summary-total total-row"> 
-                  <span>Total</span>
-                   <span>Rs {finalTotal}</span> 
-                   </div>
+            <span>Subtotal</span>
+            <span>Rs {totalPrice}</span>
+          </div>
+          <div className="summary-total">
+            <span>Delivery {area && `(${area})`}</span>
+            <span>Rs {deliveryCharge}</span>
+          </div>
+          <hr />
+          <div className="summary-total">
+            <span>Total</span>
+            <span>Rs {finalTotal}</span>
+          </div>
         </div>
       </div>
 
