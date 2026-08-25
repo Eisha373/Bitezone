@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;   
   align-items: center;
-  background-image: url("/images/food-background.jpg");
+  background-image: url("/images/background-image.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
@@ -54,6 +54,9 @@
   margin-bottom: 14px;
   line-height: 1.15;
 }
+.welcome-actions a {
+  text-decoration: none;
+}
 
 .welcome-subtext {
   font-size: 1.05rem;
@@ -67,14 +70,14 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  max-width: 300px;
+  max-width: 240px;   
   margin: 0 auto;
 }
 
 .welcome-btn {
-  padding: 14px 32px;
+  padding: 12px 24px;   
+  font-size: 0.95rem;   
   border-radius: 25px;
-  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
@@ -87,26 +90,26 @@
 }
 
 .welcome-btn.primary {
-  background-color: #f97316;
+  background-color: #241b2f;
   color: white;
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 4px 14px rgba(95, 33, 240, 0.35);
 }
 
 .welcome-btn.primary:hover {
-  background-color: #ea6408;
+  background-color: #8b5cf6;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.45);
+  box-shadow: 0 6px 18px rgba(57, 73, 248, 0.45);
 }
 
 .welcome-btn.secondary {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color:#241b2f;
   color: white;
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border: #241b2f;
 }
 
 .welcome-btn.secondary:hover {
   background-color: white;
-  color: #1c1c1e;
+  color:#8b5cf6;
   transform: translateY(-2px);
 }
 

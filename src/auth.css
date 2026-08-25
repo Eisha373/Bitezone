@@ -159,7 +159,7 @@
   width: 100%;
   text-align: left;
   padding: 7px 9px;
-  border: 1px solid #070707;
+  border: 1px solid #ccc;
   border-radius: 4px;
   background: #fff;
   cursor: pointer;
@@ -170,6 +170,7 @@
   color: #333;
 }
 .custom-select-trigger .placeholder {
+  font-size:0.85rem;
   color: #999;
 }
 .custom-select-arrow {
