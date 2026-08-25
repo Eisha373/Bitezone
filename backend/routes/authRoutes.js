@@ -1,6 +1,7 @@
 import express from "express"; 
 import bcrypt from "bcryptjs"; 
 import jwt from "jsonwebtoken"; 
+import crypto from "crypto";
 import User from "../models/User.js";
 
 const router = express.Router(); 
@@ -87,6 +88,54 @@ router.post("/login", async (req, res)=>{
      
     catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+});
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "No account found with this email" });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
+    await user.save( {validateBeforeSave: false});
+
+    res.status(200).json({
+      message: "Reset token generated",
+      resetToken,
+    });
+  } catch (e){
+    res.status(500).json({ message: e.message });
+  }
+});
+router.post("/reset-password/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired reset link" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save({ validateBeforeSave: false});
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch(e) {
+    res.status(500).json({ message: e.message });
   }
 });
 export default router;

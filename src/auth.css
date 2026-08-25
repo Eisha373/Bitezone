@@ -88,24 +88,25 @@
 
 .auth-card input:focus,
 .auth-card select:focus{
-    border-color:blue;
+    border-color:rgb(15, 15, 16);
 }
 
 .auth-card button[type="submit"]{
-    margin-top:10px;
+    margin-top:20px;
     padding:10px 12px;
     border-radius:25px;
     border:none;
     outline:none;              
     background-color:#d65335;
     color:white;
-    font-size:0.95rem;
+    font-size:1rem;
+    font-weight: 600;
     cursor:pointer;
     transition:background-color 0.1s ease;
 }
 
 .auth-card button[type="submit"]:focus-visible{
-    outline: 2px solid #6372fc;
+    outline: 1px solid #fe986c;
     outline-offset: 2px;
 }
 
@@ -126,7 +127,7 @@
 .role-based-selector p{
   margin: 0;
   font-size: 0.9rem;
-  color: #444;
+  color: #070707;
   font-weight: 500;
 }
 
@@ -156,8 +157,8 @@
 .custom-select-trigger {
   width: 100%;
   text-align: left;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
+  padding: 7px 9px;
+  border: 1px solid #070707;
   border-radius: 4px;
   background: #fff;
   cursor: pointer;
@@ -215,57 +216,131 @@
 .auth-card p a:hover {
   text-decoration: underline;
 }
-
-.logout-actions{
-display:flex;
-gap:12px;
-margin-top:25px;
-}
-.logout-actions button{
-    flex:1;
-    margin-left:4px;
-    margin-right:4px;
-    padding:12px;
-    border-radius:25px;
-    border:0.5px solid #ccc;
-    font-size:0.85rem;
-    outline:none;
-    transition:border-color 0.2s ease;
-    font-weight:600;
-}
-/* Role-based theme variables */
-.theme-customer {
-  --primary: #d65335;
-  --primary-dark: #6372fc;
-}
-.theme-admin {
-  --primary: #1c1c1e;
-  --primary-dark: #1d1c1e;
+.forgot-password-link {
+  text-align: right;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
 }
 
-.logout-actions button:first-child{
-    background-color: var(--primary, #d65335);
-    color:#121111;
-}
-.logout-actions button:first-child:hover{
-    background-color: var(--primary-dark, #6372fc);
-    color:white;
+.forgot-password-link a {
+  color: #6372fc;
+  text-decoration: none;
 }
 
-.logout-actions button:last-child{
-    background-color: var(--primary, #d65335);
-    color:#121111;
+.forgot-password-link a:hover {
+  text-decoration: underline;
 }
-.logout-actions button:last-child:hover{
-    background-color: var(--primary-dark, #6372fc);
-    color:white;
+
+.status-message {
+  font-size: 0.9rem;
+  margin: 8px 0;
 }
-.auth-logo {
-  width: 60px;
+
+.status-message.success {
+  color: #2e7d32;
+}
+
+.status-message.error {
+  color: #d32f2f;
+}
+/* Buttons container */
+.logout-actions {
+  display: flex;
+  gap: 30px;
+  margin-top: 38px;
+  width: 100%;
+}
+.logout-card {
+  max-width: 580px;
+  padding: 55px 65px 50px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.logout-card p {
+  margin: 0;
+  color: #0b0b0b;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.logout-actions button {
+  flex: 1;
   height: 60px;
-  display: block;
-  margin: 0 auto 15px;
+  padding: 0 20px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
+
+/* Cancel button */
+.theme-customer .logout-cancel-btn {
+  background-color: #d65335;
+  border: 1.5px solid #d65335 !important;
+  color: #fff;
+}
+
+.theme-customer .logout-cancel-btn:hover {
+  background-color: #fe9072;
+  border-color: #fe9072!important;
+  color: #fff;
+}
+
+/* Customer confirm */
+.theme-customer .logout-confirm-btn {
+  background-color: #d65335;
+  color: #ffffff;
+  border: 1.5px solid #d65335;
+}
+
+.theme-customer .logout-confirm-btn:hover {
+  background-color:#fe9072;
+  border-color: #fe9072;
+}
+
+/* Admin confirm */
+.theme-admin .logout-confirm-btn {
+  background-color: #14b8a6;
+  color: #ffffff;
+  border: 1.5px solid #14b8a6;
+}
+
+.theme-admin .logout-confirm-btn:hover {
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
+/*Admin cancel btn*/
+.theme-admin .logout-cancel-btn {
+  background-color: #14b8a6;
+  color: #ffffff;
+  border: 1.5px solid #14b8a6;
+}
+
+.theme-admin .logout-cancel-btn:hover {
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
+/* Remove old margins */
+.logout-actions button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Focus */
+.logout-actions button:focus {
+  outline: none;
+}
+
+.logout-actions button:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.25);
+  outline-offset: 3px;
+}
+
 
 .password-field {
   position: relative;
@@ -430,14 +505,6 @@ margin-top:25px;
     gap: 10px;
   }
 
-  .logout-actions {
-    flex-direction: column;
-  }
-
-  .logout-actions button {
-    margin-left: 0;
-    margin-right: 0;
-  }
 
   /* Popups: cap width to viewport so they never overflow the screen,
      and keep the arrow aligned to the same offset used elsewhere */
@@ -486,5 +553,33 @@ margin-top:25px;
   .auth-card {
     max-width: 440px;
     padding: 44px 40px;
+  }
+}
+@media (max-width: 600px) {
+
+  .logout-card {
+    max-width: 90%;
+    padding: 40px 25px;
+  }
+
+  .logout-actions {
+    gap: 15px;
+  }
+
+  .logout-actions button {
+    height: 52px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .logout-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .logout-actions button {
+    width: 100%;
   }
 }
