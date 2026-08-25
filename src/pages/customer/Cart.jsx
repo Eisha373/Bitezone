@@ -46,7 +46,7 @@ export function Cart() {
                     <span className="qty-count">{item.quantity}</span>
                     <button className="qty-btn" onClick={() => handleIncrement(item._id, item.quantity)}>+</button>
                   </div>
-                <button className="remove-btn" onClick={() => removeFromCart(item._id)} aria-label="Remove item">
+                <button className={isAdmin ?"admin-remove-btn":"remove-btn"} onClick={() => removeFromCart(item._id)} aria-label="Remove item">
       Remove
     </button>
                 </div>

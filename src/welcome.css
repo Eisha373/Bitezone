@@ -1,12 +1,15 @@
 .welcome-container {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;   
+  background-color:#000;
   align-items: center;
-  background-image: url("/images/background-image.jpg");
+  background-image: url("/images/food-background.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
+  padding-bottom: 60px;
 }
 
 .welcome-container::before {
@@ -16,49 +19,49 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.25) 100%);
 }
-
 .welcome-overlay {
   position: relative;
   z-index: 1;
   text-align: center;
   color: white;
   padding: 20px;
-  max-width: 600px;
+  max-width: 500px;
+  width: 100%;
 }
 
 .welcome-heading {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .welcome-subtext {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: #e5e5e5;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .welcome-actions {
   display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;   
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .welcome-btn {
-  padding: 12px 32px;
+  padding: 14px 32px;
   border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
   transition: background-color 0.2s ease, transform 0.15s ease;
 }
+
 .welcome-btn.primary {
   background-color: #f97316;
   color: white;
@@ -80,19 +83,9 @@
   color: #1c1c1e;
   transform: translateY(-2px);
 }
-.welcome-container::before {
-  background: radial-gradient(circle at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.4) 100%);
-}
 
-@media (max-width: 480px) {
-  .welcome-heading {
-    font-size: 2rem;
-  }
-  .welcome-subtext {
-    font-size: 1rem;
-  }
-  .welcome-btn {
-    padding: 10px 24px;
-    font-size: 0.9rem;
-  }
+.welcome-helper-text {
+  font-size: 0.85rem;
+  color: #d1d5db;
+  margin-top: 6px;
 }
