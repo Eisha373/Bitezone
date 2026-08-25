@@ -1,29 +1,30 @@
 import express from "express";
 import mongoose from "mongoose";
- import dotenv from "dotenv";
-  import cors from "cors";
-  import authRoutes from "./routes/authRoutes.js";
-  import productRoutes from "./routes/productRoutes.js";
+import dotenv from "dotenv";
+import cors from "cors";
+import http from "http";                    // added
+import { initSocket } from "./utils/socket.js"; // added
+import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-  
-  dotenv.config(); 
 
-  mongoose.connect(process.env.MONGO_URI) 
-  .then(() => console.log("MongoDB connected")) 
+dotenv.config();
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
-  const app = express();
-   app.use(cors()); 
-   app.use(express.json()); 
-   app.use("/api/auth", authRoutes);
-   app.use("/api/products", productRoutes);
-   app.use("/api/orders", orderRoutes);
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
+app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
 
-   app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
-    const PORT = process.env.PORT || 5000; 
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const server = http.createServer(app);       // added — wrap express in http server
+initSocket(server);                          // added — attach socket.io to it
 
-    
-
-    
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`)); // changed: app.listen → server.listen
