@@ -17,7 +17,7 @@
 .order-card {
   background: white;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 10px 28px rgba(0, 0, 0, 0.08);
   padding: 18px 20px;
 }
 
@@ -71,6 +71,10 @@
 .status-preparing {
   background-color: #cce5ff;
   color: #004085;
+}
+.status-out-for-delivery {
+  background-color: #ffe0b2;
+  color: #e65100;
 }
 
 .status-delivered {

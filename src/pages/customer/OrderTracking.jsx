@@ -8,6 +8,7 @@ import "../../order.css";
 const STEPS = [
   { key: "Pending", label: "Confirming your order", icon: "📝" },
   { key: "Preparing", label: "Food is being prepared", icon: "👨‍🍳" },
+    { key: "Out for delivery", label: "Courier is on the way", icon: "🛵" },
   { key: "Delivered", label: "Delivered — enjoy your meal!", icon: "🎉" },
 ];
 
@@ -116,13 +117,13 @@ export function OrderTracking() {
   }, [id]);
 
   const displayId = order ? order.orderNumber || `BZ-${order._id.slice(-6).toUpperCase()}` : "";
-  const canCancel = order && (order.status === "Pending" || order.status === "Preparing");
-
+const canCancel = order && order.status === "Pending";
   return (
     <div>
       <AppNavbar />
       <div className="orders-container">
-        <h1>Order Tracking</h1>
+        <h3>Order Tracking</h3>
+        <span className="order-id-small">{displayId}</span>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? (
