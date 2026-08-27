@@ -36,8 +36,12 @@ export async function recalcActiveOrdersEta() {
   const updated = [];
   for (const order of activeOrders) {
     const newEta = new Date(order.createdAt.getTime() + (BASE_ETA_MIN + delay) * 60 * 1000);
+    await Order.updateOne(
+      { _id: order._id },
+      { $set: { estimatedDeliveryTime: newEta } }
+    );
     order.estimatedDeliveryTime = newEta;
-    await order.save();
+  
     updated.push(order);
   }
 
