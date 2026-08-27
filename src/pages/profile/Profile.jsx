@@ -120,16 +120,13 @@ export function Profile() {
           {savedUser.role === "admin" && <span className="profile-admin-badge">Admin</span>}
 
           <div className="profile-field">
-            <label>Full Name</label>
-            <p>{savedUser.name}</p>
-          </div>
-
+  <label>Full Name</label>
+  <input type="text" value={savedUser.name} disabled className="profile-field-input" />
+</div>
           <div className="profile-field">
-            <label>Email</label>
-            <p>
-              {savedUser.email} <span className="locked-badge">🔒 Cannot be changed</span>
-            </p>
-          </div>
+  <label>Email</label>
+  <input type="text" value={savedUser.email} disabled className="profile-field-input" />
+</div>
 
           <div className="profile-field">
             <label>Phone</label>
@@ -139,7 +136,7 @@ export function Profile() {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
-                  maxLength={11}
+                  maxLength={11} className="profile-field-input"
                 />
                 <button className="profile-save-btn" onClick={handleSavePhone} disabled={savingPhone}>
                   {savingPhone ? "Saving..." : "Save"}
@@ -169,14 +166,13 @@ export function Profile() {
 
           <div className="profile-field">
             <label>Delivery Area</label>
-            <p>{savedUser.area || "—"}</p>
+            <input input="text" value={savedUser.area || "—"}disable className="profile-field-input"/>
           </div>
 
           <div className="profile-field">
             <label>Address</label>
-            <p>{savedUser.address || "—"}</p>
+            <input value={savedUser.address || "—"} disable className="profile-field-input"/>
           </div>
-          <p className="profile-hint">Area & address can be updated anytime during checkout.</p>
 
           <hr />
 

@@ -56,6 +56,16 @@
   font-size: 0.95rem;
   color: #111;
 }
+.profile-field-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333;
+  background: #f3f3f3;   /* light grey, disabled look */
+  cursor: not-allowed;
+}
 
 .locked-badge {
   font-size: 0.72rem;

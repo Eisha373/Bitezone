@@ -4,6 +4,8 @@ import { useCart } from "../context/CartContext";
 
 export function AdminNavbar() {
   const { cartItems } = useCart();
+  const user = JSON.parse(localStorage.getItem("user"));
+const initial = user?.name?.charAt(0).toUpperCase() || "?";
 
   const [ordersDropdownOpen, setOrdersDropdownOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
@@ -25,26 +27,7 @@ export function AdminNavbar() {
           <Link to="/admin/products">Products</Link>
         </li>
 
-        {/* Orders + Order History sub-dropdown */}
-        <li
-          className="nav-dropdown"
-          onMouseEnter={() => setOrdersDropdownOpen(true)}
-          onMouseLeave={() => setOrdersDropdownOpen(false)}
-        >
-          <span className="nav-dropdown-label">Orders ▾</span>
-
-          {ordersDropdownOpen && (
-            <ul className="nav-dropdown-menu">
-              <li>
-                <Link to="/admin/orders">Track Orders</Link>
-              </li>
-              <li>
-                <Link to="/admin/history">Order History</Link>
-              </li>
-            </ul>
-          )}
-        </li>
-
+       
         {/* More Dropdown */}
         <li
           className="nav-dropdown"
@@ -70,14 +53,34 @@ export function AdminNavbar() {
               <li>
                 <Link to="/my-orders">My Orders</Link>
               </li>
+               {/* Orders + Order History sub-dropdown */}
+        <li
+          className="nav-dropdown"
+          onMouseEnter={() => setOrdersDropdownOpen(true)}
+          onMouseLeave={() => setOrdersDropdownOpen(false)}
+        >
+          <span className="nav-dropdown-label">Orders ▾</span>
+
+          {ordersDropdownOpen && (
+            <ul className="nav-dropdown-menu">
+              <li>
+                <Link to="/admin/orders">Track Orders</Link>
+              </li>
+              <li>
+                <Link to="/admin/history">Order History</Link>
+              </li>
+            </ul>
+          )}
+        </li>
+
             </ul>
           )}
         </li>
 
         <li>
-          <Link to="/profile" className="profile-icon-link" title="My Profile">
-            👤
-          </Link>
+          <Link to="/profile" className="navbar-avatar">
+  {initial}
+</Link>
         </li>
       </ul>
     </nav>

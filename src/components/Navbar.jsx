@@ -1,18 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 import "../navbar-footer.css";
 
 export function Navbar() {
-  const navigate = useNavigate();
   const { cartItems } = useCart();
+  const user = JSON.parse(localStorage.getItem("user"));
+const initial = user?.name?.charAt(0).toUpperCase() || "?";
+
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  function handleLogoutClick() {
-     navigate("/logout");
-  }
-
+  
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -27,7 +26,9 @@ export function Navbar() {
         </li>
         <li><Link to="/my-orders">My Orders</Link></li>
         <li>
-          <button className="logout-button" onClick={handleLogoutClick}> Logout</button>
+<Link to="/profile" className="navbar-avatar">
+  {initial}
+</Link>
         </li>
       </ul>
     </nav>

@@ -22,6 +22,19 @@
     padding:0%;
     list-style:none;
 }
+.navbar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #6c2bd9;  
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
 .navbar-links a{
     text-decoration:none;
     color: #333;
