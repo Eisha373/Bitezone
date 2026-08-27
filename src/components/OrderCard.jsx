@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 
 export function OrderCard({ order }) {
+  const displayId = order.orderNumber || `BZ-${order._id.slice(-6).toUpperCase()}`;
+
   return (
     <div className="order-card">
       <div className="order-card-header">
-        <h3>Order #{order._id.slice(-6)}</h3>
+        <h3>Order {displayId}</h3>
         <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
           {order.status}
         </span>

@@ -6,16 +6,50 @@
 .cart-container h1{
 margin-bottom:20px;
 }
-.empty-state{
-    text-align: center;
-  font-size: 1rem;
-  color: #6b7280;
+.empty-orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
   background: #fff;
-  max-width: 400px;
-  margin: 60px auto;
-  padding: 40px 30px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.empty-orders-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.empty-orders h3 {
+  font-size: 1.15rem;
+  color: #222;
+  margin-bottom: 6px;
+}
+.empty-orders p {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+  max-width: 280px;
+}
+.empty-orders-cta {
+  background-color: #6372fc;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 22px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.empty-orders-cta:hover {
+  background-color: #4b56d8;
+}
+
+@media (max-width: 480px) {
+  .empty-orders {
+    padding: 40px 16px;
+  }
 }
 .cart-items{
     display:flex;

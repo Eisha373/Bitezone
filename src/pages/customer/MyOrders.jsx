@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { OrderCard } from "../../components/OrderCard";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../order.css";
+import "../../cart.css";
 
 export function MyOrders() {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -48,22 +51,27 @@ export function MyOrders() {
         <h1>My Orders</h1>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
-{loading ? (
+        {loading ? (
           <div className="page-loader">
             <p>Loading...</p>
           </div>
-        ) : (
-          <>
-        {hasOrders ? (
+        ) : hasOrders ? (
           <div className="orders-list">
             {orders.map((order) => (
               <OrderCard key={order._id} order={order} />
             ))}
           </div>
         ) : (
-          !loading && <p className="empty-state">You haven't placed any orders yet.</p>
-        )}
-        </>
+          !error && (
+            <div className="empty-orders">
+              <div className="empty-orders-icon">🍔</div>
+              <h3>No orders yet</h3>
+              <p>Looks like you haven't placed an order.</p>
+              <button className="empty-orders-cta" onClick={() => navigate("/menu")}>
+                Browse Menu
+              </button>
+            </div>
+          )
         )}
       </div>
 
