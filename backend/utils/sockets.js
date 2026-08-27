@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+
 let io;
 
 export function initSocket(server) {

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";                    // added
-import { initSocket } from "./utils/socket.js"; // added
+import { initSocket } from "./utils/sockets.js"; // added
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
