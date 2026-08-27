@@ -25,20 +25,21 @@ export function Welcome() {
         <p className="welcome-subtext">
           Cravings, delivered fast — your favorite food is just a few clicks away.
         </p>
-        <div className="welcome-actions">
-          <div>
-     <p className="welcome-helper-text">Already have an account?</p>
-            <Link to="/login">
-              <button className="welcome-btn primary">Login</button>
-            </Link>
-          </div>
+      </div>
 
-          <div>
-                 <p className="welcome-helper-text">New here? Sign up to continue</p>
-            <Link to="/signup">
-              <button className="welcome-btn secondary">Sign Up</button>
-            </Link>
-          </div>
+      <div className="welcome-actions">
+        <div>
+          <p className="welcome-helper-text">Already have an account?</p>
+          <Link to="/login">
+            <button className="welcome-btn primary">Login</button>
+          </Link>
+        </div>
+
+        <div>
+          <p className="welcome-helper-text">New here? Sign up to continue</p>
+          <Link to="/signup">
+            <button className="welcome-btn secondary">Sign Up</button>
+          </Link>
         </div>
       </div>
     </div>

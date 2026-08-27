@@ -2,11 +2,13 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;   
+  justify-content: space-between;   /* pushes heading up, buttons down */
   align-items: center;
-  background-image: url("/images/background-image.jpg");
+  padding: 8vh 20px 6vh;             /* top space smaller than bottom */
+  background-image: url("/images/welcome-image.jpg");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
 }
 
@@ -17,11 +19,12 @@
   left: 0;
   width: 100%;
   height: 100%;
+  /* pure black gradient instead of grey-tinted */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.3) 0%,
-    rgba(0,0,0,0.55) 50%,
-    rgba(0,0,0,0.75) 100%
+    rgba(0,0,0,0.45) 0%,
+    rgba(0,0,0,0.7) 50%,
+    rgba(0,0,0,0.9) 100%
   );
 }
 
@@ -30,22 +33,8 @@
   z-index: 1;
   text-align: center;
   color: white;
-  padding: 20px;
   max-width: 480px;
   width: 100%;
-}
-
-.welcome-badge {
-  display: inline-block;
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid #f97316;
-  color: #f97316;
-  padding: 6px 18px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 18px;
-  letter-spacing: 0.3px;
 }
 
 .welcome-heading {
@@ -54,29 +43,35 @@
   margin-bottom: 14px;
   line-height: 1.15;
 }
-.welcome-actions a {
-  text-decoration: none;
-}
 
+/* tagline now shares the brand's look — same family, orange accent */
 .welcome-subtext {
+  font-family: inherit;
   font-size: 1.05rem;
-  color: #e5e5e5;
-  margin-bottom: 36px;
+  font-weight: 600;
+  font-style: italic;
+  color: #f97316;
+  letter-spacing: 0.2px;
+  margin-bottom: 0;
   line-height: 1.5;
 }
 
 .welcome-actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 28px;                 /* more space between login block and signup block */
   width: 100%;
-  max-width: 240px;   
+  max-width: 240px;
   margin: 0 auto;
 }
 
+.welcome-actions a {
+  text-decoration: none;
+}
+
 .welcome-btn {
-  padding: 12px 24px;   
-  font-size: 0.95rem;   
+  padding: 12px 24px;
+  font-size: 0.95rem;
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
@@ -102,20 +97,21 @@
 }
 
 .welcome-btn.secondary {
-  background-color:#f97316;
+  background-color: #f97316;
   color: white;
-  border: #f97316;
+  border: none;
 }
 
 .welcome-btn.secondary:hover {
   background-color: #8a83ef;
-  color:white;
+  color: white;
   transform: translateY(-2px);
 }
 
 .welcome-helper-text {
   font-size: 0.95rem;
-  font-weight:250;
+  font-weight: 250;
   color: white;
-  margin-top: 4px;
+  margin-top: 0;
+  margin-bottom: 10px;      /* gap before the button itself */
 }

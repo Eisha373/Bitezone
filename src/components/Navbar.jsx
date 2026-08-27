@@ -26,7 +26,7 @@ const initial = user?.name?.charAt(0).toUpperCase() || "?";
         </li>
         <li><Link to="/my-orders">My Orders</Link></li>
         <li>
-<Link to="/profile" className="navbar-avatar">
+<Link to="/profile" className="navbar-avatar-customer">
   {initial}
 </Link>
         </li>
