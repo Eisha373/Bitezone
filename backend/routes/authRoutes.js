@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"; 
 import crypto from "crypto";
 import User from "../models/User.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router(); 
 
@@ -136,6 +137,63 @@ router.post("/reset-password/:token", async (req, res) => {
     res.status(200).json({ message: "Password reset successful" });
   } catch(e) {
     res.status(500).json({ message: e.message });
+  }
+});
+
+router.patch("/profile", verifyToken, async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) {
+      return res.status(400).json({ message: "Phone number is required" });
+    }
+
+    const phoneExist = await User.findOne({ phone, _id: { $ne: req.user.id } });
+    if (phoneExist) {
+      return res.status(400).json({ message: "Phone number already registered" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { phone },
+      { new: true, runValidators: true }
+    );
+
+    res.json({
+      message: "Profile updated",
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        area: updatedUser.area,
+        address: updatedUser.address,
+        role: updatedUser.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.patch("/change-password", verifyToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Both current and new password are required" });
+    }
+
+    const user = await User.findById(req.user.id);
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if (!match) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save({ validateBeforeSave: false });
+
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 export default router;

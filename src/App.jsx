@@ -7,6 +7,7 @@ import { Home } from "./pages/customer/Home";
 import { Cart } from "./pages/customer/Cart";
 import { Checkout } from "./pages/customer/Checkout";
 import { MyOrders } from "./pages/customer/MyOrders";
+import {Profile} from "./pages/profile/Profile";
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { OrderHistory } from "./pages/admin/OrderHistory";
 import { OrdersList } from "./pages/admin/OrdersList";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/admin/products" element={<ProductsManagement />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

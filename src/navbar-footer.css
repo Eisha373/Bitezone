@@ -78,7 +78,21 @@
 .footer-links a:hover{
     color: #6372fc;
 }
-
+.profile-icon-link {
+  font-size: 1.3rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.15s ease;
+}
+.profile-icon-link:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablets */
