@@ -2,8 +2,73 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
-import socket from "../../utils/sockets";     
+import socket from "../../utils/sockets";
 import "../../order.css";
+
+const STEPS = [
+  { key: "Pending", label: "Confirming your order", icon: "📝" },
+  { key: "Preparing", label: "Food is being prepared", icon: "👨‍🍳" },
+  { key: "Delivered", label: "Delivered — enjoy your meal!", icon: "🎉" },
+];
+
+function VerticalTracker({ order }) {
+  const isCancelled = order.status === "Cancelled";
+  const currentIndex = STEPS.findIndex((s) => s.key === order.status);
+
+  function getTimeFor(key) {
+    const entry = order.statusHistory?.find((h) => h.status === key);
+    return entry
+      ? new Date(entry.changedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      : null;
+  }
+
+  if (isCancelled) {
+    return (
+      <div className="vt-cancelled">
+        <span className="vt-cancelled-dot">✕</span>
+        <div>
+          <p className="vt-cancelled-title">Order Cancelled</p>
+          <p className="vt-cancelled-sub">This order will not be delivered.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="vt-timeline">
+      {STEPS.map((step, i) => {
+        const isDone = i < currentIndex;
+        const isCurrent = i === currentIndex;
+        const isFuture = i > currentIndex;
+
+        return (
+          <div key={step.key} className={`vt-row ${isFuture ? "vt-future" : ""}`}>
+            <div className="vt-marker">
+              <span className={`vt-dot ${isDone ? "vt-dot-done" : ""} ${isCurrent ? "vt-dot-current" : ""}`}>
+                {isDone ? "✓" : ""}
+              </span>
+              {i < STEPS.length - 1 && <span className={`vt-line ${isDone ? "vt-line-done" : ""}`} />}
+            </div>
+
+            <div className="vt-content">
+              <p className={`vt-label ${isCurrent ? "vt-label-current" : ""}`}>
+                {step.icon} {step.label}
+              </p>
+              {isCurrent && (
+                <>
+                  <p className="vt-address">📍 {order.deliveryAddress}</p>
+                </>
+              )}
+              {(isDone || isCurrent) && getTimeFor(step.key) && (
+                <p className="vt-time">{getTimeFor(step.key)}</p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function OrderTracking() {
   const { id } = useParams();
@@ -35,7 +100,6 @@ export function OrderTracking() {
     fetchOrder();
   }, [id]);
 
-  // added: join the order's socket room and listen for live updates
   useEffect(() => {
     socket.emit("joinOrder", id);
 
@@ -51,6 +115,9 @@ export function OrderTracking() {
     };
   }, [id]);
 
+  const displayId = order ? order.orderNumber || `BZ-${order._id.slice(-6).toUpperCase()}` : "";
+  const canCancel = order && (order.status === "Pending" || order.status === "Preparing");
+
   return (
     <div>
       <AppNavbar />
@@ -59,59 +126,58 @@ export function OrderTracking() {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? (
-          <div className="page-loader"><p>Loading...</p></div>
+          <div className="page-loader">
+            <p>Loading...</p>
+          </div>
         ) : (
-          <>
-            {order && (
-              <div className="order-card">
-                <h3>Order #{order._id.slice(-6)}</h3>
+          order && (
+            <div className="order-card tracking-card-v2">
+              <div className="vt-header">
+                <div>
+                  <h3>Order {displayId}</h3>
+                  <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
+                </div>
                 <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
                   {order.status}
                 </span>
-                <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
+              </div>
 
-                <div className="order-items">
-                  {order.items.map((item) => (
-                    <div className="summary-item" key={item.product._id}>
-                      <span>{item.product.name} ({item.quantity})</span>
-                      <span>Rs {item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                </div>
+              <VerticalTracker order={order} />
 
-                <hr />
-                <p className="order-total">Total: Rs {order.totalAmount}</p>
-                <p className="delivery-address">Delivering to: {order.deliveryAddress}</p>
+              {canCancel && (
+                <button className="vt-cancel-btn" type="button">
+                  Cancel Order
+                </button>
+              )}
 
-                {order.status !== "Delivered" && order.status !== "Cancelled" && order.estimatedDeliveryTime && (
-                  <p className="estimated-delivery">
-                    Estimated delivery by:{" "}
+              <div className="order-items">
+                {order.items.map((item) => (
+                  <div className="summary-item" key={item.product._id}>
+                    <span>
+                      {item.product.name} ({item.quantity})
+                    </span>
+                    <span>Rs {item.price * item.quantity}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="order-total">Total: Rs {order.totalAmount}</p>
+
+              {order.status !== "Delivered" && order.status !== "Cancelled" && order.estimatedDeliveryTime && (
+                <div className="vt-eta-banner">
+                  <p className="vt-eta-time">
                     {new Date(order.estimatedDeliveryTime).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </p>
-                )}
-
-                {/* added: live status timeline */}
-                {order.statusHistory && order.statusHistory.length > 0 && (
-                  <div className="status-timeline">
-                    {order.statusHistory.map((entry, i) => (
-                      <div className="timeline-entry" key={i}>
-                        <span className="timeline-status">{entry.status}</span>
-                        <span className="timeline-time">
-                          {new Date(entry.changedAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
+                  <p className="vt-eta-label">ESTIMATED DELIVERY TIME</p>
+                  <button className="vt-support-btn" type="button">
+                    Contact Support
+                  </button>
+                </div>
+              )}
+            </div>
+          )
         )}
       </div>
       <Footer />

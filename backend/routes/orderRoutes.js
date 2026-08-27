@@ -5,6 +5,7 @@ import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 import { DELIVERY_ZONES } from "../data/deliveryZones.js";
 import { calculateEtaForNewOrder, recalcActiveOrdersEta } from "../utils/orderEta.js"; // added
 import { getIO } from "../utils/sockets.js"; // added
+import { getNextOrderNumber } from "../utils/getNextOrderNumber.js"; // added
 
 const router = express.Router();
 
@@ -36,8 +37,10 @@ router.post("/", verifyToken, async (req, res) => {
     // added: calculate ETA based on current active order load
     const { estimatedDeliveryTime } = await calculateEtaForNewOrder();
 
+    const orderNumber = await getNextOrderNumber();
+
     const newOrder = await Order.create({
-      customer: req.user.id,
+      customer: req.user.id,orderNumber,
       items: orderItems,
       area,
       deliveryCharge,
