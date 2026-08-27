@@ -153,4 +153,41 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+router.patch("/:id/cancel", verifyToken, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    if (order.customer.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized to cancel this order" });
+    }
+    if (order.status !== "Pending") {
+      return res.status(400).json({ message: "This order can no longer be cancelled" });
+    }
+
+    order.status = "Cancelled";
+    order.statusHistory.push({ status: "Cancelled", changedAt: new Date() });
+    await order.save();
+
+    const io = getIO();
+    const updatedOrders = await recalcActiveOrdersEta();
+    updatedOrders.forEach((o) => {
+      io.to(`order:${o._id}`).emit("orderUpdate", {
+        status: o.status,
+        estimatedDeliveryTime: o.estimatedDeliveryTime,
+        statusHistory: o.statusHistory,
+      });
+    });
+    io.to(`order:${order._id}`).emit("orderUpdate", {
+      status: order.status,
+      estimatedDeliveryTime: order.estimatedDeliveryTime,
+      statusHistory: order.statusHistory,
+    });
+
+    res.json({ message: "Order cancelled successfully", order });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 export default router;

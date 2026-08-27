@@ -8,7 +8,7 @@ import "../../order.css";
 const STEPS = [
   { key: "Pending", label: "Confirming your order", icon: "📝" },
   { key: "Preparing", label: "Food is being prepared", icon: "👨‍🍳" },
-    { key: "Out for delivery", label: "Courier is on the way", icon: "🛵" },
+  { key: "Out for delivery", label: "Courier is on the way", icon: "🛵" },
   { key: "Delivered", label: "Delivered — enjoy your meal!", icon: "🎉" },
 ];
 
@@ -55,11 +55,7 @@ function VerticalTracker({ order }) {
               <p className={`vt-label ${isCurrent ? "vt-label-current" : ""}`}>
                 {step.icon} {step.label}
               </p>
-              {isCurrent && (
-                <>
-                  <p className="vt-address">📍 {order.deliveryAddress}</p>
-                </>
-              )}
+              {isCurrent && <p className="vt-address">📍 {order.deliveryAddress}</p>}
               {(isDone || isCurrent) && getTimeFor(step.key) && (
                 <p className="vt-time">{getTimeFor(step.key)}</p>
               )}
@@ -76,6 +72,7 @@ export function OrderTracking() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
     async function fetchOrder() {
@@ -117,13 +114,40 @@ export function OrderTracking() {
   }, [id]);
 
   const displayId = order ? order.orderNumber || `BZ-${order._id.slice(-6).toUpperCase()}` : "";
-const canCancel = order && order.status === "Pending";
+  const canCancel = order && order.status === "Pending";
+  const showEta =
+    order && order.status !== "Delivered" && order.status !== "Cancelled" && order.estimatedDeliveryTime;
+
+  async function handleCancelOrder() {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    setCancelling(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/cancel`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || "Failed to cancel order");
+        return;
+      }
+      setOrder(data.order);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setCancelling(false);
+    }
+  }
+
   return (
     <div>
       <AppNavbar />
       <div className="orders-container">
-        <h3>Order Tracking</h3>
-        <span className="order-id-small">{displayId}</span>
+        <h1>Order Tracking</h1>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? (
@@ -132,39 +156,9 @@ const canCancel = order && order.status === "Pending";
           </div>
         ) : (
           order && (
-            <div className="order-card tracking-card-v2">
-              <div className="vt-header">
-                <div>
-                  <h3>Order {displayId}</h3>
-                  <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
-                </div>
-                <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
-                  {order.status}
-                </span>
-              </div>
-
-              <VerticalTracker order={order} />
-
-              {canCancel && (
-                <button className="vt-cancel-btn" type="button">
-                  Cancel Order
-                </button>
-              )}
-
-              <div className="order-items">
-                {order.items.map((item) => (
-                  <div className="summary-item" key={item.product._id}>
-                    <span>
-                      {item.product.name} ({item.quantity})
-                    </span>
-                    <span>Rs {item.price * item.quantity}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="order-total">Total: Rs {order.totalAmount}</p>
-
-              {order.status !== "Delivered" && order.status !== "Cancelled" && order.estimatedDeliveryTime && (
-                <div className="vt-eta-banner">
+            <>
+              {showEta && (
+                <div className="vt-eta-banner vt-eta-top">
                   <p className="vt-eta-time">
                     {new Date(order.estimatedDeliveryTime).toLocaleTimeString([], {
                       hour: "2-digit",
@@ -172,12 +166,41 @@ const canCancel = order && order.status === "Pending";
                     })}
                   </p>
                   <p className="vt-eta-label">ESTIMATED DELIVERY TIME</p>
-                  <button className="vt-support-btn" type="button">
-                    Contact Support
-                  </button>
                 </div>
               )}
-            </div>
+
+              <div className="order-card tracking-card-v2">
+                <div className="vt-header">
+                  <div>
+                    <h3>Order {displayId}</h3>
+                    <p className="order-date">{new Date(order.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <span className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}>
+                    {order.status}
+                  </span>
+                </div>
+
+                <VerticalTracker order={order} />
+
+                {canCancel && (
+                  <button className="vt-cancel-btn" type="button" onClick={handleCancelOrder} disabled={cancelling}>
+                    {cancelling ? "Cancelling..." : "Cancel Order"}
+                  </button>
+                )}
+
+                <div className="order-items">
+                  {order.items.map((item) => (
+                    <div className="summary-item" key={item.product._id}>
+                      <span>
+                        {item.product.name} ({item.quantity})
+                      </span>
+                      <span>Rs {item.price * item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="order-total tracking-total">Total: Rs {order.totalAmount}</p>
+              </div>
+            </>
           )
         )}
       </div>
