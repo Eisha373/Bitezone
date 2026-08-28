@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
+import { NotificationBell } from "./NotificationBell"; // add this
 
 export function AdminNavbar() {
   const { cartItems } = useCart();
   const user = JSON.parse(localStorage.getItem("user"));
-const initial = user?.name?.charAt(0).toUpperCase() || "?";
+  const initial = user?.name?.charAt(0).toUpperCase() || "?";
 
   const [ordersDropdownOpen, setOrdersDropdownOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
@@ -27,7 +28,6 @@ const initial = user?.name?.charAt(0).toUpperCase() || "?";
           <Link to="/admin/products">Products</Link>
         </li>
 
-       
         {/* More Dropdown */}
         <li
           className="nav-dropdown"
@@ -53,34 +53,36 @@ const initial = user?.name?.charAt(0).toUpperCase() || "?";
               <li>
                 <Link to="/my-orders">My Orders</Link>
               </li>
-               {/* Orders + Order History sub-dropdown */}
-        <li
-          className="nav-dropdown"
-          onMouseEnter={() => setOrdersDropdownOpen(true)}
-          onMouseLeave={() => setOrdersDropdownOpen(false)}
-        >
-          <span className="nav-dropdown-label">Orders ▾</span>
+              <li
+                className="nav-dropdown"
+                onMouseEnter={() => setOrdersDropdownOpen(true)}
+                onMouseLeave={() => setOrdersDropdownOpen(false)}
+              >
+                <span className="nav-dropdown-label">Orders ▾</span>
 
-          {ordersDropdownOpen && (
-            <ul className="nav-dropdown-menu">
-              <li>
-                <Link to="/admin/orders">Track Orders</Link>
+                {ordersDropdownOpen && (
+                  <ul className="nav-dropdown-menu">
+                    <li>
+                      <Link to="/admin/orders">Track Orders</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/history">Order History</Link>
+                    </li>
+                  </ul>
+                )}
               </li>
-              <li>
-                <Link to="/admin/history">Order History</Link>
-              </li>
-            </ul>
-          )}
-        </li>
-
             </ul>
           )}
         </li>
 
         <li>
+          <NotificationBell />
+        </li>
+
+        <li>
           <Link to="/profile" className="navbar-avatar">
-  {initial}
-</Link>
+            {initial}
+          </Link>
         </li>
       </ul>
     </nav>

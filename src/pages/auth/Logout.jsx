@@ -9,6 +9,8 @@ export function Logout() {
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
   const isAdmin = user.role === "admin";
+  window.dispatchEvent(new Event("auth-changed"));
+
 
   function handleConfirmLogout() {
     localStorage.removeItem("token");

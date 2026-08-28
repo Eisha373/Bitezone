@@ -7,7 +7,7 @@ import { Home } from "./pages/customer/Home";
 import { Cart } from "./pages/customer/Cart";
 import { Checkout } from "./pages/customer/Checkout";
 import { MyOrders } from "./pages/customer/MyOrders";
-import {Profile} from "./pages/profile/Profile";
+import { Profile } from "./pages/profile/Profile";
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { OrderHistory } from "./pages/admin/OrderHistory";
 import { OrdersList } from "./pages/admin/OrdersList";
@@ -15,7 +15,8 @@ import { OrderTracking } from "./pages/customer/OrderTracking";
 import { CartProvider } from "./context/CartContext";
 import { ProductsManagement } from "./pages/admin/ProductsManagement";
 import { ForgotPassword } from "./pages/auth/ForgotPassword";
-import {ResetPassword} from "./pages/auth/ResetPassword";
+import { ResetPassword } from "./pages/auth/ResetPassword";
+import { NotificationsProvider } from "./context/NotificationsContext";
 import "./welcome.css";
 import "./auth.css";
 import "./home.css";
@@ -29,28 +30,30 @@ import "./App.css";
 
 function App() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/menu" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/history" element={<OrderHistory />} />
-          <Route path="/order-tracking/:id" element={<OrderTracking />} />
-          <Route path="/admin/orders" element={<OrdersList />} />
-          <Route path="/admin/products" element={<ProductsManagement />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+    <NotificationsProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/menu" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/history" element={<OrderHistory />} />
+            <Route path="/order-tracking/:id" element={<OrderTracking />} />
+            <Route path="/admin/orders" element={<OrdersList />} />
+            <Route path="/admin/products" element={<ProductsManagement />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </NotificationsProvider>
   );
 }
 export default App;
