@@ -65,7 +65,6 @@ router.post("/", verifyToken, async (req, res) => {
     });
     io.to(`user:${newOrder.customer.toString()}`).emit("notification", placedNotif);
 
-    io.to(`user:${newOrder.customer.toString()}`).emit("notification", placedNotif);
 
     // added: notify every admin that a new order came in
     const admins = await User.find({ role: "admin" }).select("_id");
