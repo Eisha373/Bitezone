@@ -13,15 +13,18 @@
     color: #202020;
     text-decoration: none;
 }
-.navbar-links{
-    display:flex;
-    font-size:1.4rem;
-    font-weight:400;
-    align-items:center;
-    justify-content:center;
-    gap:3rem;
-    padding:0%;
-    list-style:none;
+.navbar-links {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  gap: 32px;
+}
+
+.navbar-links a {
+  color: #c2b6ae;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 .navbar-avatar {
   width: 36px;

@@ -10,8 +10,8 @@ export function NotificationsProvider({ children }) {
   useEffect(() => {
   function joinRoom() {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user?._id) return;
-    socket.emit("joinUser", user._id);
+    if (!user?.id) return;
+    socket.emit("joinUser", user.id);
   }
 
   joinRoom(); // try immediately on mount
