@@ -512,6 +512,11 @@ function handleImageChange(e) {
 
                     {/* Product Name */}
                     <h3>{product.name}</h3>
+                    {/* Product Description */}
+{product.description && (
+  <p className="admin-product-description">{product.description}</p>
+)}
+
 
                     {/* Product Price + Category */}
                     <p>

@@ -1,31 +1,79 @@
-.navbar{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    background-color:rgb(242, 147, 113);
-    padding:3rem;
-    align-items:center;
-    box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1);
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 3rem;
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 55%, #ea580c 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
-.navbar-logo a{
-    font-size: 2rem;
-    font-weight: bold;
-    color: #202020;
-    text-decoration: none;
+
+.navbar-logo a {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-decoration: none;
+  letter-spacing: -0.5px;
 }
+
 .navbar-links {
   display: flex;
   align-items: center;
-  font-size: 1.1rem;
-  gap: 32px;
+  font-size: 1.05rem;
+  gap: 8px;
+  list-style: none;   /* fixes the bullets */
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-links a {
-  color: #c2b6ae;
+  color: #2b1a10;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+.navbar-links a:hover {
+  background: rgba(255, 255, 255, 0.35);
+  color: #1a1a1a;
+}
+
+.navbar-avatar-customer {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: #f97316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.cart-badge {
+  background: #1a1a1a;
+  color: #f97316;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+
+.notif-bell-btn {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #2b1a10;
+}
+
 .navbar-avatar {
   width: 36px;
   height: 36px;
@@ -39,27 +87,9 @@
   font-weight: 700;
   text-decoration: none;
 }
-.navbar-avatar-customer {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #b83607;  
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-.navbar-links a{
-    text-decoration:none;
-    color: #333;
-    transition: color 0.3s;
-}
-.navbar-links a:hover{
-    color: #6372fc;
-}
+
+
+
 .logout-button{
     background-color: #b83607;
     font-size:1rem;
@@ -70,27 +100,12 @@
     border-radius: 6px;
     cursor: pointer;
 }
-.cart-badge {
-  background: #0843cf;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 2px 7px;
-  border-radius: 999px;
-  margin-left: 4px;
-}
+
 .notif-bell-wrapper {
   position: relative;
 }
 
-.notif-bell-btn {
-  position: relative;
-  background: none;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: inherit;
-}
+
 
 .notif-badge {
   position: absolute;
