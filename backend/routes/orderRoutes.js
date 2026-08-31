@@ -1,6 +1,6 @@
 import express from "express";
 import Order from "../models/Order.js";
-import User from "../models/User.js"; // add this import at the top
+import User from "../models/User.js";
 import Product from "../models/Product.js";
 import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 import { DELIVERY_ZONES } from "../data/deliveryZones.js";
@@ -36,8 +36,7 @@ router.post("/", verifyToken, async (req, res) => {
     const deliveryCharge = DELIVERY_ZONES[area] || 0;
     const totalAmount = subtotal + deliveryCharge;
 
-    // added: calculate ETA based on current active order load
-    const { estimatedDeliveryTime } = await calculateEtaForNewOrder();
+    const { estimatedDeliveryTime, prepTime, delay } = await calculateEtaForNewOrder(items);
 
     const orderNumber = await getNextOrderNumber();
 
@@ -50,12 +49,13 @@ router.post("/", verifyToken, async (req, res) => {
       totalAmount,
       deliveryAddress,
       estimatedDeliveryTime,
-      statusHistory: [{ status: "Pending", changedAt: new Date() }], // added
+      prepTimeMinutes: prepTime,
+      queueDelayMinutes: delay,
+      statusHistory: [{ status: "Pending", changedAt: new Date() }],
     });
 
     const io = getIO();
 
-    // added: notify the customer that their order was placed
     const placedNotif = await Notification.create({
       user: newOrder.customer,
       orderId: newOrder._id,
@@ -65,8 +65,6 @@ router.post("/", verifyToken, async (req, res) => {
     });
     io.to(`user:${newOrder.customer.toString()}`).emit("notification", placedNotif);
 
-
-    // added: notify every admin that a new order came in
     const admins = await User.find({ role: "admin" }).select("_id");
     for (const admin of admins) {
       const adminNotif = await Notification.create({
@@ -79,7 +77,6 @@ router.post("/", verifyToken, async (req, res) => {
       io.to(`user:${admin._id.toString()}`).emit("notification", adminNotif);
     }
 
-    // added: this new order changes the queue size — recalc everyone else's ETA
     const updatedOrders = await recalcActiveOrdersEta();
     updatedOrders.forEach((order) => {
       io.to(`order:${order._id}`).emit("orderUpdate", {
@@ -145,7 +142,8 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
       req.params.id,
       {
         status,
-        $push: { statusHistory: { status, changedAt: new Date() } }, // added
+        autoManaged: false,
+        $push: { statusHistory: { status, changedAt: new Date() } },
       },
       { new: true }
     );
@@ -156,7 +154,6 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
 
     const io = getIO();
 
-    // added: if order finished/cancelled, queue shrinks — recalc remaining active orders
     if (status === "Delivered" || status === "Cancelled") {
       const updatedOrders = await recalcActiveOrdersEta();
       updatedOrders.forEach((order) => {
@@ -168,14 +165,12 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
       });
     }
 
-    // added: push this order's own update to its room
     io.to(`order:${updatedOrder._id}`).emit("orderUpdate", {
       status: updatedOrder.status,
       estimatedDeliveryTime: updatedOrder.estimatedDeliveryTime,
       statusHistory: updatedOrder.statusHistory,
     });
 
-    // added: persist + push a bell notification for status changes worth notifying about
     const NOTIFY_STATUSES = ["Preparing", "Out for delivery", "Delivered", "Cancelled"];
     if (NOTIFY_STATUSES.includes(status)) {
       const statusNotif = await Notification.create({
@@ -189,6 +184,47 @@ router.patch("/:id/status", verifyToken, isAdmin, async (req, res) => {
     }
 
     res.json({ message: "Order status updated", order: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.patch("/:id/delay", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { minutes } = req.body;
+
+    if (!minutes || minutes <= 0) {
+      return res.status(400).json({ message: "Provide a positive number of minutes" });
+    }
+
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.adjustmentMinutes += minutes;
+    order.estimatedDeliveryTime = new Date(
+      order.estimatedDeliveryTime.getTime() + minutes * 60 * 1000
+    );
+    await order.save();
+
+    const io = getIO();
+    io.to(`order:${order._id}`).emit("orderUpdate", {
+      status: order.status,
+      estimatedDeliveryTime: order.estimatedDeliveryTime,
+      statusHistory: order.statusHistory,
+    });
+
+    const notif = await Notification.create({
+      user: order.customer,
+      orderId: order._id,
+      orderNumber: order.orderNumber,
+      status: order.status,
+      message: `Order ${order.orderNumber} delivery time updated — running about ${minutes} min behind.`,
+    });
+    io.to(`user:${order.customer.toString()}`).emit("notification", notif);
+
+    res.json({ message: "Order delayed successfully", order });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -226,7 +262,6 @@ router.patch("/:id/cancel", verifyToken, async (req, res) => {
       statusHistory: order.statusHistory,
     });
 
-    // added: notify the customer their own cancellation went through
     const cancelNotif = await Notification.create({
       user: order.customer,
       orderId: order._id,

@@ -63,7 +63,7 @@
   border-radius: 6px;
   font-size: 0.95rem;
   color: #333;
-  background: #f3f3f3;   /* light grey, disabled look */
+  background: #f3f3f3;
   cursor: not-allowed;
 }
 
@@ -126,24 +126,6 @@
   margin-bottom: 16px;
 }
 
-.password-form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-}
-.password-form input {
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-.password-form-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
 .profile-error {
   color: #c0392b;
   font-size: 0.8rem;
@@ -171,4 +153,82 @@
 }
 .profile-logout-btn:hover {
   background: #f9d6d2;
+}
+
+/* =========================================================
+   PASSWORD CHANGE MODAL
+========================================================= */
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.password-modal-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  width: calc(100% - 40px);
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+}
+
+.password-modal-card h2 {
+  margin: 0 0 18px;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding: 8px 40px 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.toggle-password-btn:hover {
+  color: #6372fc;
+}
+
+.password-form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }

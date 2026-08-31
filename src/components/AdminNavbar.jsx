@@ -47,7 +47,7 @@ export function AdminNavbar() {
               <li>
                 <Link to="/cart">
                   Cart
-                  {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                  {cartCount > 0 && <span className="cart-badge-admin">{cartCount}</span>}
                 </Link>
               </li>
               <li>

@@ -218,13 +218,13 @@
 .auth-card p a:hover {
   text-decoration: underline;
 }
-.forgot-password-link {
-  text-align: right;   
+.auth-card p.forgot-password-link {
+  text-align: left;   
   margin-top: 4px;
   margin-bottom: 16px;
   font-size: 0.85rem;
+  color: inherit;
 }
-
 .forgot-password-link a {
   color: #6372fc;
   text-decoration: none;

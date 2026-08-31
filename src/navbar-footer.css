@@ -64,15 +64,16 @@
   border-radius: 999px;
   margin-left: 4px;
 }
-
-.notif-bell-btn {
-  position: relative;
-  background: none;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: #2b1a10;
+.cart-badge-admin {
+  background: #8b5cf6;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
 }
+
 
 .navbar-avatar {
   width: 36px;
