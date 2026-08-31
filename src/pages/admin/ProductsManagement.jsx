@@ -22,23 +22,20 @@ export function ProductsManagement() {
   const [editingId, setEditingId] = useState(null);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
-const [imagePickerOpen, setImagePickerOpen] = useState(false);
-const [imagePickerMode, setImagePickerMode] = useState("");
-   const [form, setForm] = useState({
+  const [imagePickerOpen, setImagePickerOpen] = useState(false);
+  const [imagePickerMode, setImagePickerMode] = useState("");
+  const [form, setForm] = useState({
     name: "",
     price: "",
     description: "",
     imageLink: "",
-    category: "burger"});
+    category: "burger",
+    prepTimeMinutes: "",
+  });
 
-  // Load products when component opens
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  // =========================================================
-  // FETCH PRODUCTS
-  // =========================================================
 
   async function fetchProducts() {
     try {
@@ -63,53 +60,45 @@ const [imagePickerMode, setImagePickerMode] = useState("");
     }
   }
 
-  // =========================================================
-  // HANDLE NORMAL FORM INPUTS
-  // =========================================================
-
   function handleFormChange(e) {
-  setForm((prev) => ({
-    ...prev,
-    [e.target.name]: e.target.value,
-  }));
-}
-
-function handleImageChange(e) {
-  const file = e.target.files[0];
-
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    setError("Please select a valid image file.");
-    return;
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    setError("Image size must be less than 2 MB.");
-    return;
-  }
-
-  setError("");
-
-  const reader = new FileReader();
-
-  reader.onloadend = () => {
-    const imageData = reader.result;
-
     setForm((prev) => ({
       ...prev,
-      imageLink: imageData,
+      [e.target.name]: e.target.value,
     }));
+  }
 
-    setImagePreview(imageData);
-  };
+  function handleImageChange(e) {
+    const file = e.target.files[0];
 
-  reader.readAsDataURL(file);
-}
+    if (!file) return;
 
-  // =========================================================
-  // RESET FORM
-  // =========================================================
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image size must be less than 2 MB.");
+      return;
+    }
+
+    setError("");
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const imageData = reader.result;
+
+      setForm((prev) => ({
+        ...prev,
+        imageLink: imageData,
+      }));
+
+      setImagePreview(imageData);
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   function resetForm() {
     setForm({
@@ -118,13 +107,13 @@ function handleImageChange(e) {
       description: "",
       imageLink: "",
       category: "burger",
+      prepTimeMinutes: "",
     });
 
     setImagePreview("");
     setEditingId(null);
     setError("");
 
-    // Reset file input
     const fileInput = document.getElementById("imageFile");
 
     if (fileInput) {
@@ -132,30 +121,28 @@ function handleImageChange(e) {
     }
   }
 
-  // =========================================================
-  // ADD / UPDATE PRODUCT
-  // =========================================================
-
   async function handleSubmit(e) {
     e.preventDefault();
 
     setError("");
 
-    // Validate image
     if (!form.imageLink) {
       setError("Please provide an image URL or browse for an image.");
       return;
     }
 
-    // Validate name
     if (!form.name.trim()) {
       setError("Product name is required.");
       return;
     }
 
-    // Validate price
     if (form.price === "" || Number(form.price) < 0) {
       setError("Please enter a valid price.");
+      return;
+    }
+
+    if (form.prepTimeMinutes === "" || Number(form.prepTimeMinutes) < 1) {
+      setError("Please enter a valid estimated prep time.");
       return;
     }
 
@@ -177,6 +164,7 @@ function handleImageChange(e) {
         body: JSON.stringify({
           ...form,
           price: Number(form.price),
+          prepTimeMinutes: Number(form.prepTimeMinutes),
         }),
       });
 
@@ -187,19 +175,12 @@ function handleImageChange(e) {
         return;
       }
 
-      // Reset form
       resetForm();
-
-      // Reload products
       await fetchProducts();
     } catch {
       setError("Something went wrong. Please try again.");
     }
   }
-
-  // =========================================================
-  // EDIT PRODUCT
-  // =========================================================
 
   function handleEditClick(product) {
     setEditingId(product._id);
@@ -210,22 +191,17 @@ function handleImageChange(e) {
       description: product.description || "",
       imageLink: product.imageLink || "",
       category: product.category || "burger",
+      prepTimeMinutes: product.prepTimeMinutes ?? "",
     });
 
-    // Show existing image
     setImagePreview(product.imageLink || "");
-     setError("");
+    setError("");
 
-    // Scroll to top/form
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }
-
-  // =========================================================
-  // DELETE PRODUCT - OPEN CONFIRMATION
-  // =========================================================
 
   function handleDeleteClick(id) {
     setDeleteTargetId(id);
@@ -239,7 +215,7 @@ function handleImageChange(e) {
 
     try {
       setError("");
-  const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/products/${deleteTargetId}`,
@@ -258,10 +234,7 @@ function handleImageChange(e) {
         return;
       }
 
-      // Close confirmation
       setDeleteTargetId(null);
-
-      // Reload products
       await fetchProducts();
     } catch {
       setError("Something went wrong. Please try again.");
@@ -278,8 +251,8 @@ function handleImageChange(e) {
 
       <div className="admin-container">
         <h1>Manage Products</h1>
-        {error && ( <p style={{color: "red",marginBottom: "15px",fontWeight: "500", }}>{error}
-          </p>
+        {error && (
+          <p style={{ color: "red", marginBottom: "15px", fontWeight: "500" }}>{error}</p>
         )}
 
         {loading ? (
@@ -289,15 +262,9 @@ function handleImageChange(e) {
         ) : (
           <>
             <form className="product-form" onSubmit={handleSubmit}>
-              <h2>
-                {editingId ? "Edit Product" : "Add New Product"}
-              </h2>
+              <h2>{editingId ? "Edit Product" : "Add New Product"}</h2>
 
-              {/* Product Name */}
-              <label htmlFor="name">
-                Product Name:
-              </label>
-
+              <label htmlFor="name">Product Name:</label>
               <input
                 type="text"
                 id="name"
@@ -308,141 +275,121 @@ function handleImageChange(e) {
                 required
               />
 
-              {/* Price */}
-              <label htmlFor="price">
-                Price:
-              </label>
+              <div className="form-row">
+                <div className="form-row-field">
+                  <label htmlFor="price">Price:</label>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    placeholder="Enter Product Price"
+                    value={form.price}
+                    onChange={handleFormChange}
+                    min="0"
+                    required
+                  />
+                </div>
+
+                <div className="form-row-field">
+                  <label htmlFor="prepTimeMinutes">Est. Prep Time (min):</label>
+                  <input
+                    type="number"
+                    id="prepTimeMinutes"
+                    name="prepTimeMinutes"
+                    placeholder="e.g. 10"
+                    value={form.prepTimeMinutes}
+                    onChange={handleFormChange}
+                    min="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <label className="image-field-label">Product Image:</label>
+
+              <div className="image-picker">
+                <button
+                  type="button"
+                  className="image-picker-main"
+                  onClick={() => setImagePickerOpen((prev) => !prev)}
+                >
+                  <span>
+                    🖼️
+                    {imagePreview ? " Change Product Image" : " Add Product Image"}
+                  </span>
+                  <span className="image-picker-arrow">{imagePickerOpen ? "▲" : "▼"}</span>
+                </button>
+
+                {imagePickerOpen && (
+                  <div className="image-picker-menu">
+                    <button
+                      type="button"
+                      className="image-picker-option"
+                      onClick={() => {
+                        setImagePickerMode("url");
+                        setImagePickerOpen(false);
+                      }}
+                    >
+                      <span className="image-option-icon">🔗</span>
+                      <span>
+                        <strong>Insert Image URL</strong>
+                        <small>Paste an image link</small>
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="image-picker-option"
+                      onClick={() => {
+                        setImagePickerOpen(false);
+                        document.getElementById("imageFile").click();
+                      }}
+                    >
+                      <span className="image-option-icon">📎</span>
+                      <span>
+                        <strong>Browse Image</strong>
+                        <small>Browse an image</small>
+                      </span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {imagePickerMode === "url" && (
+                <div className="image-url-input">
+                  <input
+                    type="text"
+                    placeholder="Paste Image URL"
+                    value={form.imageLink.startsWith("data:image") ? "" : form.imageLink}
+                    onChange={(e) => {
+                      setForm((prev) => ({
+                        ...prev,
+                        imageLink: e.target.value,
+                      }));
+
+                      setImagePreview(e.target.value);
+                      setError("");
+                    }}
+                  />
+                </div>
+              )}
 
               <input
-                type="number"
-                id="price"
-                name="price"
-                placeholder="Enter Product Price"
-                value={form.price}
-                onChange={handleFormChange}
-                min="0"
-                required
+                type="file"
+                id="imageFile"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden-file-input"
               />
 
-              <label className="image-field-label">
-  Product Image:
-</label>
+              {imagePreview && (
+                <div className="image-preview-container">
+                  <p>Image Preview:</p>
+                  <img src={imagePreview} alt="Product Preview" className="image-preview" />
+                </div>
+              )}
 
-<div className="image-picker">
-
-  {/* Main button */}
-  <button
-    type="button"
-    className="image-picker-main"
-    onClick={() =>
-      setImagePickerOpen((prev) => !prev)
-    }
-  >
-    <span>
-      🖼️
-      {imagePreview ? " Change Product Image" : " Add Product Image"}
-    </span>
-
-    <span className="image-picker-arrow">
-      {imagePickerOpen ? "▲" : "▼"}
-    </span>
-  </button>
-
-
-  {/* Dropdown options */}
-  {imagePickerOpen && (
-    <div className="image-picker-menu">
-
-      {/* URL option */}
-      <button
-        type="button"
-        className="image-picker-option"
-        onClick={() => {
-          setImagePickerMode("url");
-          setImagePickerOpen(false);
-        }}
-      >
-        <span className="image-option-icon">🔗</span>
-
-        <span>
-          <strong>Insert Image URL</strong>
-          <small>Paste an image link</small>
-        </span>
-      </button>
-
-
-      {/* Browse option */}
-      <button
-        type="button"
-        className="image-picker-option"
-        onClick={() => {
-          setImagePickerOpen(false);
-          document.getElementById("imageFile").click();
-        }}
-      >
-        <span className="image-option-icon">📎</span>
-
-        <span>
-          <strong>Browse Image</strong>
-          <small>Browse an image</small>
-        </span>
-      </button>
-
-    </div>
-  )}
-
-</div>
-
-{/* URL input appears only when URL option is selected */}
-{imagePickerMode === "url" && (
-  <div className="image-url-input">
-    <input
-      type="text"
-      placeholder="Paste Image URL"
-      value={form.imageLink.startsWith("data:image") ? "" : form.imageLink}
-      onChange={(e) => {
-        setForm((prev) => ({
-          ...prev,
-          imageLink: e.target.value,
-        }));
-
-        setImagePreview(e.target.value);
-        setError("");
-      }}
-    />
-  </div>
-)}
-
-
-{/* Hidden file input */}
-<input
-  type="file"
-  id="imageFile"
-  accept="image/*"
-  onChange={handleImageChange}
-  className="hidden-file-input"
-/>
-
-
-{/* Preview */}
-{imagePreview && (
-  <div className="image-preview-container">
-
-    <p>Image Preview:</p>
-
-    <img
-      src={imagePreview}
-      alt="Product Preview"
-      className="image-preview"
-    />
-
-  </div>
-)}
-              {/* Description */}
-              <label htmlFor="description">
-                Description: (optional)
-              </label>
-
+              <label htmlFor="description">Description: (optional)</label>
               <input
                 type="text"
                 id="description"
@@ -452,11 +399,7 @@ function handleImageChange(e) {
                 onChange={handleFormChange}
               />
 
-              {/* Category */}
-              <label htmlFor="category">
-                Category:
-              </label>
-
+              <label htmlFor="category">Category:</label>
               <select
                 id="category"
                 name="category"
@@ -470,78 +413,55 @@ function handleImageChange(e) {
                 ))}
               </select>
 
-              {/* Buttons */}
               <div className="product-form-actions">
-                <button type="submit">
-                  {editingId
-                    ? "Update Product"
-                    : "Add Product"}
-                </button>
+                <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
 
                 {editingId && (
-                  <button
-                    type="button"
-                    onClick={resetForm}
-                  >
+                  <button type="button" onClick={resetForm}>
                     Cancel
                   </button>
                 )}
               </div>
             </form>
 
-            {/* =================================================
-                PRODUCTS GRID
-            ================================================= */}
-
             <div className="admin-products-grid">
               {products.length === 0 ? (
                 <p className="empty-state">
-                  No products yet. Add your first product
-                  using the form above.
+                  No products yet. Add your first product using the form above.
                 </p>
               ) : (
                 products.map((product) => (
-                  <div
-                    className="admin-product-card"
-                    key={product._id}
-                  >
-                    {/* Product Image */}
+                  <div className="admin-product-card" key={product._id}>
                     <img
                       src={product.imageLink}
                       alt={product.name}
                       className="admin-product-image"
                     />
 
-                    {/* Product Name */}
                     <h3>{product.name}</h3>
-                    {/* Product Description */}
-{product.description && (
-  <p className="admin-product-description">{product.description}</p>
-)}
 
+                    {product.description && (
+                      <p className="admin-product-description">{product.description}</p>
+                    )}
 
-                    {/* Product Price + Category */}
                     <p>
-                      Rs {product.price} ·{" "}
-                      {product.category}
+                      Rs {product.price} · {product.category}
                     </p>
 
-                    {/* Actions */}
+                    {product.prepTimeMinutes && (
+                      <p className="admin-prep-time-badge">
+                        ⏱ ~{product.prepTimeMinutes} min prep
+                      </p>
+                    )}
+
                     <div className="admin-product-actions">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleEditClick(product)
-                        }
-                      >
+                      <button type="button" onClick={() => handleEditClick(product)}>
                         Edit
                       </button>
 
                       <button
                         type="button"
-                        onClick={() =>
-                          handleDeleteClick(product._id)
-                        }
+                        onClick={() => handleDeleteClick(product._id)}
                         className="delete-btn"
                       >
                         Delete
@@ -555,30 +475,17 @@ function handleImageChange(e) {
         )}
       </div>
 
-      {/* =====================================================
-          DELETE CONFIRMATION MODAL
-      ===================================================== */}
-
       {deleteTargetId && (
         <div className="confirm-overlay">
           <div className="confirm-card">
-            <p>
-              Are you sure you want to delete this product?
-            </p>
+            <p>Are you sure you want to delete this product?</p>
 
             <div className="confirm-actions">
-              <button
-                type="button"
-                onClick={cancelDelete}
-              >
+              <button type="button" onClick={cancelDelete}>
                 Cancel
               </button>
 
-              <button
-                type="button"
-                onClick={confirmDelete}
-                className="confirm-delete-btn"
-              >
+              <button type="button" onClick={confirmDelete} className="confirm-delete-btn">
                 Delete
               </button>
             </div>

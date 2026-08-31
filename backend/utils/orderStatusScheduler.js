@@ -2,16 +2,15 @@ import Order from "../models/Order.js";
 import Notification from "../models/Notification.js";
 import { getIO } from "./sockets.js";
 
-const DELIVERY_BUFFER_MIN = 15; 
 
 function getExpectedStatus(order) {
   const elapsedMin = (Date.now() - order.createdAt.getTime()) / 60000;
   const prepEnd = order.prepTimeMinutes + order.queueDelayMinutes + order.adjustmentMinutes;
-  const deliveryEnd = prepEnd + DELIVERY_BUFFER_MIN;
+  const deliveryEnd = prepEnd + (order.driveMinutes ?? 15);
 
   if (elapsedMin < prepEnd) return "Preparing";
   if (elapsedMin < deliveryEnd) return "Out for delivery";
-  return "Out for delivery"; // Delivered stays a manual/rider-confirmed action
+  return "Out for delivery";
 }
 
 const STATUS_ORDER = ["Pending", "Preparing", "Out for delivery", "Delivered"];

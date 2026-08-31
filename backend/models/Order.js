@@ -21,6 +21,7 @@ const orderSchema = new mongoose.Schema(
     ],
     area: { type: String, required: true },
     deliveryCharge: { type: Number, required: true, default: 0 },
+    driveMinutes: { type: Number, default: 15 },
     totalAmount: { type: Number, required: true, min: 0 },
     status: {
       type: String,

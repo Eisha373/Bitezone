@@ -209,15 +209,24 @@ export function OrdersList() {
                     </select>
 
                     {isActive && (
-                      <div className="delay-actions">
-                        <button type="button" className="delay-btn" onClick={() => handleDelay(order._id, 10)}>
-                          +10 min
-                        </button>
-                        <button type="button" className="delay-btn" onClick={() => handleDelay(order._id, 20)}>
-                          +20 min
-                        </button>
-                      </div>
-                    )}
+  <select
+    className="delay-select"
+    defaultValue=""
+    onChange={(e) => {
+      const minutes = Number(e.target.value);
+      if (minutes) handleDelay(order._id, minutes);
+      e.target.value = ""; // reset dropdown after firing, so it's ready for the next delay
+    }}
+  >
+    <option value="" disabled>
+      Delay by...
+    </option>
+    <option value="5">+5 min</option>
+    <option value="10">+10 min</option>
+    <option value="20">+20 min</option>
+    <option value="30">+30 min</option>
+  </select>
+)}
                   </div>
                 );
               })}

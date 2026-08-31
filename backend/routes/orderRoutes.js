@@ -33,10 +33,11 @@ router.post("/", verifyToken, async (req, res) => {
       });
     }
 
-    const deliveryCharge = DELIVERY_ZONES[area] || 0;
+    const zone = DELIVERY_ZONES[area] || { charge: 0, driveMinutes: 15 };
+    const deliveryCharge = zone.charge;
     const totalAmount = subtotal + deliveryCharge;
 
-    const { estimatedDeliveryTime, prepTime, delay } = await calculateEtaForNewOrder(items);
+    const { estimatedDeliveryTime, prepTime, delay } = await calculateEtaForNewOrder(items, zone.driveMinutes);
 
     const orderNumber = await getNextOrderNumber();
 
@@ -51,6 +52,7 @@ router.post("/", verifyToken, async (req, res) => {
       estimatedDeliveryTime,
       prepTimeMinutes: prepTime,
       queueDelayMinutes: delay,
+      driveMinutes: zone.driveMinutes,
       statusHistory: [{ status: "Pending", changedAt: new Date() }],
     });
 
