@@ -2,11 +2,13 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;   
+  justify-content: space-between;   /* pushes heading up, buttons down */
   align-items: center;
-  background-image: url("/images/background-image.jpg");
+  padding: 8vh 20px 6vh;             /* top space smaller than bottom */
+  background-image: url("/images/welcome-image.jpg");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
 }
 
@@ -17,35 +19,21 @@
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 0;   /* explicit, so it stays below overlay + actions regardless of DOM order */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.3) 0%,
-    rgba(0,0,0,0.55) 50%,
-    rgba(0,0,0,0.75) 100%
+    rgba(0,0,0,0.45) 0%,
+    rgba(0,0,0,0.65) 50%,
+    rgba(0,0,0,0.75) 100%   /* lowered from 0.9 so buttons don't get swallowed */
   );
 }
-
 .welcome-overlay {
   position: relative;
   z-index: 1;
   text-align: center;
   color: white;
-  padding: 20px;
   max-width: 480px;
   width: 100%;
-}
-
-.welcome-badge {
-  display: inline-block;
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid #f97316;
-  color: #f97316;
-  padding: 6px 18px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 18px;
-  letter-spacing: 0.3px;
 }
 
 .welcome-heading {
@@ -54,29 +42,37 @@
   margin-bottom: 14px;
   line-height: 1.15;
 }
-.welcome-actions a {
-  text-decoration: none;
-}
 
+/* tagline now shares the brand's look — same family, orange accent */
 .welcome-subtext {
+  font-family: inherit;
   font-size: 1.05rem;
-  color: #e5e5e5;
-  margin-bottom: 36px;
+  font-weight: 600;
+  font-style: italic;
+  color: #f97316;
+  letter-spacing: 0.2px;
+  margin-bottom: 0;
   line-height: 1.5;
 }
 
 .welcome-actions {
   display: flex;
+  position: relative;   /* add this */
+  z-index: 1;  
   flex-direction: column;
-  gap: 12px;
+  gap: 28px;                 /* more space between login block and signup block */
   width: 100%;
-  max-width: 240px;   
+  max-width: 240px;
   margin: 0 auto;
 }
 
+.welcome-actions a {
+  text-decoration: none;
+}
+
 .welcome-btn {
-  padding: 12px 24px;   
-  font-size: 0.95rem;   
+  padding: 12px 24px;
+  font-size: 0.95rem;
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
@@ -88,12 +84,13 @@
   gap: 8px;
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
-
-.welcome-btn.primary {
+.welcome-btn.primary,
+.welcome-btn.secondary {
   background-color: #f97316;
-  color: white;
-  box-shadow: 0 4px 14px rgba(246, 118, 38, 0.35);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
 }
+
 
 .welcome-btn.primary:hover {
   background-color: #8a83ef;
@@ -101,21 +98,16 @@
   box-shadow: 0 6px 18px rgba(57, 73, 248, 0.45);
 }
 
-.welcome-btn.secondary {
-  background-color:#f97316;
-  color: white;
-  border: #f97316;
-}
 
 .welcome-btn.secondary:hover {
   background-color: #8a83ef;
-  color:white;
+  color: white;
   transform: translateY(-2px);
 }
 
 .welcome-helper-text {
   font-size: 0.95rem;
-  font-weight:250;
-  color: white;
-  margin-top: 4px;
+  font-weight: 500;         /* was 250 — too thin to read on dark photo */
+  color: #f2f2f2;           /* brighter than pure white-on-grey, more legible */
+  margin-bottom: 10px;
 }

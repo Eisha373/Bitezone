@@ -4,7 +4,7 @@
     align-items:center;
     padding:20px;
     min-height:100vh;
-    background-image: url("/images/background-image.jpg");
+    background-image: url("/images/welcome-image.jpg");
   background-size: cover;
   background-position: center;
   position:relative;

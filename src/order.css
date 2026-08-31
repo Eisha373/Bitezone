@@ -44,6 +44,14 @@
   margin-bottom: 12px;
 }
 
+.order-items {
+  padding: 0 24px;
+}
+.tracking-total {
+  padding: 0 24px 22px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
 .view-details-btn {
   background-color: #6372fc;
   color: white;
