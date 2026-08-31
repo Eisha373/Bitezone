@@ -8,6 +8,9 @@ export function initSocket(server) {
   });
 
   io.on("connection", (socket) => {
+    socket.on("joinUser", (userId) => {
+      socket.join(`user:${userId}`);
+    });
     socket.on("joinOrder", (orderId) => {
       socket.join(`order:${orderId}`);
     });

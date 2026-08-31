@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AppNavbar } from "../../components/AppNavbar";
 import { Footer } from "../../components/Footer";
 import "../../profile.css";
@@ -24,6 +25,20 @@ export function Profile() {
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
   const [savingPassword, setSavingPassword] = useState(false);
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  function resetPasswordForm() {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setPasswordError("");
+    setShowCurrentPassword(false);
+    setShowNewPassword(false);
+    setShowConfirmPassword(false);
+  }
 
   async function handleSavePhone() {
     setPhoneError("");
@@ -94,10 +109,8 @@ export function Profile() {
         return;
       }
       setPasswordSuccess("Password changed successfully");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmNewPassword("");
       setShowPasswordForm(false);
+      resetPasswordForm();
     } catch {
       setPasswordError("Something went wrong. Please try again.");
     } finally {
@@ -120,13 +133,14 @@ export function Profile() {
           {savedUser.role === "admin" && <span className="profile-admin-badge">Admin</span>}
 
           <div className="profile-field">
-  <label>Full Name</label>
-  <input type="text" value={savedUser.name} disabled className="profile-field-input" />
-</div>
+            <label>Full Name</label>
+            <input type="text" value={savedUser.name} disabled className="profile-field-input" />
+          </div>
+
           <div className="profile-field">
-  <label>Email</label>
-  <input type="text" value={savedUser.email} disabled className="profile-field-input" />
-</div>
+            <label>Email</label>
+            <input type="text" value={savedUser.email} disabled className="profile-field-input" />
+          </div>
 
           <div className="profile-field">
             <label>Phone</label>
@@ -136,7 +150,8 @@ export function Profile() {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
-                  maxLength={11} className="profile-field-input"
+                  maxLength={11}
+                  className="profile-field-input"
                 />
                 <button className="profile-save-btn" onClick={handleSavePhone} disabled={savingPhone}>
                   {savingPhone ? "Saving..." : "Save"}
@@ -166,63 +181,31 @@ export function Profile() {
 
           <div className="profile-field">
             <label>Delivery Area</label>
-            <input input="text" value={savedUser.area || "—"}disable className="profile-field-input"/>
+            <input
+              type="text"
+              value={savedUser.area || "—"}
+              disabled
+              className="profile-field-input"
+            />
           </div>
 
           <div className="profile-field">
             <label>Address</label>
-            <input value={savedUser.address || "—"} disable className="profile-field-input"/>
+            <input
+              type="text"
+              value={savedUser.address || "—"}
+              disabled
+              className="profile-field-input"
+            />
           </div>
 
           <hr />
 
           <div className="profile-field">
             <label>Password</label>
-            {!showPasswordForm ? (
-              <button className="profile-edit-btn" onClick={() => setShowPasswordForm(true)}>
-                Change Password
-              </button>
-            ) : (
-              <form className="password-form" onSubmit={handleChangePassword}>
-                <input
-                  type="password"
-                  placeholder="Current password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder="New password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm new password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
-                {passwordError && <p className="profile-error">{passwordError}</p>}
-                <div className="password-form-actions">
-                  <button type="submit" className="profile-save-btn" disabled={savingPassword}>
-                    {savingPassword ? "Saving..." : "Update Password"}
-                  </button>
-                  <button
-                    type="button"
-                    className="profile-cancel-btn"
-                    onClick={() => {
-                      setShowPasswordForm(false);
-                      setCurrentPassword("");
-                      setNewPassword("");
-                      setConfirmNewPassword("");
-                      setPasswordError("");
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            )}
+            <button className="profile-edit-btn" onClick={() => setShowPasswordForm(true)}>
+              Change Password
+            </button>
           </div>
 
           {passwordSuccess && <p className="profile-success">{passwordSuccess}</p>}
@@ -233,6 +216,83 @@ export function Profile() {
           </button>
         </div>
       </div>
+
+      {showPasswordForm && (
+        <div className="confirm-overlay">
+          <div className="password-modal-card">
+            <h2>Change Password</h2>
+
+            <form className="password-form" onSubmit={handleChangePassword}>
+              <div className="password-field">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  placeholder="Current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="toggle-password-btn"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                >
+                  {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="password-field">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  placeholder="New password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="toggle-password-btn"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="password-field">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm new password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="toggle-password-btn"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {passwordError && <p className="profile-error">{passwordError}</p>}
+
+              <div className="password-form-actions">
+                <button type="submit" className="profile-save-btn" disabled={savingPassword}>
+                  {savingPassword ? "Saving..." : "Update Password"}
+                </button>
+                <button
+                  type="button"
+                  className="profile-cancel-btn"
+                  onClick={() => {
+                    setShowPasswordForm(false);
+                    resetPasswordForm();
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );

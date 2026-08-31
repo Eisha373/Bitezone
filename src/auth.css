@@ -219,7 +219,7 @@
   text-decoration: underline;
 }
 .auth-card p.forgot-password-link {
-  text-align: right;   
+  text-align: left;   
   margin-top: 4px;
   margin-bottom: 16px;
   font-size: 0.85rem;
