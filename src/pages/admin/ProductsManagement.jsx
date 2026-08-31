@@ -11,6 +11,8 @@ const CATEGORIES = [
   "pasta",
   "nuggets",
   "shawarma",
+  "desert",
+  "refreshment",
 ];
 
 export function ProductsManagement() {

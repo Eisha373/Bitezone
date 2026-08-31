@@ -11,6 +11,9 @@ const CATEGORY_LABELS = {
   sandwich: "Sandwiches",
   fries: "Fries",
   pasta: "Pasta",
+  shawarma:"Shawarma",
+  desert:"Desert",
+  refreshment:"Refreshment",
 };
 
 const CATEGORY_ORDER = ["burger", "pizza", "sandwich", "nuggets", "fries", "pasta"];

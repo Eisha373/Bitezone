@@ -2,13 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import http from "http";                    // added
-import { initSocket } from "./utils/sockets.js"; // added
+import http from "http";
+import { initSocket } from "./utils/sockets.js";
+import { runStatusAutoAdvance } from "./utils/orderStatusScheduler.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
-
 
 dotenv.config();
 
@@ -26,8 +26,10 @@ app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
 
-const server = http.createServer(app);       // added — wrap express in http server
-initSocket(server);                          // added — attach socket.io to it
+const server = http.createServer(app);
+initSocket(server);
+
+setInterval(runStatusAutoAdvance, 30 * 1000);
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`)); // changed: app.listen → server.listen
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
