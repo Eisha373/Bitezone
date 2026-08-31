@@ -31,7 +31,7 @@ export function ProductCard({ product }) {
         <p className="product-description">{product.description}</p>
       )}
 
-      <p className="product-price">Price: Rs {product.price}</p>
+      <p className="product-price">Rs {product.price}</p>
 
       <div className="quantity-control">
         <button className="qty-btn" onClick={handleDecrement}>-</button>

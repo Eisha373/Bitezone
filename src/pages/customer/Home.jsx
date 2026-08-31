@@ -15,12 +15,16 @@ const CATEGORY_LABELS = {
 
 const CATEGORY_ORDER = ["burger", "pizza", "sandwich", "nuggets", "fries", "pasta"];
 
+
 export function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     async function fetchProducts() {
@@ -62,38 +66,38 @@ export function Home() {
   })).filter((group) => group.items.length > 0);
 
   return (
-    <div className="page-wrapper">
-      <AppNavbar />
+  <div className="page-wrapper">
+    <AppNavbar />
 
-      <div className="home-container">
-        <h1>Menu</h1>
+    <div className={`home-container ${isAdmin ? "theme-admin" : "theme-customer"}`}>
+      <h1>Menu</h1>
 
-        <input
-          type="text"
-          className="menu-search-bar"
-          placeholder="Search for burgers, fries, wraps..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <input
+        type="text"
+        className="menu-search-bar"
+        placeholder="Search for your favourite items here"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
-        <div className="category-pills">
+      <div className="category-pills">
+        <button
+          className={`category-pill ${activeCategory === "all" ? "category-pill-active" : ""}`}
+          onClick={() => setActiveCategory("all")}
+        >
+          All
+        </button>
+        {availableCategories.map((catKey) => (
           <button
-            className={`category-pill ${activeCategory === "all" ? "category-pill-active" : ""}`}
-            onClick={() => setActiveCategory("all")}
+            key={catKey}
+            className={`category-pill ${activeCategory === catKey ? "category-pill-active" : ""}`}
+            onClick={() => setActiveCategory(catKey)}
           >
-            All
+            {CATEGORY_LABELS[catKey]}
           </button>
-          {availableCategories.map((catKey) => (
-            <button
-              key={catKey}
-              className={`category-pill ${activeCategory === catKey ? "category-pill-active" : ""}`}
-              onClick={() => setActiveCategory(catKey)}
-            >
-              {CATEGORY_LABELS[catKey]}
-            </button>
-          ))}
-        </div>
-
+        ))}
+      </div>
+      
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? (
           <div className="page-loader">

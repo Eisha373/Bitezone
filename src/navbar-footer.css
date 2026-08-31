@@ -64,6 +64,15 @@
   border-radius: 999px;
   margin-left: 4px;
 }
+.cart-badge-admin {
+  background: #8b5cf6;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
 
 .notif-bell-btn {
   position: relative;

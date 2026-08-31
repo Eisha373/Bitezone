@@ -47,11 +47,11 @@
   color: #777;
   margin: 4px 0 10px;
   line-height: 1.4;
-  min-height: 1.4em; /* keeps card heights consistent even if some products have no description */
+  min-height: 2.8em; /* 2 lines × 1.4 line-height — always reserves full clamp space */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden; /* truncates long descriptions to 2 lines instead of breaking card layout */
+  overflow: hidden;
 }
 
 .menu-search-bar:focus {
@@ -74,7 +74,7 @@
   color: #1a1a1a;
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid #f97316;
+  border-bottom: 2px solid #f97316; /* fallback default */
   display: inline-block;
 }
 /* =========================
@@ -84,20 +84,15 @@
 .product-card {
   width: 100%;
   box-sizing: border-box;
-
   background: white;
   border-radius: 12px;
-
   padding: 18px;
-
   text-align: center;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-  transition: transform 0.2s ease,
-              box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
-
 .product-card:hover {
   transform: translateY(-3px);
 
@@ -124,17 +119,43 @@
   transition: all 0.2s ease;
 }
 
-.category-pill:hover {
+/* Customer theme — orange */
+.theme-customer .category-pill:hover {
   border-color: #f97316;
   color: #f97316;
 }
-
-.category-pill-active {
+.theme-customer .category-pill-active {
   background: #f97316;
   color: white;
   border-color: #f97316;
 }
+.theme-customer .category-pill-active:hover {
+  background: #f97316;
+  color: white;
+  border-color: #f97316;
+}
+.theme-customer .menu-category-title {
+  border-bottom-color: #f97316;
+}
 
+/* Admin theme — navbar purple */
+.theme-admin .category-pill:hover {
+  border-color: #241b2f;
+  color: #241b2f;
+}
+.theme-admin .category-pill-active {
+  background: #241b2f;
+  color: white;
+  border-color: #241b2f;
+}
+.theme-admin .category-pill-active:hover {
+  background: #241b2f;
+  color: white;
+  border-color: #241b2f;
+}
+.theme-admin .menu-category-title {
+  border-bottom-color: #241b2f;
+}
 /* =========================
    PRODUCT IMAGE
 ========================= */
@@ -234,10 +255,9 @@
 
 .product-action {
   display: flex;
-
   justify-content: center;
-
-  margin-top: 14px;
+  margin-top: auto; /* pushes this to the bottom of the flex column, regardless of content above */
+  padding-top: 14px;
 }
 
 
