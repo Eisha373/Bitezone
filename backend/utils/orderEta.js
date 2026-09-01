@@ -1,15 +1,12 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 
-const DELIVERY_BUFFER_MIN = 15;
-
 function getDelayForActiveCount(activeCount) {
   if (activeCount <= 3) return 0;
   if (activeCount <= 7) return 10;
   return 20;
 }
 
-// Prep happens in parallel per item, not sequentially — use the max, not the sum
 async function getPrepTimeForItems(items) {
   const productIds = items.map((i) => i.product);
   const products = await Product.find({ _id: { $in: productIds } });
@@ -17,17 +14,17 @@ async function getPrepTimeForItems(items) {
   return Math.max(...prepTimes, 15);
 }
 
-export async function calculateEtaForNewOrder(items) {
+export async function calculateEtaForNewOrder(items, driveMinutes = 15) {
   const activeCount = await Order.countDocuments({
     status: { $in: ["Pending", "Preparing", "Out for delivery"] },
   });
 
   const delay = getDelayForActiveCount(activeCount);
   const prepTime = await getPrepTimeForItems(items);
-  const totalMinutes = prepTime + DELIVERY_BUFFER_MIN + delay;
+  const totalMinutes = prepTime + driveMinutes + delay;
   const eta = new Date(Date.now() + totalMinutes * 60 * 1000);
 
-  return { estimatedDeliveryTime: eta, activeCount, delay, prepTime };
+  return { estimatedDeliveryTime: eta, activeCount, delay, prepTime, driveMinutes };
 }
 
 export async function recalcActiveOrdersEta() {
@@ -42,7 +39,8 @@ export async function recalcActiveOrdersEta() {
   for (const order of activeOrders) {
     const prepTimes = order.items.map((i) => i.product?.prepTimeMinutes ?? 15);
     const prepTime = Math.max(...prepTimes, 15);
-    const totalMinutes = prepTime + DELIVERY_BUFFER_MIN + delay + order.adjustmentMinutes;
+    const driveMinutes = order.driveMinutes ?? 15; // snapshot taken at order creation, see model change below
+    const totalMinutes = prepTime + driveMinutes + delay + order.adjustmentMinutes;
 
     const newEta = new Date(order.createdAt.getTime() + totalMinutes * 60 * 1000);
     await Order.updateOne(

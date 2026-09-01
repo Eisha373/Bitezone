@@ -29,7 +29,7 @@ app.get("/", (req, res) => { res.send("Bitezone backend is running"); });
 const server = http.createServer(app);
 initSocket(server);
 
-setInterval(runStatusAutoAdvance, 30 * 1000);
+setInterval(runStatusAutoAdvance, 3*60 * 1000);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

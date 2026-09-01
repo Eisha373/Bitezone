@@ -17,7 +17,10 @@ export function Checkout() {
   const [phone, setPhone] = useState(savedUser.phone || "");
   const [area, setArea] = useState(savedUser.area || "");
   const [address, setAddress] = useState(savedUser.address || "");
-  const deliveryCharge = DELIVERY_ZONES[area] || 0;
+
+  const zone = DELIVERY_ZONES[area] || { charge: 0, driveMinutes: 0 };
+  const deliveryCharge = zone.charge;
+  const estimatedDriveMinutes = zone.driveMinutes;
   const finalTotal = totalPrice + deliveryCharge;
 
   const [areaError, setAreaError] = useState("");
@@ -73,7 +76,6 @@ export function Checkout() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ items, area, deliveryAddress: address }),
-        
       });
 
       const data = await response.json();
@@ -149,16 +151,16 @@ export function Checkout() {
                 </button>
                 {areaOpen && (
                   <ul className="custom-select-options">
-                    {Object.keys(DELIVERY_ZONES).map((zone) => (
+                    {Object.keys(DELIVERY_ZONES).map((zoneName) => (
                       <li
-                        key={zone}
-                        className={zone === area ? "selected" : ""}
+                        key={zoneName}
+                        className={zoneName === area ? "selected" : ""}
                         onClick={() => {
-                          setArea(zone);
+                          setArea(zoneName);
                           setAreaOpen(false);
                         }}
                       >
-                        {zone}
+                        {zoneName}
                       </li>
                     ))}
                   </ul>
@@ -215,6 +217,11 @@ export function Checkout() {
             <span>Delivery {area && `(${area})`}</span>
             <span>Rs {deliveryCharge}</span>
           </div>
+          {area && (
+            <p className="checkout-eta-hint">
+              🕒 Estimated delivery in ~{estimatedDriveMinutes} min after preparation
+            </p>
+          )}
           <hr />
           <div className="summary-total">
             <span>Total</span>
