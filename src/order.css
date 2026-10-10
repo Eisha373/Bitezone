@@ -234,13 +234,11 @@
   font-size: 14px;
   flex-shrink: 0;
 }
-.vt-cancelled-title {
-  font-weight: 700;
-  color: #c0392b;
-}
+
 .vt-cancelled-sub {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #a94442;
+  font-weight: 500;
 }
 
 /* ===== Bottom ETA banner (dark, like the reference) ===== */
@@ -315,4 +313,14 @@
     margin-top: 6px;
     margin-bottom: 10px;
   }
+}
+/* ===== ETA banner: customer theme (orange, matches navbar) ===== */
+.vt-eta-banner.vt-eta-customer {
+  background: linear-gradient(135deg, #3b2314 0%, #2b1a10 100%);
+}
+.vt-eta-banner.vt-eta-customer .vt-eta-time {
+  color: #fff;
+}
+.vt-eta-banner.vt-eta-customer .vt-eta-label {
+  color: #fff7ed;
 }

@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../../order.css";
 import { Footer } from "../../components/Footer";
 import { useCart } from "../../context/CartContext";
 import { AppNavbar } from "../../components/AppNavbar";
 import "../../cart.css";
 
 export function Cart() {
+
+  const navigate = useNavigate();
   const { cartItems, updateQuantity, totalPrice,removeFromCart } = useCart();
 
   const isCartEmpty = cartItems.length === 0;
@@ -30,8 +33,15 @@ export function Cart() {
         <h1>Your Cart</h1>
 
         {isCartEmpty ? (
-          <p className="empty-state">Your cart is empty.</p>
-        ) : (
+
+<div className="empty-orders">
+  <div className="empty-orders-icon">🛒</div>
+  <h3>Your cart is empty</h3>
+  <p>Looks like you haven't added anything yet.</p>
+  <button className="empty-orders-cta" onClick={() => navigate("/menu")}>
+    Browse Menu
+  </button>
+</div>) : (
           <>
             <div className="cart-items">
               {cartItems.map((item) => (

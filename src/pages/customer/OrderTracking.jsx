@@ -24,16 +24,24 @@ function VerticalTracker({ order }) {
   }
 
   if (isCancelled) {
-    return (
-      <div className="vt-cancelled">
-        <span className="vt-cancelled-dot">✕</span>
-        <div>
-          <p className="vt-cancelled-title">Order Cancelled</p>
-          <p className="vt-cancelled-sub">This order will not be delivered.</p>
-        </div>
+  const cancelEntry = order.statusHistory?.find((h) => h.status === "Cancelled");
+  const cancelledAt = cancelEntry?.changedAt || order.updatedAt;
+
+  return (
+    <div className="vt-cancelled">
+      <span className="vt-cancelled-dot">✕</span>
+      <div>
+        <p className="vt-cancelled-sub">
+          {cancelledAt
+            ? `Order Cancelled on ${new Date(cancelledAt).toLocaleDateString()} at ${new Date(
+                cancelledAt
+              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+            : "This order will not be delivered."}
+        </p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="vt-timeline">
@@ -73,6 +81,8 @@ export function OrderTracking() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cancelling, setCancelling] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     async function fetchOrder() {
@@ -145,6 +155,7 @@ export function OrderTracking() {
 
   return (
     <div>
+
       <AppNavbar />
       <div className="orders-container">
         <h1>Order Tracking</h1>
@@ -158,8 +169,9 @@ export function OrderTracking() {
           order && (
             <>
               {showEta && (
-                <div className="vt-eta-banner vt-eta-top">
-                  <p className="vt-eta-time">
+
+<div className={`vt-eta-banner vt-eta-top ${isAdmin ? "vt-eta-admin" : "vt-eta-customer"}`}>
+  <p className="vt-eta-time">
                     {new Date(order.estimatedDeliveryTime).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
