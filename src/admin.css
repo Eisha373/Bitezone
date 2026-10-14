@@ -982,3 +982,222 @@
     margin-right: 12px;
   }
 }
+
+.manage-admins-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+.manage-admins-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.manage-admins-card h2 {
+  margin-bottom: 14px;
+  font-size: 1.15rem;
+}
+.manage-admins-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.manage-admins-card input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+.manage-admins-btn {
+  margin-top: 12px;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background: #241b2f;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.manage-admins-btn:hover {
+  background: #8b5cf6;
+}
+.manage-admins-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.manage-admins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.manage-admins-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+.manage-admins-name {
+  font-weight: 600;
+}
+.manage-admins-meta {
+  font-size: 0.8rem;
+  color: #777;
+}
+.manage-admins-you {
+  background: #ede9fe;
+  color: #6c2bd9;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+.manage-admins-remove {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #c0392b;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.manage-admins-remove:hover {
+  background: #fdecea;
+}
+.ca-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+}
+.ca-card{
+    max-width: none;
+
+}
+.ma-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ma-header h1 { margin: 0; }
+.ma-link-btn {
+  padding: 9px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #241b2f;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+.ma-link-primary { background: #241b2f; color: #fff; border-color: #241b2f; }
+.ma-link-primary:hover { background: #8b5cf6; border-color: #8b5cf6; }
+.ma-link-disabled { opacity: 0.55; cursor: not-allowed; }
+
+.ma-slots { margin-bottom: 16px; }
+.ma-slots-text { font-size: 0.85rem; color: #555; margin-bottom: 6px; }
+.ma-slots-full .ma-slots-text { color: #c0392b; font-weight: 600; }
+.ma-slots-bar { height: 8px; background: #e9e5f2; border-radius: 999px; overflow: hidden; }
+.ma-slots-bar span { display: block; height: 100%; background: #8b5cf6; border-radius: 999px; transition: width 0.3s ease; }
+.ma-slots-full .ma-slots-bar span { background: #ef4444; }
+
+.ma-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  font-size: 0.92rem;
+}
+.ma-search:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+
+.ma-avatar {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 50%;
+  background: #6c2bd9; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.ma-info { flex: 1; min-width: 0; }
+.ma-badge {
+  margin-left: 6px;
+  background: #f1f1f1; color: #555;
+  font-size: 0.7rem; padding: 2px 8px;
+  border-radius: 999px; font-weight: 600;
+}
+.ma-badge-owner { background: #fef3c7; color: #92400e; }
+
+.ma-skeleton {
+  height: 72px; border-radius: 10px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e6e6e6 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: ma-shimmer 1.4s ease infinite;
+}
+@keyframes ma-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+.ma-empty { text-align: center; padding: 30px 10px; color: #777; }
+.ma-empty-icon { font-size: 2rem; margin-bottom: 6px; }
+
+.ma-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 900; padding: 16px;
+}
+.ma-modal {
+  background: #fff; border-radius: 14px;
+  padding: 24px; max-width: 420px; width: 100%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.ma-modal h3 { margin-bottom: 10px; }
+.ma-modal p { color: #555; font-size: 0.92rem; line-height: 1.5; }
+.ma-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.ma-btn-cancel, .ma-btn-danger {
+  padding: 9px 18px; border-radius: 20px;
+  font-weight: 600; cursor: pointer; font-size: 0.88rem;
+}
+.ma-btn-cancel { background: #fff; border: 1px solid #ddd; color: #333; }
+.ma-btn-danger { background: #dc2626; border: none; color: #fff; }
+.ma-btn-danger:hover { background: #b91c1c; }
+.ma-btn-cancel:disabled, .ma-btn-danger:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.ca-fieldset { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ca-fieldset:disabled { opacity: 0.6; }
+.ca-rules { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 0.8rem; color: #888; }
+.ca-rule-ok { color: #16a34a; font-weight: 600; }
+.manage-admins-btn:disabled { background: #9ca3af; }
+
+@media (max-width: 800px) {
+  .manage-admins-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Password input: eye button text ke upar na aaye */
+.manage-admins-card .password-field input {
+  padding-right: 44px;
+}
+
+/* Labels Signup jaisi */
+.ca-fieldset label {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #121111;
+}
+
+/* Area dropdown: Signup mein sirf 1 item dikhta hai, yahan 5 chahiye */
+.ca-card .custom-select-options {
+  height: 190px;
+}
+
+/* Error popup agle label ko na dhake */
+.ca-card .field-wrapper {
+  margin-bottom: 14px;
+}

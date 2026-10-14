@@ -17,6 +17,9 @@ import { ProductsManagement } from "./pages/admin/ProductsManagement";
 import { ForgotPassword } from "./pages/auth/ForgotPassword";
 import { ResetPassword } from "./pages/auth/ResetPassword";
 import { NotificationsProvider } from "./context/NotificationsContext";
+import { ManageAdmins } from "./pages/admin/ManageAdmins";
+import { ToastProvider } from "./context/ToastContext";
+import { CreateAdmin } from "./pages/admin/CreateAdmin";
 import "./welcome.css";
 import "./auth.css";
 import "./home.css";
@@ -30,6 +33,7 @@ import "./App.css";
 
 function App() {
   return (
+    <ToastProvider>
     <NotificationsProvider>
       <CartProvider>
         <BrowserRouter>
@@ -50,10 +54,14 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/admin/admins" element={<ManageAdmins />} />
+            <Route path="/admin/admins/create" element={<CreateAdmin />} />
+
           </Routes>
         </BrowserRouter>
       </CartProvider>
     </NotificationsProvider>
+    </ToastProvider>
   );
 }
 export default App;

@@ -27,6 +27,9 @@ export function AdminNavbar() {
         <li>
           <Link to="/admin/products">Products</Link>
         </li>
+        <li>
+  <Link to="/admin/admins">Admins</Link>
+</li>
 
         {/* More Dropdown */}
         <li

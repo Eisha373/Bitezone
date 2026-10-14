@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"; 
 import crypto from "crypto";
 import User from "../models/User.js";
+import { DELIVERY_ZONES } from "../data/deliveryZones.js";
 import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router(); 
@@ -197,14 +198,25 @@ router.patch("/change-password", verifyToken, async (req, res) => {
   }
 });
 const ADMIN_PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+const getMaxAdmins = () => Number(process.env.MAX_ADMINS) || 3;
 
-// Create Admin (created by an existing admin)
 router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, phone, area, address, password } = req.body;
+    const maxAdmins = getMaxAdmins();
 
-    if (!name || !email || !phone || !password) {
+    const adminCount = await User.countDocuments({ role: "admin" });
+    if (adminCount >= maxAdmins) {
+      return res.status(403).json({
+        message: `Admin limit reached (${maxAdmins}). Remove an admin before adding a new one.`,
+      });
+    }
+
+    if (!name || !email || !phone || !area || !address?.trim() || !password) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+    if (!DELIVERY_ZONES[area]) {
+      return res.status(400).json({ message: "Invalid delivery area" });
     }
     if (!ADMIN_PASSWORD_PATTERN.test(password)) {
       return res.status(400).json({
@@ -221,8 +233,8 @@ router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
       name,
       email,
       phone,
-      area: "Model Town",
-      address: "Bitezone HQ",
+      area,
+      address: address.trim(),
       password: await bcrypt.hash(password, 10),
       role: "admin",
       createdBy: req.user.id,
@@ -237,23 +249,28 @@ router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// List of all admins
 router.get("/admins", verifyToken, isAdmin, async (req, res) => {
   try {
     const admins = await User.find({ role: "admin" })
       .select("name email phone createdAt createdBy")
+      .sort({ createdAt: 1 })
       .populate("createdBy", "name email");
-    res.json(admins);
+
+    const list = admins.map((a, i) => ({ ...a.toObject(), isOwner: i === 0 }));
+    res.json({ admins: list, maxAdmins: getMaxAdmins() });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
 
-// Demote Admin to Customer (cannot demote self, nor the last admin)
 router.patch("/admins/:id/demote", verifyToken, isAdmin, async (req, res) => {
   try {
     if (req.params.id === req.user.id) {
-      return res.status(400).json({ message: "You cannot demote yourself" });
+      return res.status(400).json({ message: "You cannot remove your own admin access" });
+    }
+    const owner = await User.findOne({ role: "admin" }).sort({ createdAt: 1 }).select("_id");
+    if (owner && owner._id.toString() === req.params.id) {
+      return res.status(400).json({ message: "The owner admin cannot be removed" });
     }
     const adminCount = await User.countDocuments({ role: "admin" });
     if (adminCount <= 1) {
@@ -270,4 +287,5 @@ router.patch("/admins/:id/demote", verifyToken, isAdmin, async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 });
+
 export default router;

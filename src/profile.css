@@ -232,3 +232,32 @@
   gap: 10px;
   align-items: center;
 }
+/* ===== THEME: customer = orange, admin = purple ===== */
+
+/* Logout button */
+.theme-customer .profile-logout-btn { background: #fff1e6; color: #ea580c; }
+.theme-customer .profile-logout-btn:hover { background: #f97316; color: #fff; }
+.theme-admin .profile-logout-btn { background: #ede9fe; color: #6c2bd9; }
+.theme-admin .profile-logout-btn:hover { background: #8b5cf6; color: #fff; }
+
+/* Avatar */
+.theme-customer .profile-avatar { background: #2b1a10; color: #fff7ed; }
+.theme-admin .profile-avatar { background: #6c2bd9; }
+
+/* Edit / Change Password button */
+.theme-customer .profile-edit-btn { border-color: #f97316; color: #ea580c; }
+.theme-customer .profile-edit-btn:hover { background: #f97316; color: #fff; }
+.theme-admin .profile-edit-btn { border-color: #8b5cf6; color: #6c2bd9; }
+.theme-admin .profile-edit-btn:hover { background: #8b5cf6; color: #fff; }
+
+/* Save / Update Password button */
+.theme-customer .profile-save-btn,
+.theme-customer .password-modal-card .profile-save-btn { background: #f97316; }
+.theme-admin .profile-save-btn,
+.theme-admin .password-modal-card .profile-save-btn { background: #241b2f; }
+.theme-admin .profile-save-btn:hover { background: #8b5cf6; }
+.theme-customer .profile-save-btn:hover { background: #ea580c; }
+
+/* Eye icon hover */
+.theme-customer .toggle-password-btn:hover { color: #ea580c; }
+.theme-admin .toggle-password-btn:hover { color: #8b5cf6; }

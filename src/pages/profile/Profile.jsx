@@ -11,6 +11,7 @@ const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 export function Profile() {
   const navigate = useNavigate();
   const savedUser = JSON.parse(localStorage.getItem("user")) || {};
+  const isAdmin = savedUser.role === "admin";
 
   const [phone, setPhone] = useState(savedUser.phone || "");
   const [editingPhone, setEditingPhone] = useState(false);
@@ -123,7 +124,7 @@ export function Profile() {
   }
 
   return (
-    <div>
+      <div className={isAdmin ? "theme-admin" : "theme-customer"}>
       <AppNavbar />
       <div className="profile-container">
         <h1>My Profile</h1>

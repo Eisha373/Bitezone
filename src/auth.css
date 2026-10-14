@@ -584,3 +584,13 @@
     width: 100%;
   }
 }
+/* Login/Signup: sab inputs ka same size */
+.auth-card input:not([type="radio"]) {
+  padding: 9px 10px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+.auth-card .password-field input {
+  padding: 9px 44px 9px 10px;
+  font-size: 0.9rem;
+}
