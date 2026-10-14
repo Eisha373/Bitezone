@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";
+import rateLimit from "express-rate-limit";
 import { initSocket } from "./utils/sockets.js";
 import { runStatusAutoAdvance } from "./utils/orderStatusScheduler.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -23,6 +24,15 @@ const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
 
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { message: "Too many attempts. Please try again later." },
+});
+app.use("/api/auth/login", authLimiter);
+app.use("/api/auth/signup", authLimiter);
+app.use("/api/auth/forgot-password", authLimiter);
+app.use("/api/auth/create-admin", authLimiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);

@@ -18,7 +18,6 @@ export function Signup() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -116,7 +115,7 @@ export function Signup() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, area, address, password, role }),
+        body: JSON.stringify({ name, email, phone, area, address, password }),
       });
 
       const data = await response.json();
@@ -324,30 +323,6 @@ export function Signup() {
                 <span>{confirmPasswordError}</span>
               </div>
             )}
-          </div>
-
-          <div className="role-based-selector">
-            <label htmlFor="role">Role:</label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="role"
-                value="customer"
-                checked={role === "customer"}
-                onChange={(e) => setRole(e.target.value)}
-              />
-              Customer
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="role"
-                value="admin"
-                checked={role === "admin"}
-                onChange={(e) => setRole(e.target.value)}
-              />
-              Admin
-            </label>
           </div>
 
           <button type="submit">Sign up</button>

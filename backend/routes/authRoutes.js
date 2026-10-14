@@ -3,13 +3,13 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"; 
 import crypto from "crypto";
 import User from "../models/User.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router(); 
 
 router.post("/signup", async (req, res) => {
   try {
-const { name, email, phone, area, address, password, role } = req.body;
+const { name, email, phone, area, address, password } = req.body;
     const emailExist = await User.findOne({ email });
     if (emailExist) {
       return res.status(400).json({ message: "Email already registered" });
@@ -28,7 +28,7 @@ const phoneExist = await User.findOne({ phone });
       area,
       address,
       password: hashedPassword,
-      role: role || "customer",
+      role: "customer",
     });
     const token = jwt.sign(
       { id: newUser._id, role: newUser.role },
@@ -194,6 +194,80 @@ router.patch("/change-password", verifyToken, async (req, res) => {
     res.json({ message: "Password changed successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+const ADMIN_PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+// Create Admin (created by an existing admin)
+router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { name, email, phone, password } = req.body;
+
+    if (!name || !email || !phone || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (!ADMIN_PASSWORD_PATTERN.test(password)) {
+      return res.status(400).json({
+        message: "Password must be 8+ characters with uppercase, lowercase, number & special character",
+      });
+    }
+
+    const exists = await User.findOne({ $or: [{ email }, { phone }] });
+    if (exists) {
+      return res.status(400).json({ message: "Email or phone already registered" });
+    }
+
+    const admin = await User.create({
+      name,
+      email,
+      phone,
+      area: "Model Town",
+      address: "Bitezone HQ",
+      password: await bcrypt.hash(password, 10),
+      role: "admin",
+      createdBy: req.user.id,
+    });
+
+    res.status(201).json({
+      message: "Admin created",
+      admin: { id: admin._id, name: admin.name, email: admin.email },
+    });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// List of all admins
+router.get("/admins", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const admins = await User.find({ role: "admin" })
+      .select("name email phone createdAt createdBy")
+      .populate("createdBy", "name email");
+    res.json(admins);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// Demote Admin to Customer (cannot demote self, nor the last admin)
+router.patch("/admins/:id/demote", verifyToken, isAdmin, async (req, res) => {
+  try {
+    if (req.params.id === req.user.id) {
+      return res.status(400).json({ message: "You cannot demote yourself" });
+    }
+    const adminCount = await User.countDocuments({ role: "admin" });
+    if (adminCount <= 1) {
+      return res.status(400).json({ message: "Cannot remove the last admin" });
+    }
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id, role: "admin" },
+      { role: "customer" },
+      { new: true }
+    );
+    if (!user) return res.status(404).json({ message: "Admin not found" });
+    res.json({ message: "Admin demoted to customer" });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
   }
 });
 export default router;
