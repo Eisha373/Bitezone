@@ -26,12 +26,8 @@ export function ForgotPassword() {
         setError(data.message || "Something went wrong");
         return;
       }
-
-      setMessage("Reset link generated. Redirecting...");
-
-      setTimeout(() => {
-        navigate(`/reset-password/${data.resetToken}`);
-      }, 1500);
+setMessage(data.message);
+setEmail("");
     } catch {
       setError("Something went wrong. Please try again.");
     }

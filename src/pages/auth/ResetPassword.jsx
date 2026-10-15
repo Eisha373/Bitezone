@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../../auth.css";
 
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+const PASSWORD_MSG = "Must be 8+ characters with uppercase, lowercase, number & special character";
+
 export function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -29,9 +32,9 @@ export function ResetPassword() {
   };
 
   const handlePasswordBlur = () => {
-    if (password.length > 0 && password.length < 8) {
-      setPasswordError("Password must be at least 8 characters");
-    }
+    if (password.length > 0 && !PASSWORD_PATTERN.test(password)) {
+  setPasswordError(PASSWORD_MSG);
+}
   };
 
   const handleConfirmPasswordBlur = () => {
@@ -46,9 +49,10 @@ export function ResetPassword() {
     if (!password) {
       setPasswordError("Password is required");
       valid = false;
-    } else if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters");
-      valid = false;
+    } else if (!PASSWORD_PATTERN.test(password)) {
+  setPasswordError(PASSWORD_MSG);
+  valid = false;
+
     }
 
     if (!confirmPassword) {

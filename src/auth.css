@@ -594,3 +594,27 @@
   padding: 9px 44px 9px 10px;
   font-size: 0.9rem;
 }
+/* Login/Signup: sab inputs ka same size */
+.auth-card input:not([type="radio"]) {
+  padding: 9px 10px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+.auth-card .password-field input {
+  padding: 9px 44px 9px 10px;
+  font-size: 0.9rem;
+}
+
+/* Forgot password link: customer theme ke orange se match */
+.forgot-password-link a,
+.forgot-password-link a:visited {
+  color: #d65335;
+  font-weight: 500;
+}
+.forgot-password-link a:hover {
+  color: #6372fc;
+}
+.auth-card p a,
+.auth-card p a:visited {
+  color: #d65335;
+}

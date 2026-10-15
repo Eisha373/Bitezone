@@ -1,73 +1,104 @@
-import express from "express"; 
-import bcrypt from "bcryptjs"; 
-import jwt from "jsonwebtoken"; 
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 import User from "../models/User.js";
 import { DELIVERY_ZONES } from "../data/deliveryZones.js";
 import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 
-const router = express.Router(); 
+const router = express.Router();
 
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+const PASSWORD_MSG =
+  "Password must be 8+ characters with uppercase, lowercase, number & special character";
+const PHONE_PATTERN = /^03\d{9}$/;
+const getMaxAdmins = () => Number(process.env.MAX_ADMINS) || 3;
+const hashToken = (token) => crypto.createHash("sha256").update(token).digest("hex");
+
+function publicUser(u) {
+  return {
+    id: u._id,
+    name: u.name,
+    email: u.email,
+    phone: u.phone,
+    area: u.area,
+    address: u.address,
+    role: u.role,
+  };
+}
+
+/* ===================== SIGNUP ===================== */
 router.post("/signup", async (req, res) => {
   try {
-const { name, email, phone, area, address, password } = req.body;
+    const { name, email, phone, area, address, password } = req.body;
+
+    if (!name || !email || !phone || !area || !address?.trim() || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (!PHONE_PATTERN.test(phone)) {
+      return res.status(400).json({ message: "Enter a valid 11-digit phone number" });
+    }
+    if (!DELIVERY_ZONES[area]) {
+      return res.status(400).json({ message: "Invalid delivery area" });
+    }
+    if (!PASSWORD_PATTERN.test(password)) {
+      return res.status(400).json({ message: PASSWORD_MSG });
+    }
+
     const emailExist = await User.findOne({ email });
     if (emailExist) {
       return res.status(400).json({ message: "Email already registered" });
     }
-const phoneExist = await User.findOne({ phone });
+    const phoneExist = await User.findOne({ phone });
     if (phoneExist) {
       return res.status(400).json({ message: "Phone number already registered" });
     }
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       name,
       email,
       phone,
       area,
-      address,
-      password: hashedPassword,
-      role: "customer",
+      address: address.trim(),
+      password: await bcrypt.hash(password, 10),
+      role: "customer", // role kabhi request se nahi aata
     });
+
     const token = jwt.sign(
       { id: newUser._id, role: newUser.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-
     return res.status(201).json({
       message: "Registration Successful!",
       token,
-      user: {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        phone:newUser.phone,
-        area:newUser.area,
-        address:newUser.address,
-        role: newUser.role,
-      },
+      user: publicUser(newUser),
     });
   } catch (e) {
     return res.status(500).json({ message: e.message });
   }
 });
 
-router.post("/login", async (req, res)=>{
-    try{
-      const {email,password}=req.body;
-      const user=await User.findOne({email});
-      if(!user){
-        return res.status(400).json({message:"Invalid email or password"});
-      }
-      const match=await bcrypt.compare(password,user.password);
-      if(!match){
-        return res.status(400).json({message:"Invalid email or password"});
-      }
-      const token = jwt.sign(
+/* ===================== LOGIN ===================== */
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -76,76 +107,94 @@ router.post("/login", async (req, res)=>{
     return res.status(200).json({
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        phone:user.phone,
-        area:user.area,
-        address:user.address,
-        role: user.role,
-      },
+      user: publicUser(user),
     });
-  } 
-     
-    catch (error) {
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
+
+/* ===================== FORGOT / RESET PASSWORD ===================== */
 router.post("/forgot-password", async (req, res) => {
+  const genericMsg = "If this email is registered, a reset link has been sent.";
   try {
     const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
 
     const user = await User.findOne({ email });
+    // Same jawab chahe email registered ho ya na ho
     if (!user) {
-      return res.status(404).json({ message: "No account found with this email" });
+      return res.status(200).json({ message: genericMsg });
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-
-    user.resetPasswordToken = resetToken;
+    user.resetPasswordToken = hashToken(resetToken); // DB mein sirf hash
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
-    await user.save( {validateBeforeSave: false});
+    await user.save({ validateBeforeSave: false });
 
-    res.status(200).json({
-      message: "Reset token generated",
-      resetToken,
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
     });
-  } catch (e){
-    res.status(500).json({ message: e.message });
+
+    const link = `${process.env.CLIENT_URL_PUBLIC}/reset-password/${resetToken}`;
+
+    await transporter.sendMail({
+      from: `"Bitezone" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: "Reset your Bitezone password",
+      html: `<p>Hi ${user.name},</p>
+             <p>Click the link below to reset your password. It expires in 15 minutes.</p>
+             <p><a href="${link}">Reset password</a></p>
+             <p>If you didn't request this, you can ignore this email.</p>`,
+    });
+
+    return res.status(200).json({ message: genericMsg });
+  } catch (e) {
+    console.error("forgot-password error:", e.message);
+    return res
+      .status(500)
+      .json({ message: "Could not send reset email. Try again later." });
   }
 });
+
 router.post("/reset-password/:token", async (req, res) => {
   try {
-    const { token } = req.params;
     const { password } = req.body;
+    if (!password || !PASSWORD_PATTERN.test(password)) {
+      return res.status(400).json({ message: PASSWORD_MSG });
+    }
 
     const user = await User.findOne({
-      resetPasswordToken: token,
+      resetPasswordToken: hashToken(req.params.token),
       resetPasswordExpires: { $gt: Date.now() },
     });
-
     if (!user) {
       return res.status(400).json({ message: "Invalid or expired reset link" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(password, 10);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
-    await user.save({ validateBeforeSave: false});
+    await user.save({ validateBeforeSave: false });
 
     res.status(200).json({ message: "Password reset successful" });
-  } catch(e) {
+  } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
 
+/* ===================== PROFILE ===================== */
 router.patch("/profile", verifyToken, async (req, res) => {
   try {
     const { phone } = req.body;
     if (!phone) {
       return res.status(400).json({ message: "Phone number is required" });
+    }
+    if (!PHONE_PATTERN.test(phone)) {
+      return res.status(400).json({ message: "Enter a valid 11-digit phone number" });
     }
 
     const phoneExist = await User.findOne({ phone, _id: { $ne: req.user.id } });
@@ -159,18 +208,7 @@ router.patch("/profile", verifyToken, async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    res.json({
-      message: "Profile updated",
-      user: {
-        id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        phone: updatedUser.phone,
-        area: updatedUser.area,
-        address: updatedUser.address,
-        role: updatedUser.role,
-      },
-    });
+    res.json({ message: "Profile updated", user: publicUser(updatedUser) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -180,10 +218,18 @@ router.patch("/change-password", verifyToken, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "Both current and new password are required" });
+      return res
+        .status(400)
+        .json({ message: "Both current and new password are required" });
+    }
+    if (!PASSWORD_PATTERN.test(newPassword)) {
+      return res.status(400).json({ message: PASSWORD_MSG });
     }
 
     const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     const match = await bcrypt.compare(currentPassword, user.password);
     if (!match) {
       return res.status(400).json({ message: "Current password is incorrect" });
@@ -197,9 +243,8 @@ router.patch("/change-password", verifyToken, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-const ADMIN_PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-const getMaxAdmins = () => Number(process.env.MAX_ADMINS) || 3;
 
+/* ===================== ADMIN MANAGEMENT ===================== */
 router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
   try {
     const { name, email, phone, area, address, password } = req.body;
@@ -215,13 +260,14 @@ router.post("/create-admin", verifyToken, isAdmin, async (req, res) => {
     if (!name || !email || !phone || !area || !address?.trim() || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
+    if (!PHONE_PATTERN.test(phone)) {
+      return res.status(400).json({ message: "Enter a valid 11-digit phone number" });
+    }
     if (!DELIVERY_ZONES[area]) {
       return res.status(400).json({ message: "Invalid delivery area" });
     }
-    if (!ADMIN_PASSWORD_PATTERN.test(password)) {
-      return res.status(400).json({
-        message: "Password must be 8+ characters with uppercase, lowercase, number & special character",
-      });
+    if (!PASSWORD_PATTERN.test(password)) {
+      return res.status(400).json({ message: PASSWORD_MSG });
     }
 
     const exists = await User.findOne({ $or: [{ email }, { phone }] });
